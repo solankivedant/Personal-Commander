@@ -1,0 +1,4 @@
+{"text": "chrome kholo", "intent": "open_app", "args": {"app": "chrome"}}
+{"text": "avaaj thodi ochi karo", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "મારી બેટરી કેની છે", "intent": "battery_status", "args": {}}
+{"text": "screen lock karo", "intent": "lock_screen", "args": {}}

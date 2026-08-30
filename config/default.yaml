@@ -1,0 +1,92 @@
+# Munshiji default configuration
+# Source: munshiji-full-report.md §19.1. YAML only — no behaviour constants
+# belong in source (see .claude/rules/engineering-standards.md).
+
+app:
+  name: munshiji
+  language: auto              # auto | en | hi | gu
+  first_run_wizard: true
+
+audio:
+  input_device: default
+  sample_rate: 16000
+  ring_buffer_s: 3.0
+
+vad:
+  model: silero_v5
+  silence_ms: 300              # keep in the 280-320ms band, see docs/ARCHITECTURE.md
+  min_speech_ms: 200
+
+wake:
+  engine: openwakeword
+  phrase: hey_munshiji
+  threshold: 0.5
+  debounce_ms: 1500
+  hotkey: ctrl+alt+space        # always ship push-to-talk alongside wake word
+
+asr:
+  engine: faster-whisper
+  model: small
+  compute_type: int8
+  backend: openvino             # fallback: ctranslate2-cpu
+  initial_prompt: "Chrome open karo. Volume thoda kam karo."
+
+router:
+  grammar:
+    enabled: true
+    dirs: [config/intents]
+  embeddings:
+    enabled: true
+    model: multilingual-e5-small
+    threshold: 0.75
+    examples: config/examples
+  teach_mode: true
+
+llm:
+  enabled: true
+  provider: ollama
+  model: qwen2.5:3b-instruct-q4_K_M   # pin by digest before shipping, not :latest
+  keep_alive: -1
+  history_turns: 4
+  max_tools_in_context: 12
+  max_iterations: 5
+  temperature: 0.1
+
+cloud:
+  enabled: false
+  escalate: ask                # never | ask | auto
+
+tts:
+  engine: kokoro
+  voice: default
+  stream: true
+  indic_engine: indictts
+
+network:
+  mode: hybrid                 # local_only | hybrid | full
+  inbound: none                # none | tailscale
+  allowlist:
+    - api.open-meteo.com
+    - gmail.googleapis.com
+    - www.googleapis.com
+  timeout_s: 10
+  retries: 1
+
+security:
+  confirm_risk_tiers: [confirm]
+  blocked_tools: [registry_write, format_disk, delete_permanent]
+  speaker_verification: false
+  undo_depth: 20
+
+memory:
+  facts_db: data/facts.sqlite
+  documents:
+    enabled: true
+    path: data/chroma
+    embed_model: nomic-embed-text
+    watch_dirs: []
+
+logging:
+  level: INFO
+  audit: data/audit.jsonl
+  rotate_mb: 50

@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-type:
+    name: Lint & type check
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - run: uv sync --frozen --all-groups
+      - name: ruff
+        run: uv run ruff check src tests scripts
+      - name: mypy --strict
+        run: uv run mypy
+
+  test:
+    name: Unit + golden test set
+    runs-on: windows-latest
+    needs: lint-and-type
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - run: uv sync --frozen --all-groups
+      - name: pytest (unit + golden set)
+        run: uv run pytest tests/ -v
+        # Golden set gate lives in tests/test_router.py:
+        # >=92% exact tool match, >=85% args match, 100% on expect_confirm
+        # cases — see .claude/rules/engineering-standards.md. Do not relax
+        # these thresholds here to unblock a merge.
+
+  build-installer:
+    name: Build installer (smoke test)
+    runs-on: windows-latest
+    needs: test
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - run: uv sync --frozen --all-groups
+      - name: Build (PyInstaller --onedir)
+        run: uv run python scripts/package.py --no-sign --no-upload
+        # Signing and R2 upload are release-only steps, not run on every push.
+        # See .claude/agents/packaging-release-engineer.md before changing this.

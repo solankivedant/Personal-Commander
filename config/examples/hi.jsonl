@@ -1,0 +1,5 @@
+{"text": "chrome khol do", "intent": "open_app", "args": {"app": "chrome"}}
+{"text": "volume thoda kam karo", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "awaaz badha do", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "battery kitni bachi hai", "intent": "battery_status", "args": {}}
+{"text": "screen lock kar do", "intent": "lock_screen", "args": {}}

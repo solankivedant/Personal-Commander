@@ -1,0 +1,28 @@
+# hassil grammar templates — file operation intents.
+# All of these map to risk="confirm" tools (see .claude/rules/security-and-privacy.md)
+# except find_file, which only searches and does not mutate anything.
+
+intents:
+  find_file:
+    data:
+      - sentences:
+          - "find {query}"
+          - "(search for|look for) {query}"
+          - "where is {query}"
+
+  move_files:
+    data:
+      - sentences:
+          - "move {query} to {destination}"
+          - "move [all] {query} from {source} to {destination}"
+
+  rename_file:
+    data:
+      - sentences:
+          - "rename {query} to {new_name}"
+
+  delete_files:
+    data:
+      - sentences:
+          - "delete {query}"
+          - "(remove|trash) {query}"

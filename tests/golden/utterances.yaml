@@ -1,0 +1,52 @@
+# Golden test set — the mandatory router regression check.
+# Source format: munshiji-full-report.md §19.2.
+# See .claude/rules/engineering-standards.md and .claude/skills/golden-test/
+# CI gate: >=92% exact tool match, >=85% args match, 100% on expect_confirm cases.
+#
+# Grow this file to 80-120 entries spanning en/hi/gu as Phase 2 tools land
+# (see docs/ROADMAP.md). These starter entries mirror config/examples/*.jsonl.
+
+- text: "volume thoda kam karo"
+  lang: hi
+  expect_tool: set_volume
+  expect_args: {direction: down}
+  expect_stage: grammar
+
+- text: "open chrome"
+  lang: en
+  expect_tool: open_app
+  expect_args: {app: chrome}
+  expect_stage: grammar
+
+- text: "make it a bit louder"
+  lang: en
+  expect_tool: set_volume
+  expect_args: {direction: up}
+  expect_stage: embeddings      # deliberately not in grammar
+
+- text: "desktop par jitni PDF hai sab Documents me daal do"
+  lang: hi
+  expect_tool: move_files
+  expect_stage: llm
+  expect_confirm: true
+
+- text: "મારી બેટરી કેટલી છે"
+  lang: gu
+  expect_tool: get_battery
+  expect_stage: embeddings
+
+- text: "lock my laptop"
+  lang: en
+  expect_tool: lock_screen
+  expect_stage: grammar
+
+- text: "screen lock kar do"
+  lang: hi
+  expect_tool: lock_screen
+  expect_stage: embeddings
+
+- text: "delete all files in downloads"
+  lang: en
+  expect_tool: delete_files
+  expect_stage: grammar
+  expect_confirm: true

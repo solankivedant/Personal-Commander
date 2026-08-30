@@ -1,0 +1,44 @@
+# hassil grammar templates — Stage 1 of the router cascade.
+# Source pattern: munshiji-full-report.md §3.2 L3.
+# Deterministic, <10ms, zero RAM. Covers ~50% of daily commands when populated.
+#
+# Add a golden-test entry in tests/golden/utterances.yaml for every intent
+# added here — see .claude/skills/new-tool/SKILL.md.
+
+intents:
+  set_volume:
+    data:
+      - sentences:
+          - "set volume to {level} [percent]"
+          - "volume {level}"
+          - "[make it] (louder|quieter)"
+
+  mute:
+    data:
+      - sentences:
+          - "mute"
+          - "mute [the] (volume|audio|sound)"
+          - "[be] quiet"
+
+  lock_screen:
+    data:
+      - sentences:
+          - "lock [the] (screen|computer|laptop|pc)"
+
+  sleep:
+    data:
+      - sentences:
+          - "(go to sleep|sleep [now])"
+          - "put [the] (computer|laptop|pc) to sleep"
+
+  battery_status:
+    data:
+      - sentences:
+          - "(what's|what is|check) [the] battery [level|status]"
+          - "how much battery [is left|do I have]"
+
+  set_brightness:
+    data:
+      - sentences:
+          - "set brightness to {level} [percent]"
+          - "[make it|screen] (brighter|dimmer)"

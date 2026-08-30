@@ -1,0 +1,18 @@
+Proprietary License (placeholder)
+
+Copyright (c) 2026 Munshiji. All rights reserved.
+
+This is a placeholder licence. munshiji-full-report.md §13.4 recommends either:
+
+  1. A proprietary EULA — closed source, perpetual licence for the shipped
+     major version, paid major-version upgrades; or
+  2. An open-core split — router, tools, and voice loop under AGPL-3.0, with
+     the Indic layer, GUI, and Office/COM integration kept proprietary.
+
+Neither has been finalized yet — see docs/LICENSING-AUDIT.md "Open decisions"
+for status. Do not treat this file as final, and do not distribute the
+software under this placeholder text. Replace it with the actual chosen
+licence (and, if open-core, split the repository accordingly) before any
+public release.
+
+This is not legal advice. Consult a lawyer before commercial launch.

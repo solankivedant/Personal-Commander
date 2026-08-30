@@ -1,0 +1,6 @@
+{"text": "open chrome", "intent": "open_app", "args": {"app": "chrome"}}
+{"text": "launch spotify", "intent": "open_app", "args": {"app": "spotify"}}
+{"text": "make it a bit louder", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "turn the volume down", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "how much battery do I have left", "intent": "battery_status", "args": {}}
+{"text": "lock my laptop", "intent": "lock_screen", "args": {}}

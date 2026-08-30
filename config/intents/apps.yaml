@@ -1,0 +1,26 @@
+# hassil grammar templates — application control intents.
+# See config/intents/system.yaml for format notes.
+
+intents:
+  open_app:
+    data:
+      - sentences:
+          - "open {app}"
+          - "(launch|start|run) {app}"
+
+  close_app:
+    data:
+      - sentences:
+          - "close {app}"
+          - "(quit|exit) {app}"
+
+  focus_app:
+    data:
+      - sentences:
+          - "(switch to|go to|focus) {app}"
+
+  minimize_app:
+    data:
+      - sentences:
+          - "minimize {app}"
+          - "minimize [this|current] window"
