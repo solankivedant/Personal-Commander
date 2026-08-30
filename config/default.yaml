@@ -29,6 +29,14 @@ asr:
   model: small
   compute_type: int8
   backend: openvino             # fallback: ctranslate2-cpu
+  # device: GPU is not optional — Phase 0 measured on the actual target
+  # hardware (docs/PHASE-0-RESULTS.md): OpenVINO IR on CPU gave NO speedup
+  # over the plain ctranslate2 CPU backend (~2.9s, fails the 600ms gate).
+  # Explicitly targeting the Iris Xe iGPU (device: GPU) cut that to ~850ms
+  # (3.4x). Still short of the gate as of this measurement — INT8
+  # quantization of the OpenVINO IR is the next untried lever, see the
+  # results doc before changing this default.
+  device: GPU                   # fallback: CPU (measured much slower, avoid)
   initial_prompt: "Chrome open karo. Volume thoda kam karo."
 
 router:

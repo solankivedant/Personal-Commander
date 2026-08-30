@@ -13,16 +13,27 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ## Phase 0 — Spike (1 week, ~20h)
 
-Prove the hardware works before committing to it.
+Prove the hardware works before committing to it. **Run on: Dell Inspiron 14
+7430 2-in-1, i7-1355U, Iris Xe, 16GB — confirmed to match the report's target
+baseline.** Full results: [`docs/PHASE-0-RESULTS.md`](PHASE-0-RESULTS.md).
 
-- [ ] Benchmark Whisper `small` int8 on the actual target laptop
-- [ ] Benchmark Qwen2.5-3B tok/s via Ollama on the actual target laptop
-- [ ] Check RAM channel configuration (Task Manager → Performance → Memory →
-      Slots used) — single-channel forfeits 40–60% memory bandwidth, the
-      cheapest largest speedup available (§9.2)
-- [ ] Test openWakeWord false-accept rate in a real room
+- [x] Benchmark Whisper `small` int8 on the actual target laptop — **CPU
+      backend fails the gate (~2.9s)**; OpenVINO on the Iris Xe GPU gets to
+      ~850ms (close, not yet passing — INT8 quantization is the next lever)
+- [x] Benchmark Qwen2.5-3B tok/s via Ollama on the actual target laptop —
+      **11.3 tok/s median, gate passed**
+- [x] Check RAM channel configuration — soldered LPDDR5x @ 6400 MT/s, already
+      optimal on this machine; the report's dual-channel-upgrade advice
+      doesn't apply here
+- [ ] Test openWakeWord false-accept rate in a real room — needs a live mic
+      session, deferred to Phase 1 once `wake/detector.py` exists
 
 **Gate:** if ASR > 600ms or 3B < 10 tok/s, revise model choices before Phase 1.
+**Status: partially open.** LLM path cleared. ASR needs one more iteration
+(INT8-quantized Whisper `small` on the Iris Xe GPU, ~30-60 min estimated) —
+see `docs/PHASE-0-RESULTS.md` for the concrete next step before treating
+`small` as final. Recommend starting Phase 1's non-ASR work now (ring buffer,
+wake FSM, TTS) in parallel rather than blocking everything on this.
 
 ## Phase 1 — Voice loop (2 weeks, ~50h)
 

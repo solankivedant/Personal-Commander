@@ -45,6 +45,13 @@ htmlcov/
 installer/*.exe
 installer/Output/
 
+# Benchmark scratch (scripts/benchmark.py, docs/PHASE-0-RESULTS.md) —
+# converted model IR, synthesized speech samples. Local only, regenerable.
+.bench_tmp/
+
+# Claude Code harness state
+.claude/scheduled_tasks.lock
+
 # IDE / OS
 .vscode/
 .idea/
