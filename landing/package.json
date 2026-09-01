@@ -1,0 +1,16 @@
+{
+  "name": "munshiji-landing",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Munshiji marketing landing page — Vite + TypeScript, static output",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^8.2.2"
+  }
+}

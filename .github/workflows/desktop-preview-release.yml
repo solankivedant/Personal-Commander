@@ -1,0 +1,48 @@
+name: Desktop preview release
+
+# Builds the Tauri UI-preview shell (desktop-preview/) for Windows and
+# publishes the installer to a GitHub Release. Windows-only: the real
+# Munshiji product only ever targets Windows (Office COM automation has no
+# macOS/Linux equivalent), so this preview doesn't build those either. This
+# is NOT the real Munshiji installer pipeline (that's scripts/package.py +
+# installer/, gated on the engine actually existing) — see
+# desktop-preview/README.md.
+on:
+  push:
+    tags:
+      - "desktop-preview-v*"
+  workflow_dispatch: {}
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install frontend deps
+        working-directory: desktop-preview
+        run: npm install
+
+      - name: Generate icon set
+        working-directory: desktop-preview
+        run: npx tauri icon src-tauri/icon-source.png -o src-tauri/icons
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: desktop-preview
+          tagName: ${{ github.ref_name }}
+          releaseName: "Munshiji preview build ${{ github.ref_name }}"
+          releaseBody: |
+            UI preview of the Munshiji Control Center, for Windows. No voice,
+            file, or system control is wired up yet — see the Roadmap tab
+            in-app or docs/ROADMAP.md. This is not the shipping product.
+          releaseDraft: true
+          prerelease: true

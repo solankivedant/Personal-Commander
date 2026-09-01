@@ -20,6 +20,23 @@ Pre-Phase 0. See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the build plan and
 current progress, and [`docs/RISK-REGISTER.md`](docs/RISK-REGISTER.md) for
 known risks.
 
+## Landing page & desktop preview
+
+- **`landing/`** — the public marketing page: what Munshiji is, the router
+  cascade, the security model, and an honest phase-by-phase status section.
+  A Vite + TypeScript project (`npm install && npm run dev`) that builds to
+  static output (`npm run build` → `landing/dist/`), deployable to any static
+  host (Vercel/Netlify/GitHub Pages).
+- **`desktop-preview/`** — a small [Tauri](https://tauri.app) app wrapping the
+  Control Center UI mockup so it's downloadable as a real Windows installer.
+  It is a **UI preview only** — no voice, file, or system control is wired
+  up, and it is not the real product installer (see
+  `desktop-preview/README.md`). Windows-only, same as the real product: Office
+  COM automation has no macOS/Linux equivalent, so this preview doesn't build
+  for those either. The actual shipping installer, once the engine exists, is
+  the PyInstaller + Inno Setup pipeline under `installer/` and
+  `scripts/package.py`.
+
 ## Target hardware
 
 Windows 10/11, 16 GB RAM, Intel Iris integrated graphics (no CUDA). See
@@ -35,6 +52,8 @@ tests/golden/    The golden test set — mandatory router regression check
 scripts/         build_index.py, benchmark.py, package.py
 installer/       Inno Setup script + assets
 docs/            Roadmap, architecture, risk register, licensing audit
+landing/         Public marketing page (static HTML)
+desktop-preview/ Tauri UI-preview shell — not the real product installer
 .claude/         Claude Code rules, agents, and skills for working in this repo
 ```
 
