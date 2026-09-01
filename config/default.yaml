@@ -19,7 +19,11 @@ vad:
 
 wake:
   engine: openwakeword
-  phrase: hey_munshiji
+  phrase: hey_munshiji          # product identity — no trained model for this yet
+  detector_model_id: hey_jarvis # actual openWakeWord model loaded until "hey
+                                 # munshiji" is trained (needs synthetic-TTS
+                                 # data + a training run, see docs/ROADMAP.md
+                                 # Phase 1 note); push-to-talk covers the gap
   threshold: 0.5
   debounce_ms: 1500
   hotkey: ctrl+alt+space        # always ship push-to-talk alongside wake word
@@ -66,9 +70,21 @@ cloud:
 
 tts:
   engine: kokoro
-  voice: default
+  voice: af_heart               # see data/models/kokoro/voices-v1.0.bin for
+                                 # the full list ("default" is not a valid key)
   stream: true
   indic_engine: indictts
+
+ui:
+  overlay:
+    enabled: true
+    position: bottom_center       # bottom_center | bottom_left | bottom_right
+    width_px: 320
+    height_px: 56
+    margin_px: 40                 # gap from the screen edge
+    opacity: 0.92
+    transcript_display_s: 3.0     # how long the last transcript stays shown
+                                   # before the pill reverts to the state label
 
 network:
   mode: hybrid                 # local_only | hybrid | full

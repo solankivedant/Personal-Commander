@@ -26,7 +26,10 @@ baseline.** Full results: [`docs/PHASE-0-RESULTS.md`](PHASE-0-RESULTS.md).
       optimal on this machine; the report's dual-channel-upgrade advice
       doesn't apply here
 - [ ] Test openWakeWord false-accept rate in a real room — needs a live mic
-      session, deferred to Phase 1 once `wake/detector.py` exists
+      session, deferred to Phase 1 once `wake/detector.py` exists. Note:
+      `wake/detector.py` now exists but loads a stock pretrained model
+      (`hey_jarvis`) as a placeholder, not a trained "hey munshiji" model —
+      see the Phase 1 note below before running this test.
 
 **Gate:** if ASR > 600ms or 3B < 10 tok/s, revise model choices before Phase 1.
 **Status: partially open.** LLM path cleared. ASR needs one more iteration
@@ -37,13 +40,36 @@ wake FSM, TTS) in parallel rather than blocking everything on this.
 
 ## Phase 1 — Voice loop (2 weeks, ~50h)
 
-- [ ] L0 ring buffer + Silero VAD (`audio/`)
-- [ ] L1 wake word + FSM + push-to-talk (`wake/`)
-- [ ] L2 Whisper integration (`asr/whisper.py`)
-- [ ] L8 Kokoro streaming TTS (`tts/kokoro.py`)
-- [ ] Echo-back test: say something, hear it repeated
+- [x] L0 ring buffer + Silero VAD (`audio/`)
+- [x] L1 wake word + FSM + push-to-talk (`wake/`)
+- [x] L2 Whisper integration (`asr/whisper.py`) — CTranslate2 CPU backend;
+      `asr/openvino.py` stays the Phase 6 stub, see docs/PHASE-0-RESULTS.md
+- [x] L8 Kokoro streaming TTS (`tts/kokoro.py`) — requires manually
+      downloading Kokoro's weights into `data/models/kokoro/` before first
+      run (no bundled/hardcoded-URL auto-download, see the class docstring
+      and `.claude/rules/licensing-and-ip.md`)
+- [ ] Echo-back test: say something, hear it repeated — code is in place
+      (transcript passes straight through to TTS in Phase 1, no router yet)
+      but needs to be run on the actual target laptop with a live mic; not
+      verifiable from this dev environment
+- [x] Minimal floating status overlay (`ui/overlay.py`) — a Whisper-Flow/
+      Gemini-style pill docked to the bottom of the screen showing
+      listen/think/speak state and the last transcript. **Pulled forward from
+      Phase 8 by explicit user decision** (user asked for a dashboard +
+      floating control UI; Phase 2/3 — the router and tools a real dashboard
+      would control — don't exist yet, so scope was cut to a pure status
+      subscriber on the event bus, no controls). The full tray icon, control
+      dashboard, and onboarding wizard remain Phase 8.
 
-**Deliverable:** a thing that listens and talks.
+**Note:** no trained "hey munshiji" openWakeWord model exists yet — training
+one needs synthetic-TTS data and a training run, tracked as a follow-up, not
+done as part of this phase. `wake/detector.py` defaults to the stock
+`hey_jarvis` pretrained model (`config/default.yaml`'s `wake.detector_model_id`) as a
+placeholder; push-to-talk (`ctrl+alt+space`) is the reliable entry point in
+the meantime, per the report's own guidance that wake words fail in noise.
+
+**Deliverable:** a thing that listens and talks. Code-complete; live-hardware
+verification (the echo-back test above) is the one remaining gate.
 
 ## Phase 2 — Router + Tier 0/1 tools (3 weeks, ~70h)
 
@@ -101,7 +127,10 @@ wake FSM, TTS) in parallel rather than blocking everything on this.
 
 ## Phase 8 — Packaging + licensing (3 weeks, ~70h)
 
-- [ ] Tray UI, onboarding wizard (`ui/`)
+- [ ] Tray UI, control dashboard, onboarding wizard (`ui/`) — note: a minimal
+      status-only overlay (`ui/overlay.py`) already exists, pulled forward
+      into Phase 1; this phase still owns the tray icon, the real control
+      dashboard wired to the router/tools, and onboarding
 - [ ] PyInstaller + Inno Setup (`scripts/package.py`, `installer/`)
 - [ ] Code signing
 - [ ] Licence verification (`licence/verify.py`)
