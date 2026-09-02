@@ -7,7 +7,8 @@
     "tauri": "tauri",
     "dev": "tauri dev",
     "build": "tauri build",
-    "icon": "tauri icon src-tauri/icon-source.png -o src-tauri/icons"
+    "icon": "tauri icon src-tauri/icon-source.png -o src-tauri/icons",
+    "web": "node serve.mjs"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2"

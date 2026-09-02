@@ -44,6 +44,19 @@ npm run dev      # opens the preview in a native window
 npm run build    # produces an NSIS installer under src-tauri/target/release/bundle/nsis/
 ```
 
+## Testing the UI in a browser, no Rust required
+
+```bash
+cd desktop-preview
+npm install
+npm run web      # http://localhost:5180 (override with PORT=xxxx)
+```
+
+`serve.mjs` is a zero-dependency Node static server for `dist/` — the same
+file the Tauri window loads, just opened as a normal browser tab. Use this
+for quick UI iteration; use `npm run dev` (below) when you need to check how
+it actually looks inside a native window.
+
 ## Getting a build without installing Rust
 
 Push a tag matching `desktop-preview-v*` (e.g. `git tag desktop-preview-v0.1.0
