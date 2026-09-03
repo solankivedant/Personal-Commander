@@ -5,7 +5,7 @@ export interface DemoFrame {
   stage: string;
 }
 
-// Mirrors config/examples/{en,hi,gu}.jsonl — one intent, three phrasings.
+// Mirrors config/examples/{en,hi,gu}.jsonl - one intent, three phrasings.
 export const DEMO_FRAMES: DemoFrame[] = [
   { lang: "en", tag: "EN", text: '"turn the volume down"', stage: "grammar match" },
   { lang: "hi", tag: "HI", text: "आवाज़ कम करो", stage: "grammar match" },
@@ -21,17 +21,24 @@ export interface ToolCard {
   desc: string;
   iconPath: string;
   featured?: boolean;
+  wide?: boolean;
+  features?: string[];
 }
 
-// Mirrors src/munshiji/tools/ — see docs/ARCHITECTURE.md for the tool registry contract.
+// Mirrors src/munshiji/tools/ - see docs/ARCHITECTURE.md for the tool registry contract.
 export const TOOLS: ToolCard[] = [
   {
     name: "Office",
     tier: "local",
     risk: "confirm",
-    desc: "Outlook, Excel, Word via COM automation — the strongest technical moat, and the reason this exists at all.",
+    desc: "Outlook, Excel, Word via COM automation - the strongest technical moat, and the reason this exists at all.",
     iconPath: "M4 4h6v6H4zM14 4h6v6h-6zM14 14h6v6h-6zM4 14h6v6H4z",
     featured: true,
+    features: [
+      "Draft and send an Outlook reply by voice",
+      "Read values out of a running Excel sheet",
+      "Format a Word doc from a spoken command",
+    ],
   },
   {
     name: "System",
@@ -49,7 +56,7 @@ export const TOOLS: ToolCard[] = [
     name: "Files",
     tier: "local",
     risk: "confirm",
-    desc: "Search, move, rename — confirm-gated and undoable.",
+    desc: "Search, move, rename - confirm-gated and undoable.",
     iconPath: "M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3 3-2-2 3-3Z",
   },
   {
@@ -61,14 +68,16 @@ export const TOOLS: ToolCard[] = [
   {
     name: "Gmail & Calendar",
     tier: "net",
-    desc: "App-password or OAuth2.",
+    desc: "Read, draft, and search mail; check and create events - via app password or OAuth2.",
     iconPath: "M4 4h16v16H4z M4 6l8 7 8-7",
+    wide: true,
   },
   {
     name: "Phone bridge",
     tier: "lan",
-    desc: "Via the KDE Connect CLI.",
+    desc: "Send texts, check notifications, find your phone - via the KDE Connect CLI, over your own LAN.",
     iconPath: "M7 2h10v20H7z M11 18h2",
+    wide: true,
   },
 ];
 
@@ -77,16 +86,16 @@ export interface PhaseSegment {
   partial: boolean;
 }
 
-// Mirrors docs/ROADMAP.md — kept in sync by hand, same as the desktop-preview build.
+// Mirrors docs/ROADMAP.md - kept in sync by hand, same as the desktop-preview build.
 export const ROADMAP_PHASES: PhaseSegment[] = [
-  { label: "Phase 0 — Spike", partial: true },
-  { label: "Phase 1 — Voice loop", partial: true },
-  { label: "Phase 2 — Router", partial: false },
-  { label: "Phase 3 — Files", partial: false },
-  { label: "Phase 4 — LLM", partial: false },
-  { label: "Phase 5 — Office", partial: false },
-  { label: "Phase 6 — Indic", partial: false },
-  { label: "Phase 7 — Memory", partial: false },
-  { label: "Phase 8 — Packaging", partial: false },
-  { label: "Phase 9 — Commercial", partial: false },
+  { label: "Phase 0 - Spike", partial: true },
+  { label: "Phase 1 - Voice loop", partial: true },
+  { label: "Phase 2 - Router", partial: false },
+  { label: "Phase 3 - Files", partial: false },
+  { label: "Phase 4 - LLM", partial: false },
+  { label: "Phase 5 - Office", partial: false },
+  { label: "Phase 6 - Indic", partial: false },
+  { label: "Phase 7 - Memory", partial: false },
+  { label: "Phase 8 - Packaging", partial: false },
+  { label: "Phase 9 - Commercial", partial: false },
 ];

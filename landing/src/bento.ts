@@ -8,7 +8,8 @@ const TIER_TAG: Record<ToolCard["tier"], { label: string; netStyle: boolean }> =
 
 function buildCard(tool: ToolCard): HTMLElement {
   const card = document.createElement("div");
-  card.className = tool.featured ? "bento-card big" : "bento-card";
+  const modifier = tool.featured ? " big" : tool.wide ? " wide" : "";
+  card.className = `bento-card${modifier}`;
 
   const mark = document.createElement("div");
   mark.className = "mark";
@@ -20,6 +21,17 @@ function buildCard(tool: ToolCard): HTMLElement {
   const p = document.createElement("p");
   p.textContent = tool.desc;
   body.append(h3, p);
+
+  if (tool.features?.length) {
+    const list = document.createElement("ul");
+    list.className = "feature-list";
+    for (const feature of tool.features) {
+      const li = document.createElement("li");
+      li.textContent = feature;
+      list.appendChild(li);
+    }
+    body.appendChild(list);
+  }
 
   const foot = document.createElement("div");
   foot.className = "foot";

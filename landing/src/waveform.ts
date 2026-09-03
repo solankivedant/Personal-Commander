@@ -23,7 +23,7 @@ function mix(a: string, b: string, t: number): string {
   return `rgb(${r},${g},${bl})`;
 }
 
-/** Ambient bar waveform, purely decorative — evokes the assistant "listening". */
+/** Ambient bar waveform, purely decorative - evokes the assistant "listening". */
 export class Waveform {
   private ctx: CanvasRenderingContext2D;
   private dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
