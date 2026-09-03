@@ -53,7 +53,6 @@ export class Waveform {
     const accentStrong = cssVar("--accent-strong", "#103e38");
     const accent = cssVar("--accent", "#1f7a6c");
     const gold = cssVar("--gold", "#9c6a1e");
-    const rose = cssVar("--rose", "#a14f3c");
 
     this.ctx.clearRect(0, 0, this.width, this.height);
     const count = Math.floor(this.width / (this.barWidth + this.gap));
@@ -70,11 +69,9 @@ export class Waveform {
       const barH = Math.max(3 * this.dpr, amp * this.height * 0.72);
       const frac = i / count;
       const color =
-        frac < 0.4
-          ? mix(accentStrong, accent, frac / 0.4)
-          : frac < 0.7
-            ? mix(accent, gold, (frac - 0.4) / 0.3)
-            : mix(gold, rose, (frac - 0.7) / 0.3);
+        frac < 0.55
+          ? mix(accentStrong, accent, frac / 0.55)
+          : mix(accent, gold, (frac - 0.55) / 0.45);
       this.ctx.fillStyle = color;
       this.ctx.fillRect(x, mid - barH / 2, this.barWidth, barH);
     }

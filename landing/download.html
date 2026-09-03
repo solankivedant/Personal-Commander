@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Docs - Munshiji</title>
-<meta name="description" content="Set up Munshiji, learn the commands, and read how the router, security model and undo stack work.">
+<title>Download - Munshiji</title>
+<meta name="description" content="Download Munshiji for Windows 10 and 11. Free for personal use, installs in under a minute, no account needed.">
 <link rel="icon" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
   <div class="wrap">
     <span class="topbar-badge">New</span>
     <span>Munshiji 1.0 for Windows - voice control that never leaves your device</span>
-    <a href="/download.html">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a href="#get">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <button type="button" class="topbar-close" id="topbarClose" aria-label="Dismiss announcement">✕</button>
   </div>
 </div>
@@ -31,7 +31,7 @@
       <a class="textlink" href="/pricing.html">Pricing</a>
       <a class="textlink" href="/index.html#features">Features</a>
       <div class="nav-more" id="navMore">
-        <button type="button" class="textlink more-toggle" id="moreToggle" aria-expanded="false" aria-current="page">
+        <button type="button" class="textlink more-toggle" id="moreToggle" aria-expanded="false">
           More
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
@@ -46,7 +46,7 @@
     </nav>
 
     <div class="nav-cta">
-      <a class="btn download sm with-arrow" href="/download.html">
+      <a class="btn download sm with-arrow" href="#get">
         Get Started
         <span class="btn-arrow-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
@@ -55,13 +55,23 @@
 </header>
 
 <main>
-  <section class="page-hero">
+  <section class="page-hero centered" id="get">
     <div class="hero-blobs" aria-hidden="true"></div>
     <div class="hero-grid" aria-hidden="true"></div>
     <div class="wrap">
-      <span class="eyebrow"><span class="dot"></span>Documentation</span>
-      <h1>Everything you need, from install to your first command.</h1>
-      <p class="lede">Three minutes to set up. The rest is just talking to your laptop.</p>
+      <span class="eyebrow"><span class="dot"></span>Free for personal use</span>
+      <h1>One installer. Nothing phones home.</h1>
+
+      <div class="os-card" data-reveal>
+        <div class="os-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10.5 4.4V11H3V5.5ZM11.5 4.3 21 3v8H11.5V4.3ZM3 12h7.5v6.6L3 17.4V12ZM11.5 12H21v9l-9.5-1.3V12Z"/></svg></div>
+        <div class="os-name">Munshiji for Windows</div>
+        <div class="os-meta">Version 1.0.2 · 64-bit · 180 MB · Windows 10 &amp; 11</div>
+        <a class="btn download lg block" href="https://github.com/solankivedant/Personal-Commander/releases" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
+          Download installer
+        </a>
+        <div class="os-checksum mono">SHA-256 published with every release</div>
+      </div>
     </div>
   </section>
 
@@ -69,26 +79,26 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker">Quickstart</div>
-          <h2 data-reveal>Three steps to a listening assistant.</h2>
+          <div class="kicker">Set up</div>
+          <h2 data-reveal>Talking to your laptop in three steps.</h2>
         </div>
-        <p class="lede" data-reveal>Windows 10 or 11, 16 GB of memory, no graphics card required.</p>
+        <p class="lede" data-reveal>No account, no wizard, no configuration files to edit.</p>
       </div>
       <div class="steps-row" data-reveal>
         <div class="step-tile">
           <div class="step-num">1</div>
           <h3>Install</h3>
-          <p>Run the installer and pick a wake word - "Munshiji" by default.</p>
+          <p>Run the installer and choose your wake word.</p>
         </div>
         <div class="step-tile">
           <div class="step-num">2</div>
           <h3>Approve the models</h3>
-          <p>Speech and language models download once, straight from their source, with the licence shown.</p>
+          <p>Speech and language models download once from their original source, with the licence shown.</p>
         </div>
         <div class="step-tile">
           <div class="step-num">3</div>
-          <h3>Start talking</h3>
-          <p class="mono">"Munshiji, turn the volume down"</p>
+          <h3>Say the wake word</h3>
+          <p>The Control Center opens listening, and stays out of your way.</p>
         </div>
       </div>
     </div>
@@ -98,46 +108,45 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker">Guides</div>
-          <h2 data-reveal>Learn it in the order you will actually use it.</h2>
+          <div class="kicker">Requirements</div>
+          <h2 data-reveal>Built for a normal laptop.</h2>
         </div>
-        <p class="lede" data-reveal>Short, task-shaped pages - not a manual you have to read end to end.</p>
+        <p class="lede" data-reveal>No graphics card, no server, no subscription to run it.</p>
       </div>
-      <div class="split-grid" data-reveal>
-        <div class="trust-tile">
-          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3ZM19 11a7 7 0 0 1-14 0M12 18v4"/></svg></div>
-          <div><h3>Speaking to it</h3><p>Wake word, phrasing, pauses, and switching language mid-sentence.</p></div>
-        </div>
-        <div class="trust-tile">
-          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4zM14 4h6v6h-6zM14 14h6v6h-6zM4 14h6v6H4z"/></svg></div>
-          <div><h3>Office &amp; mail</h3><p>Dictating replies, reading a sheet, and formatting a document by voice.</p></div>
-        </div>
-        <div class="trust-tile">
-          <div class="mark lg amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg></div>
-          <div><h3>Security model</h3><p>Confirmation gates, the undo stack, the domain allowlist and what is off limits.</p></div>
-        </div>
-        <div class="trust-tile">
-          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.55 1 1.3 1 2.5h6c0-1.2.4-1.95 1-2.5A6 6 0 0 0 12 3Z"/></svg></div>
-          <div><h3>Teaching commands</h3><p>Turn your own phrasing into an instant path, and share it with a team.</p></div>
-        </div>
+      <div class="req-grid" data-reveal>
+        <div class="req-cell"><div class="l">Operating system</div><div class="v">Windows 10 &amp; 11</div></div>
+        <div class="req-cell"><div class="l">Memory</div><div class="v">16 GB</div></div>
+        <div class="req-cell"><div class="l">Graphics</div><div class="v">Integrated is fine</div></div>
+        <div class="req-cell"><div class="l">Disk</div><div class="v">6 GB with models</div></div>
       </div>
     </div>
   </section>
 
   <section class="band warm">
     <div class="wrap">
-      <div class="band-head">
+      <div class="band-head centered">
         <div>
-          <div class="kicker">Under the hood</div>
-          <h2 data-reveal>Four stages decide every command.</h2>
+          <div class="kicker">What happens on first run</div>
+          <h2 data-reveal>Three things, then it is yours.</h2>
         </div>
-        <p class="lede" data-reveal>Grammar, embeddings, the local model, then teach mode - in that order, first match wins.</p>
       </div>
-      <div class="req-grid" data-reveal>
-        <div class="req-cell"><div class="l">Grammar</div><div class="v">Under 10ms</div></div>
-        <div class="req-cell"><div class="l">Embeddings</div><div class="v">Under 20ms</div></div>
-        <div class="req-cell"><div class="l">Local model</div><div class="v">Five-step cap</div></div>
-        <div class="req-cell"><div class="l">Teach mode</div><div class="v">Learns on the spot</div></div>
+      <div class="split-grid" data-reveal>
+        <div class="trust-tile">
+          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/></svg></div>
+          <div><h3>Microphone permission</h3><p>Granted once, used only after the wake word.</p></div>
+        </div>
+        <div class="trust-tile">
+          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg></div>
+          <div><h3>Model download</h3><p>Once, from the original source, with the licence displayed.</p></div>
+        </div>
+        <div class="trust-tile">
+          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12v10H6zM9 11V8a3 3 0 0 1 6 0v3"/></svg></div>
+          <div><h3>Offline from then on</h3><p>Network features stay switched off until you turn one on.</p></div>
+        </div>
+        <div class="trust-tile">
+          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5M4 9h9a7 7 0 0 1 0 14H8"/></svg></div>
+          <div><h3>Clean uninstall</h3><p>Removes the app, the models and every local log.</p></div>
+        </div>
       </div>
     </div>
   </section>
@@ -145,13 +154,11 @@
   <section class="cta-band">
     <div class="hero-blobs" aria-hidden="true" style="opacity:0.6;"></div>
     <div class="wrap">
-      <h2 data-reveal>Install it and try the first command.</h2>
+      <h2 data-reveal>Need it for a team?</h2>
+      <p class="lede" data-reveal>Team plans add shared commands, an admin console and priority support.</p>
       <div class="cta-row" data-reveal>
-        <a class="btn download lg" href="/download.html">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
-          Download for Windows
-        </a>
-        <a class="btn ghost lg" href="/about.html#contact">Ask a question</a>
+        <a class="btn primary lg" href="/pricing.html">See pricing</a>
+        <a class="btn ghost lg" href="/about.html#contact">Talk to us</a>
       </div>
     </div>
   </section>

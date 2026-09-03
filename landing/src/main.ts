@@ -1,9 +1,10 @@
 import "./style.css";
-import { DEMO_FRAMES, TOOLS } from "./data";
+import { DEMO_FRAMES, TOOLS, SHOWCASE } from "./data";
 import { CommandDemo } from "./demo";
 import { Waveform } from "./waveform";
 import { initScrollReveal } from "./reveal";
-import { renderBento } from "./bento";
+import { renderFeatures } from "./features";
+import { renderShowcase } from "./carousel";
 import { initFloatingHeader } from "./header";
 
 function byId<T extends HTMLElement>(id: string): T {
@@ -25,7 +26,8 @@ function main(): void {
 
   new Waveform(byId<HTMLCanvasElement>("wave")).start();
 
-  renderBento(byId("bentoGrid"), TOOLS);
+  renderFeatures(byId("featureGrid"), TOOLS);
+  renderShowcase(byId("showcase"), SHOWCASE);
 
   initScrollReveal();
   initFloatingHeader();

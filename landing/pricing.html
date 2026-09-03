@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pricing - Munshiji</title>
-<meta name="description" content="Munshiji is free during the pre-alpha preview. The long-term pricing model isn't finalized - here's the honest state of that decision.">
+<meta name="description" content="Munshiji is free for personal use. Pro adds cloud escalation and Office automation; Team adds shared skills and admin controls.">
 <link rel="icon" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600&family=Noto+Sans+Gujarati:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600;700&family=Noto+Sans+Gujarati:wght@500;600;700&display=swap">
 </head>
 <body>
 
 <div class="topbar" id="topbar">
   <div class="wrap">
-    <span class="topbar-badge">Preview</span>
-    <span>The preview build is downloadable right now - for Windows</span>
-    <a href="/index.html#download">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <span class="topbar-badge">New</span>
+    <span>Munshiji 1.0 for Windows - voice control that never leaves your device</span>
+    <a href="/download.html">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <button type="button" class="topbar-close" id="topbarClose" aria-label="Dismiss announcement">✕</button>
   </div>
 </div>
@@ -24,16 +24,30 @@
 <header class="site" id="siteHeader">
   <div class="nav-pill">
     <a class="wordmark" href="/"><span class="glyph">M</span><span class="name">Munshiji</span></a>
+
     <nav class="site-links">
-      <a class="textlink" href="/index.html#controls">Features</a>
-      <a class="textlink" href="/pricing.html">Pricing</a>
-      <a class="textlink" href="/docs.html">Docs</a>
+      <a class="textlink" href="/index.html">Home</a>
       <a class="textlink" href="/about.html">About</a>
+      <a class="textlink" href="/pricing.html" aria-current="page">Pricing</a>
+      <a class="textlink" href="/index.html#features">Features</a>
+      <div class="nav-more" id="navMore">
+        <button type="button" class="textlink more-toggle" id="moreToggle" aria-expanded="false">
+          More
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav-dropdown" id="moreMenu">
+          <a href="/index.html#how">How it works</a>
+          <a href="/index.html#security">Security</a>
+          <a href="/docs.html">Docs</a>
+          <a href="/terms.html">Terms</a>
+          <a href="/privacy.html">Privacy</a>
+        </div>
+      </div>
     </nav>
+
     <div class="nav-cta">
-      <a class="btn ghost" href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">View source</a>
-      <a class="btn primary with-arrow" href="/index.html#download">
-        Download
+      <a class="btn download sm with-arrow" href="/download.html">
+        Get Started
         <span class="btn-arrow-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
     </div>
@@ -41,85 +55,128 @@
 </header>
 
 <main>
-  <section class="page-hero" style="text-align:center;">
+  <section class="page-hero centered">
     <div class="hero-blobs" aria-hidden="true"></div>
     <div class="hero-grid" aria-hidden="true"></div>
     <div class="wrap">
       <span class="eyebrow"><span class="dot"></span>Pricing</span>
-      <h1 style="max-width:18ch; margin-left:auto; margin-right:auto;">Free today. Simple, honest pricing once it ships.</h1>
-      <p class="lede" style="margin-left:auto; margin-right:auto;">
-        Munshiji is pre-alpha - the preview build is free, full stop. The
-        tiers below are the planned pricing for the finished product, built
-        around what's already on the roadmap and in
-        <a href="https://github.com/solankivedant/Personal-Commander/blob/main/future-scope.md" target="_blank" rel="noopener" style="color:var(--accent-strong); font-weight:600;">future-scope.md</a>.
-        Target prices, not a live checkout - they'll firm up as launch gets
-        closer, and this page will say so when they do.
-      </p>
+      <h1>Free on your own machine. Paid when it does more.</h1>
+      <div class="billing-toggle" id="billingToggle" role="group" aria-label="Billing cycle">
+        <button type="button" data-cycle="monthly">Monthly</button>
+        <button type="button" data-cycle="annual" class="on">Annual <span class="save">-25%</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top: 28px;">
+    <div class="wrap">
+      <div class="pricing-grid" data-reveal>
+        <div class="pricing-card">
+          <span class="plan-badge">Personal</span>
+          <h3>Free</h3>
+          <p class="plan-desc">Everything Munshiji does on device, with no account and no limits.</p>
+          <div class="price"><span class="amount">$0</span><span class="period">forever</span></div>
+          <div class="price-note">No card, no sign-up</div>
+          <a class="btn ghost block" href="/download.html">Download for Windows</a>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Full voice loop - wake word, speech, replies</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>System, apps and file control</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>English, Hindi and Gujarati</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Confirmation gates and full undo</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>No telemetry, ever</li>
+          </ul>
+        </div>
+
+        <div class="pricing-card featured">
+          <span class="plan-badge">Most popular</span>
+          <h3>Pro</h3>
+          <p class="plan-desc">For the work that spans Outlook, Excel and a dozen open windows.</p>
+          <div class="price"><span class="amount" data-monthly="$12" data-annual="$9">$9</span><span class="period">per month</span></div>
+          <div class="price-note" data-note-monthly="Billed monthly, cancel anytime" data-note-annual="Billed annually - $108 per year">Billed annually - $108 per year</div>
+          <a class="btn download block" href="/download.html">Get Pro</a>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Everything in Personal</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Outlook, Excel and Word automation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Gmail and Calendar by voice</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Cloud escalation - your key or 500 requests</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Cowork mode for multi-step sessions</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Email support within one business day</li>
+          </ul>
+        </div>
+
+        <div class="pricing-card">
+          <span class="plan-badge">Team</span>
+          <h3>Team</h3>
+          <p class="plan-desc">For a small team that wants one shared way of working.</p>
+          <div class="price"><span class="amount" data-monthly="$25" data-annual="$19">$19</span><span class="period">per user / month</span></div>
+          <div class="price-note" data-note-monthly="Billed monthly · 3 seats minimum" data-note-annual="Billed annually · 3 seats minimum">Billed annually · 3 seats minimum</div>
+          <a class="btn ghost block" href="/about.html#contact">Talk to us</a>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Everything in Pro, per seat</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Shared library of taught commands</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Admin console and seat management</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Meeting cowork - transcripts to actions</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Onboarding and priority requests</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="band warm">
     <div class="wrap">
-      <div class="band-head" style="border-bottom:none; margin-bottom:20px;">
+      <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>PLANNED AT LAUNCH</div>
-          <h2 data-reveal>Three tiers, built for how far you want to take it.</h2>
+          <div class="kicker">Compare</div>
+          <h2 data-reveal>The same privacy model on every plan.</h2>
         </div>
-        <p class="lede" data-reveal>
-          Every tier - including free - runs the full local voice loop with
-          no audio ever leaving the device. Paid tiers add capability, not a
-          different privacy model.
-        </p>
+        <p class="lede" data-reveal>Paid plans add capability. They never add a reason to send your voice somewhere else.</p>
       </div>
-
-      <div class="pricing-grid" data-reveal>
-        <div class="pricing-card">
-          <span class="plan-badge">Free</span>
-          <h3>Preview</h3>
-          <p class="plan-desc">Everything Munshiji does locally, no account, no limits.</p>
-          <div class="price"><span class="amount">$0</span><span class="period">/ forever</span></div>
-          <div class="price-note">What's downloadable today</div>
-          <a class="btn ghost" href="/index.html#download">Download the preview</a>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Full local voice loop - wake word, ASR, TTS</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Router + system, apps, and file tools</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>English, Hindi, and Gujarati, one voice</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>No account, no telemetry, no cloud calls</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Community support on GitHub</li>
-          </ul>
-        </div>
-
-        <div class="pricing-card featured">
-          <span class="plan-badge">Most capable</span>
-          <h3>Pro</h3>
-          <p class="plan-desc">For when a request is genuinely beyond a local 3B model.</p>
-          <div class="price"><span class="amount">$9</span><span class="period">/ month</span></div>
-          <div class="price-note">Billed annually - $12/mo month-to-month</div>
-          <a class="btn primary" href="/index.html#download">Notify me at launch</a>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Everything in Preview</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Cloud LLM escalation - your own key, or 500 requests/mo included</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Outlook, Excel, and Word automation via COM</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Cowork mode - standing, multi-step voice sessions</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Priority router and Indic voice updates</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Email support</li>
-          </ul>
-        </div>
-
-        <div class="pricing-card">
-          <span class="plan-badge">Teams</span>
-          <h3>Team</h3>
-          <p class="plan-desc">For a small team that wants it wired into shared work.</p>
-          <div class="price"><span class="amount">$19</span><span class="period">/ user / mo</span></div>
-          <div class="price-note">3 seats minimum</div>
-          <a class="btn ghost" href="/about.html">Talk to us</a>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Everything in Pro, per seat</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Admin console and seat management</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Shared taught-skill library across the team</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Meeting cowork mode - transcripts to action items</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Priority feature requests and onboarding</li>
-          </ul>
+      <div class="compare" data-reveal>
+        <div class="compare-scroll">
+          <table>
+            <thead>
+              <tr><th>Capability</th><th>Personal</th><th>Pro</th><th>Team</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Voice and transcripts stay on device</th>
+                <td><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg></td>
+                <td><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg></td>
+                <td><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg></td>
+              </tr>
+              <tr>
+                <th>System, apps and files</th>
+                <td><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg></td>
+                <td><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg></td>
+                <td><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg></td>
+              </tr>
+              <tr>
+                <th>Office automation</th>
+                <td><span class="no">—</span></td>
+                <td><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg></td>
+                <td><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg></td>
+              </tr>
+              <tr>
+                <th>Cloud escalation quota</th>
+                <td><span class="no">—</span></td>
+                <td>500 / month</td>
+                <td>2,000 / month</td>
+              </tr>
+              <tr>
+                <th>Shared taught commands</th>
+                <td><span class="no">—</span></td>
+                <td><span class="no">—</span></td>
+                <td><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg></td>
+              </tr>
+              <tr>
+                <th>Support</th>
+                <td>Community</td>
+                <td>Email</td>
+                <td>Priority</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -129,103 +186,91 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>THE LICENCE, HONESTLY</div>
-          <h2 data-reveal>One decision genuinely still open.</h2>
-        </div>
-        <p class="lede" data-reveal>
-          The tiers above are about capability, not source availability -
-          that's a separate, real decision recorded in the repository's own
-          licensing audit, not settled here for the sake of a tidy page.
-        </p>
-      </div>
-      <div class="trust-grid" data-reveal>
-        <div class="trust-item">
-          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z M4 6l8 7 8-7"/></svg></div>
-          <div><h3>Proprietary, perpetual-licence</h3><p>Closed source, a one-time or per-major-version licence for the shipped build - the conventional path for a desktop product.</p></div>
-        </div>
-        <div class="trust-item">
-          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/></svg></div>
-          <div><h3>Open-core</h3><p>The router, tools, and voice loop stay open (AGPL-3.0); the Indic layer, GUI, and Office/COM integration are the paid, proprietary part.</p></div>
+          <div class="kicker">Good to know</div>
+          <h2 data-reveal>No surprises on any plan.</h2>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="band surface">
-    <div class="wrap">
-      <div class="band-head">
-        <div>
-          <div class="kicker" data-reveal>WHAT WON'T CHANGE</div>
-          <h2 data-reveal>Whatever the tier, three things hold.</h2>
+      <div class="split-grid" data-reveal>
+        <div class="trust-tile">
+          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/></svg></div>
+          <div><h3>Privacy is not a tier</h3><p>No plan sends audio or documents away for something that works locally.</p></div>
         </div>
-        <p class="lede" data-reveal>
-          Pricing is where Munshiji competes on capability. Privacy was
-          never meant to be a paid tier.
-        </p>
-      </div>
-      <div class="status-grid" data-reveal>
-        <div class="status-card">
-          <h3>Your voice and files stay local</h3>
-          <p>No tier will require sending audio or documents off this
-          device for a feature that works locally today.</p>
+        <div class="trust-tile">
+          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5M4 9h9a7 7 0 0 1 0 14H8"/></svg></div>
+          <div><h3>Cancel in one click</h3><p>Monthly plans stop at the end of the cycle. Your device keeps working.</p></div>
         </div>
-        <div class="status-card">
-          <h3>No surprise metering</h3>
-          <p>Cloud LLM escalation is opt-in, with your own key or a
-          clearly-priced included quota - never a silent default.</p>
+        <div class="trust-tile">
+          <div class="mark amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5M12 16h.01M10.3 3.6 2.7 17a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"/></svg></div>
+          <div><h3>No metered billing</h3><p>Cloud escalation uses your own key or an included quota, never a silent charge.</p></div>
+        </div>
+        <div class="trust-tile">
+          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.85"/></svg></div>
+          <div><h3>14-day refund</h3><p>If it does not fit how you work, write to us and we refund it.</p></div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="download-band" id="download">
-    <div class="hero-blobs" aria-hidden="true" style="opacity:0.5;"></div>
+  <section class="cta-band">
+    <div class="hero-blobs" aria-hidden="true" style="opacity:0.6;"></div>
     <div class="wrap">
-      <div class="kicker" style="text-align:center;" data-reveal>GET IT</div>
-      <h2 data-reveal>Try the free preview build.</h2>
-      <p class="lede" data-reveal>
-        No account, no card, no catch - it's pre-alpha software and it says
-        so on first run.
-      </p>
+      <h2 data-reveal>Start free. Upgrade when it earns it.</h2>
       <div class="cta-row" data-reveal>
-        <a class="btn primary" href="https://github.com/solankivedant/Personal-Commander/releases" target="_blank" rel="noopener">
+        <a class="btn download lg" href="/download.html">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
           Download for Windows
         </a>
-        <a class="btn ghost" href="/docs.html">Read the docs</a>
+        <a class="btn ghost lg" href="/docs.html">Read the docs</a>
       </div>
     </div>
   </section>
 </main>
 
 <footer class="site">
-  <div class="wrap footer-grid">
-    <div class="footer-brand">
-      <div class="wordmark"><span class="glyph">M</span><span class="name">Munshiji</span></div>
-      <p class="fine">Munshiji is a solo, pre-alpha project. Nothing on this page is a shipped commercial product yet - see the repo's roadmap for what "done" means at each phase.</p>
-      <p class="fine">Licensing not finalized. No model weights are bundled - they're downloaded from their original source, with the licence shown, on first run.</p>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="wordmark"><span class="glyph">M</span><span class="name">Munshiji</span></div>
+        <p class="footer-tagline">Voice control for Windows that runs entirely on your own machine. Your files, your inbox, your voice - none of it leaves the device.</p>
+        <div class="footer-langs">
+          <span>English</span>
+          <span class="devanagari">हिन्दी</span>
+          <span class="gujarati">ગુજરાતી</span>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="footer-col-title">Product</div>
+          <a href="/index.html#features">Features</a>
+          <a href="/index.html#how">How it works</a>
+          <a href="/index.html#security">Security</a>
+          <a href="/download.html">Download</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Company</div>
+          <a href="/about.html">About</a>
+          <a href="/pricing.html">Pricing</a>
+          <a href="/docs.html">Docs</a>
+          <a href="/about.html#contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Legal</div>
+          <a href="/terms.html">Terms of service</a>
+          <a href="/privacy.html">Privacy policy</a>
+          <a href="/privacy.html#data">Data handling</a>
+          <a href="/terms.html#refunds">Refunds</a>
+        </div>
+      </div>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Product</div>
-      <a href="/index.html#how-it-decides">How it works</a>
-      <a href="/index.html#controls">What it controls</a>
-      <a href="/index.html#trust">Security</a>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Company</div>
-      <a href="/about.html">About</a>
-      <a href="/pricing.html">Pricing</a>
-      <a href="/docs.html">Docs</a>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Open source</div>
-      <a href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/solankivedant/Personal-Commander/blob/main/docs/ROADMAP.md" target="_blank" rel="noopener">Roadmap</a>
-      <a href="https://github.com/solankivedant/Personal-Commander/blob/main/docs/LICENSING-AUDIT.md" target="_blank" rel="noopener">Licensing</a>
-      <a href="https://github.com/solankivedant/Personal-Commander/blob/main/future-scope.md" target="_blank" rel="noopener">Future scope</a>
+    <div class="footer-bottom">
+      <span>© 2026 Munshiji. All rights reserved.</span>
+      <div class="links">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/index.html#security">Security</a>
+      </div>
     </div>
   </div>
-  <div class="wrap footer-bottom">Â© 2026 Munshiji. Built in the open, pre-alpha.</div>
 </footer>
 
 <script type="module" src="/src/common.ts"></script>

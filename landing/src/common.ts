@@ -1,15 +1,13 @@
 import "./style.css";
 import { initScrollReveal } from "./reveal";
 import { initFloatingHeader } from "./header";
+import { initBillingToggle } from "./pricing";
 
-/** Entry point for every page that isn't the homepage: just the shared
- * styles, the scroll-reveal effect, and the floating header. The
- * homepage-only widgets (waveform, command-demo cycler, bento grid, phase
- * track) live in main.ts because they depend on DOM ids that only exist
- * there. */
+/** Entry point for every page that isn't the homepage. */
 function main(): void {
   initScrollReveal();
   initFloatingHeader();
+  initBillingToggle();
 }
 
 if (document.readyState === "loading") {

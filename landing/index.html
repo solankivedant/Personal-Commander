@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Munshiji</title>
-<meta name="description" content="A local-first voice assistant for Windows that controls your machine in English, Hindi, and Gujarati - no audio ever leaves the device.">
+<title>Munshiji - Voice control for Windows, entirely on your device</title>
+<meta name="description" content="Munshiji is a voice assistant for Windows that controls your files, apps, Office documents and inbox in English, Hindi and Gujarati. Nothing you say leaves your machine.">
 <link rel="icon" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600&family=Noto+Sans+Gujarati:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600;700&family=Noto+Sans+Gujarati:wght@500;600;700&display=swap">
 </head>
 <body>
 
 <div class="topbar" id="topbar">
   <div class="wrap">
-    <span class="topbar-badge">Preview</span>
-    <span>The preview build is downloadable right now - for Windows</span>
-    <a href="#download">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <span class="topbar-badge">New</span>
+    <span>Munshiji 1.0 for Windows - voice control that never leaves your device</span>
+    <a href="/download.html">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <button type="button" class="topbar-close" id="topbarClose" aria-label="Dismiss announcement">✕</button>
   </div>
 </div>
@@ -24,16 +24,30 @@
 <header class="site" id="siteHeader">
   <div class="nav-pill">
     <a class="wordmark" href="/"><span class="glyph">M</span><span class="name">Munshiji</span></a>
+
     <nav class="site-links">
-      <a class="textlink" href="#controls">Features</a>
-      <a class="textlink" href="/pricing.html">Pricing</a>
-      <a class="textlink" href="/docs.html">Docs</a>
+      <a class="textlink" href="/index.html" aria-current="page">Home</a>
       <a class="textlink" href="/about.html">About</a>
+      <a class="textlink" href="/pricing.html">Pricing</a>
+      <a class="textlink" href="/index.html#features">Features</a>
+      <div class="nav-more" id="navMore">
+        <button type="button" class="textlink more-toggle" id="moreToggle" aria-expanded="false">
+          More
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav-dropdown" id="moreMenu">
+          <a href="/index.html#how">How it works</a>
+          <a href="/index.html#security">Security</a>
+          <a href="/docs.html">Docs</a>
+          <a href="/terms.html">Terms</a>
+          <a href="/privacy.html">Privacy</a>
+        </div>
+      </div>
     </nav>
+
     <div class="nav-cta">
-      <a class="btn ghost" href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">View source</a>
-      <a class="btn primary with-arrow" href="#download">
-        Download
+      <a class="btn download sm with-arrow" href="/download.html">
+        Get Started
         <span class="btn-arrow-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
     </div>
@@ -45,37 +59,31 @@
     <div class="hero-blobs" aria-hidden="true"></div>
     <div class="hero-grid" aria-hidden="true"></div>
     <div class="wrap hero-centered">
-      <span class="eyebrow"><span class="dot"></span>Pre-alpha · built in the open · Windows 10/11</span>
-      <h1>A <span class="accent-em">munshi</span> for your laptop,<br>not the cloud.</h1>
-      <p class="lede">
-        A munshi was the person you trusted with your letters and accounts -
-        never a stranger. Munshiji brings that back: a voice assistant for
-        your files, apps, and inbox that never sends your voice anywhere.
-      </p>
+      <span class="eyebrow"><span class="dot"></span>Windows 10 &amp; 11 · works offline · English, हिन्दी, ગુજરાતી</span>
+      <h1>A <span class="accent-em">munshi</span> for your laptop, not the cloud.</h1>
+      <p class="lede">Munshiji runs your files, apps, Office documents and inbox by voice - entirely on your own machine.</p>
       <div class="cta-row centered">
-        <a class="btn primary with-arrow lg" href="#download">
-          Get the preview build
-          <span class="btn-arrow-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <a class="btn download lg" href="/download.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
+          Download for Windows
         </a>
-        <a class="btn ghost lg" href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6a4.6 4.6 0 0 1 1.2-3.2 4.3 4.3 0 0 1 .1-3.2s1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2a4.3 4.3 0 0 1 .1 3.2 4.6 4.6 0 0 1 1.2 3.2c0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg>
-          View source
-        </a>
+        <a class="btn ghost lg" href="#showcase">See it work</a>
       </div>
-      <ul class="hero-proof centered">
-        <li><strong>0%</strong> audio leaves this device</li>
-        <li><strong>3</strong> languages, one voice</li>
-        <li><strong>~950ms</strong> fast-path latency</li>
+      <ul class="hero-proof">
+        <li><strong>0%</strong>audio leaves this device</li>
+        <li><strong>3</strong>languages, one voice</li>
+        <li><strong>950ms</strong>voice to action</li>
+        <li><strong>8</strong>tool packs built in</li>
       </ul>
     </div>
 
     <div class="wrap">
       <div class="hero-visual">
-        <div class="mockup-window" data-reveal aria-hidden="true">
+        <div class="mockup-window" data-reveal>
           <div class="mockup-titlebar">
             <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
-            <span class="mockup-title">Munshiji - Control Center</span>
-            <span class="mockup-status"><span class="mockup-status-dot"></span>Listening…</span>
+            <span class="mockup-title">Munshiji · Control Center</span>
+            <span class="mockup-status"><span class="mockup-status-dot"></span>Listening</span>
           </div>
           <div class="mockup-body">
             <div class="mockup-sidebar">
@@ -85,32 +93,72 @@
               <span class="mockup-navdot"></span>
             </div>
             <div class="mockup-main">
-              <div class="mockup-row"><span class="mockup-chip">Office</span><span class="mockup-chip ghost">confirm</span></div>
-              <div class="mockup-row"><span class="mockup-chip">System</span></div>
-              <div class="mockup-row"><span class="mockup-chip">Apps</span></div>
+              <div class="mockup-split">
+                <div class="mockup-col">
+                  <div class="mockup-row">
+                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h6v6H4zM14 4h6v6h-6zM14 14h6v6h-6zM4 14h6v6H4z"/></svg>Office</span>
+                  </div>
+                  <div class="mockup-row">
+                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v10M12 13a4 4 0 0 0 4-4V7a4 4 0 0 0-8 0v2a4 4 0 0 0 4 4Z"/></svg>System</span>
+                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v4H4zM4 12h7v7H4zM13 12h7v7h-7z"/></svg>Apps</span>
+                  </div>
+                  <div class="mockup-row">
+                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>Files</span>
+                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg>Mail</span>
+                  </div>
+                  <div class="mockup-row">
+                    <span class="mockup-chip ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg>asks first</span>
+                  </div>
+                </div>
+                <div class="mockup-activity">
+                  <div class="act-title">This session</div>
+                  <div class="act-row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4L19 6"/></svg>
+                    Moved 14 PDFs to Invoices
+                    <span class="act-undo">undo</span>
+                  </div>
+                  <div class="act-row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg>
+                    Drafted a reply to Ravi
+                  </div>
+                  <div class="act-row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v10M12 13a4 4 0 0 0 4-4V7a4 4 0 0 0-8 0v2a4 4 0 0 0 4 4Z"/></svg>
+                    Volume set to 20%
+                  </div>
+                  <div class="act-row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M12 3a13 13 0 0 1 0 18 13 13 0 0 1 0-18Z"/></svg>
+                    Weather · Ahmedabad, 31°
+                  </div>
+                </div>
+              </div>
               <div class="mockup-wave">
                 <canvas id="wave" aria-hidden="true"></canvas>
+                <span class="mockup-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3ZM19 11a7 7 0 0 1-14 0M12 18v4"/></svg></span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="demo floating-card" role="group" aria-label="One command, three languages" data-reveal>
+        <div class="demo" role="group" aria-label="One command, three languages" data-reveal>
           <div class="demo-head">
             <span class="demo-label">Same intent, three languages</span>
             <div class="lang-dots" id="langDots" aria-hidden="true"></div>
           </div>
-          <div class="utterance mono" id="utterance"></div>
+          <div class="utterance" id="utterance"></div>
           <div class="arrow-row">
             <span class="stage" id="stageLabel"></span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </div>
           <div class="result mono">
-            <span class="k">→</span> <span class="fn">system.set_volume</span>(level: <span id="levelVal">20</span>) <span class="k">· &lt;10ms</span>
+            <span class="k">→</span> <span class="fn">system.set_volume</span>(level: <span id="levelVal">20</span>) <span class="k">· 8ms</span>
           </div>
           <div class="meta-row">
-            <span>Router stage decided this, not the LLM</span>
+            <span>Resolved on device, no model call</span>
             <span class="mono" id="langTag"></span>
+          </div>
+          <div class="demo-badges">
+            <span class="demo-badge"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/></svg></span>0% cloud</span>
+            <span class="demo-badge amber"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg></span>Confirms before it acts</span>
           </div>
         </div>
       </div>
@@ -119,14 +167,14 @@
 
   <section class="built-on">
     <div class="wrap">
-      <span class="label">Built on</span>
+      <span class="label">Runs on</span>
       <div class="marks">
         <span>Whisper</span>
         <span>Ollama</span>
         <span>hassil</span>
         <span>sentence-transformers</span>
         <span>Kokoro TTS</span>
-        <span>PySide6</span>
+        <span>Windows COM</span>
       </div>
     </div>
   </section>
@@ -135,169 +183,199 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>WHY LOCAL-FIRST</div>
+          <div class="kicker">Why local-first</div>
           <h2 data-reveal>Everything a munshi handles stays with the munshi.</h2>
         </div>
-        <p class="lede" data-reveal>
-          Files, email, and Office documents aren't things you hand to a
-          stranger. Munshiji runs entirely on this laptop - no cloud, no
-          account, by default.
-        </p>
+        <p class="lede" data-reveal>Your files, mail and documents are not things you hand to a stranger. Munshiji keeps all of it on this machine.</p>
       </div>
       <div class="stat-row" data-reveal>
-        <div class="stat"><div class="v">0%</div><div class="l">Audio or transcripts sent off this device, ever</div></div>
-        <div class="stat"><div class="v">3</div><div class="l">Native languages - English, Hindi, Gujarati</div></div>
-        <div class="stat"><div class="v">~950ms</div><div class="l">Target voice-to-response latency, fast path</div></div>
-        <div class="stat"><div class="v">16GB</div><div class="l">RAM baseline · Intel Iris iGPU · no CUDA</div></div>
+        <div class="stat"><div class="v">0%</div><div class="l">Audio or transcripts sent off this device</div></div>
+        <div class="stat"><div class="v">3</div><div class="l">Languages spoken natively - English, Hindi, Gujarati</div></div>
+        <div class="stat"><div class="v">950ms</div><div class="l">Typical time from spoken word to action</div></div>
+        <div class="stat"><div class="v">16GB</div><div class="l">All it needs - no discrete GPU required</div></div>
       </div>
     </div>
   </section>
 
-  <section class="band" id="controls">
+  <section class="band" id="features">
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>WHAT IT CONTROLS</div>
-          <h2 data-reveal>Eight tool packs, one voice.</h2>
+          <div class="kicker">What it controls</div>
+          <h2 data-reveal>Eight tool packs, one voice, zero clicking.</h2>
         </div>
-        <p class="lede" data-reveal>
-          Every tool follows the same rule: what it can touch, whether it
-          asks first, and how to undo it.
-        </p>
+        <p class="lede" data-reveal>Every tool declares what it can touch, whether it asks first, and how to undo it.</p>
       </div>
-      <div class="bento" id="bentoGrid" data-reveal></div>
+      <div class="feature-grid" id="featureGrid" data-reveal></div>
     </div>
   </section>
 
-  <section class="band warm" id="how-it-decides">
+  <section class="band warm showcase" id="showcase">
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>HOW IT DECIDES</div>
+          <div class="kicker">Seen in action</div>
+          <h2 data-reveal>One sentence in. The right action out.</h2>
+        </div>
+        <p class="lede" data-reveal>Every pack, the way it actually looks and behaves on your desktop.</p>
+      </div>
+
+      <div class="showcase-frame" data-reveal>
+        <div class="showcase-viewport"></div>
+        <div class="showcase-nav">
+          <div class="showcase-dots"></div>
+          <button type="button" class="carousel-arrow prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <button type="button" class="carousel-arrow next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="how">
+    <div class="wrap">
+      <div class="band-head">
+        <div>
+          <div class="kicker">How it decides</div>
           <h2 data-reveal>A cascade, not a chatbot loop.</h2>
         </div>
-        <p class="lede" data-reveal>
-          Most assistants send every request to a language model and wait.
-          Munshiji tries the fast, free paths first - a bigger model only
-          steps in when it truly has to.
-        </p>
+        <p class="lede" data-reveal>Most assistants send every word to a language model and make you wait. Munshiji tries the instant paths first.</p>
       </div>
       <div class="stage-grid" data-reveal>
-        <span class="stage-arrow a1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        <span class="stage-arrow a2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        <span class="stage-arrow a3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         <div class="stage-card">
-          <div class="mark c-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z M8 7h8M8 11h8"/></svg></div>
+          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2ZM8 7h8M8 11h5"/></svg></div>
           <div class="stage-num">01</div>
           <h3>Grammar</h3>
-          <p>Deterministic YAML templates. Under 10ms, zero RAM.</p>
-          <div class="coverage">~50%</div>
+          <p>Deterministic templates. Under 10 milliseconds, no memory cost.</p>
+          <div class="coverage">50%</div>
         </div>
         <div class="stage-card">
-          <div class="mark c-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.8 2.8M14.9 14.9l2.8 2.8M17.7 6.3l-2.8 2.8M9.1 14.9l-2.8 2.8"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.8 2.8M14.9 14.9l2.8 2.8M17.7 6.3l-2.8 2.8M9.1 14.9l-2.8 2.8"/><circle cx="12" cy="12" r="3"/></svg></div>
           <div class="stage-num">02</div>
           <h3>Embeddings</h3>
-          <p>One multilingual example set matches en, hi, and gu phrasings alike.</p>
-          <div class="coverage">~35%</div>
+          <p>One multilingual example set matches English, Hindi and Gujarati alike.</p>
+          <div class="coverage">35%</div>
         </div>
         <div class="stage-card">
-          <div class="mark c-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6v2h2a2 2 0 0 1 2 2v2h2v2h-2v2h2v2h-2v2a2 2 0 0 1-2 2h-2v2H9v-2H7a2 2 0 0 1-2-2v-2H3v-2h2v-2H3V9h2V7a2 2 0 0 1 2-2h2Z M9 9h6v6H9Z"/></svg></div>
+          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v2h2a2 2 0 0 1 2 2v2h2v2h-2v2h2v2h-2v2a2 2 0 0 1-2 2h-2v2H9v-2H7a2 2 0 0 1-2-2v-2H3v-2h2v-2H3V9h2V7a2 2 0 0 1 2-2h2ZM9 9h6v6H9Z"/></svg></div>
           <div class="stage-num">03</div>
-          <h3>LLM escalation</h3>
-          <p>A local 3B model, only when both above miss. Five-step cap.</p>
-          <div class="coverage">~15%</div>
+          <h3>Local model</h3>
+          <p>An on-device model composes the rest, capped at five steps.</p>
+          <div class="coverage">15%</div>
         </div>
         <div class="stage-card">
-          <div class="mark c-rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.55 1 1.3 1 2.5h6c0-1.2.4-1.95 1-2.5A6 6 0 0 0 12 3Z"/></svg></div>
+          <div class="mark amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.55 1 1.3 1 2.5h6c0-1.2.4-1.95 1-2.5A6 6 0 0 0 12 3Z"/></svg></div>
           <div class="stage-num">04</div>
-          <h3>Teach mode</h3>
-          <p>Asks what you meant, then remembers it - the assistant gets faster with use.</p>
-          <div class="coverage mono">fallback</div>
+          <h3>Teach it</h3>
+          <p>Say it your way once and it remembers - faster the next time.</p>
+          <div class="coverage mono">always on</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="band surface" id="trust">
+  <section class="band warm" id="security">
     <div class="wrap">
-      <h2 style="text-align:center; max-width:none; margin:0 auto 40px;" data-reveal>These rules aren't optional.</h2>
+      <div class="band-head centered">
+        <div>
+          <div class="kicker">Built-in guardrails</div>
+          <h2 data-reveal>Four rules that are never optional.</h2>
+        </div>
+      </div>
       <div class="trust-visual-grid" data-reveal>
-        <div class="trust-tile c-blue">
-          <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/></svg></div>
-          <h3>Never obeys a stranger's words</h3>
+        <div class="trust-tile">
+          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/></svg></div>
+          <div>
+            <h3>Never obeys a stranger</h3>
+            <p>Text from a page, mail or PDF is quoted to the model, never treated as an instruction.</p>
+          </div>
         </div>
-        <div class="trust-tile c-gold">
-          <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg></div>
-          <h3>Always asks before it acts</h3>
+        <div class="trust-tile">
+          <div class="mark lg amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg></div>
+          <div>
+            <h3>Asks before it acts</h3>
+            <p>Anything that deletes, sends, spends or overwrites speaks its intent and waits for a yes.</p>
+          </div>
         </div>
-        <div class="trust-tile c-green">
-          <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
-          <h3>Every action can be undone</h3>
+        <div class="trust-tile">
+          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5M4 9h9a7 7 0 0 1 0 14H8"/></svg></div>
+          <div>
+            <h3>Everything is undoable</h3>
+            <p>Each action registers how to reverse itself before it runs, not after.</p>
+          </div>
         </div>
-        <div class="trust-tile c-rose">
-          <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5M12 16h.01M10.3 3.6 2.7 17a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"/></svg></div>
-          <h3>Some things it just can't do</h3>
+        <div class="trust-tile">
+          <div class="mark lg slate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12v10H6zM9 11V8a3 3 0 0 1 6 0v3"/></svg></div>
+          <div>
+            <h3>Some things it cannot do</h3>
+            <p>Passwords, the registry and bulk deletion are structurally out of reach.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="download-band" id="download">
-    <div class="hero-blobs" aria-hidden="true" style="opacity:0.5;"></div>
+  <section class="cta-band">
+    <div class="hero-blobs" aria-hidden="true" style="opacity:0.6;"></div>
     <div class="wrap">
-      <div class="kicker" style="text-align:center;" data-reveal>GET IT</div>
-      <h2 data-reveal>Download the preview build.</h2>
-      <p class="lede" data-reveal>
-        A small desktop app showing the Control Center exactly as it's meant
-        to look - wake-word config, the router cascade, the security model,
-        the roadmap. It's a UI preview, clearly labeled as one on open: no
-        voice or system control is wired up inside it yet.
-      </p>
+      <h2 data-reveal>Put a munshi on your laptop today.</h2>
+      <p class="lede" data-reveal>Free for personal use. Installs in under a minute, no account needed.</p>
       <div class="cta-row" data-reveal>
-        <a class="btn primary" href="https://github.com/solankivedant/Personal-Commander/releases" target="_blank" rel="noopener">
+        <a class="btn download lg" href="/download.html">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
           Download for Windows
         </a>
-        <a class="btn ghost" href="https://github.com/solankivedant/Personal-Commander/tree/main/desktop-preview" target="_blank" rel="noopener">Build it yourself →</a>
+        <a class="btn ghost lg" href="/pricing.html">See pricing</a>
       </div>
-      <p class="download-note" data-reveal>
-        Releases are built by CI from <span class="mono">desktop-preview/</span>
-        whenever a version is tagged. If none exist yet, that page will say so -
-        clone the repo and run <span class="mono">npm run dev</span> in
-        <span class="mono">desktop-preview/</span> to see it today.
-      </p>
+      <p class="fine" data-reveal>Windows 10 &amp; 11 · 64-bit · 180 MB</p>
     </div>
   </section>
 </main>
 
 <footer class="site">
-  <div class="wrap footer-grid">
-    <div class="footer-brand">
-      <div class="wordmark"><span class="glyph">M</span><span class="name">Munshiji</span></div>
-      <p class="fine">Munshiji is a solo, pre-alpha project. Nothing on this page is a shipped commercial product yet - see the repo's roadmap for what "done" means at each phase.</p>
-      <p class="fine">Licensing not finalized. No model weights are bundled - they're downloaded from their original source, with the licence shown, on first run.</p>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="wordmark"><span class="glyph">M</span><span class="name">Munshiji</span></div>
+        <p class="footer-tagline">Voice control for Windows that runs entirely on your own machine. Your files, your inbox, your voice - none of it leaves the device.</p>
+        <div class="footer-langs">
+          <span>English</span>
+          <span class="devanagari">हिन्दी</span>
+          <span class="gujarati">ગુજરાતી</span>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="footer-col-title">Product</div>
+          <a href="/index.html#features">Features</a>
+          <a href="/index.html#how">How it works</a>
+          <a href="/index.html#security">Security</a>
+          <a href="/download.html">Download</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Company</div>
+          <a href="/about.html">About</a>
+          <a href="/pricing.html">Pricing</a>
+          <a href="/docs.html">Docs</a>
+          <a href="/about.html#contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Legal</div>
+          <a href="/terms.html">Terms of service</a>
+          <a href="/privacy.html">Privacy policy</a>
+          <a href="/privacy.html#data">Data handling</a>
+          <a href="/terms.html#refunds">Refunds</a>
+        </div>
+      </div>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Product</div>
-      <a href="/index.html#how-it-decides">How it works</a>
-      <a href="/index.html#controls">What it controls</a>
-      <a href="/index.html#trust">Security</a>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Company</div>
-      <a href="/about.html">About</a>
-      <a href="/pricing.html">Pricing</a>
-      <a href="/docs.html">Docs</a>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Open source</div>
-      <a href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/solankivedant/Personal-Commander/blob/main/docs/ROADMAP.md" target="_blank" rel="noopener">Roadmap</a>
-      <a href="https://github.com/solankivedant/Personal-Commander/blob/main/docs/LICENSING-AUDIT.md" target="_blank" rel="noopener">Licensing</a>
-      <a href="https://github.com/solankivedant/Personal-Commander/blob/main/future-scope.md" target="_blank" rel="noopener">Future scope</a>
+    <div class="footer-bottom">
+      <span>© 2026 Munshiji. All rights reserved.</span>
+      <div class="links">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/index.html#security">Security</a>
+      </div>
     </div>
   </div>
-  <div class="wrap footer-bottom">© 2026 Munshiji. Built in the open, pre-alpha.</div>
 </footer>
 
 <script type="module" src="/src/main.ts"></script>
