@@ -14,23 +14,44 @@ SPEECH_PROB_THRESHOLD = 0.5
 
 class SileroVad:
     """Wraps Silero VAD v5 (ONNX backend via the `silero-vad` package) for
-    per-frame speech probability. Silero's own streaming helper (VADIterator)
-    wants fixed 512-sample windows at 16kHz for best accuracy; we feed it
-    whatever frame size AudioCapture hands us (80ms / 1280 samples at 16kHz)
-    for simplicity. If real-room testing shows false triggers, switching to
-    512-sample sub-chunking is the documented next step — not done here to
-    avoid speculative complexity before there's a real accuracy problem.
+    per-frame speech probability. The model itself only accepts fixed-size
+    windows — 512 samples at 16kHz, 256 at 8kHz — and raises on anything else
+    (confirmed live: AudioCapture's 80ms/1280-sample frames crash it
+    directly). Frames are sub-chunked into model-sized windows internally,
+    with the remainder carried over to the next call, so callers can keep
+    pushing whatever frame size AudioCapture hands them.
     """
 
-    def __init__(self, sample_rate: int) -> None:
+    _WINDOW_SAMPLES = {8_000: 256, 16_000: 512}
+
+    def __init__(
+        self,
+        sample_rate: int,
+        model: Callable[[torch.Tensor, int], torch.Tensor] | None = None,
+    ) -> None:
+        if sample_rate not in self._WINDOW_SAMPLES:
+            raise ValueError(
+                f"Silero VAD only supports 8000/16000Hz, got {sample_rate}"
+            )
         self.sample_rate = sample_rate
-        self._model = load_silero_vad(onnx=True)
+        self._window_samples = self._WINDOW_SAMPLES[sample_rate]
+        self._model = model if model is not None else load_silero_vad(onnx=True)
+        self._carry = np.zeros(0, dtype=np.int16)
 
     def speech_prob(self, frame: np.ndarray) -> float:
-        audio = torch.from_numpy(frame.astype(np.float32) / 32768.0)
-        with torch.no_grad():
-            prob = self._model(audio, self.sample_rate).item()
-        return float(prob)
+        buffer = np.concatenate([self._carry, frame])
+        probs: list[float] = []
+        window = self._window_samples
+        n_complete = len(buffer) // window
+        for i in range(n_complete):
+            chunk = buffer[i * window : (i + 1) * window]
+            audio = torch.from_numpy(chunk.astype(np.float32) / 32768.0)
+            with torch.no_grad():
+                probs.append(self._model(audio, self.sample_rate).item())
+        self._carry = buffer[n_complete * window :].copy()
+        # Max, not mean: a short burst of speech within this frame should
+        # register as speech even if most of the frame was still silence.
+        return max(probs) if probs else 0.0
 
     def is_speech(self, frame: np.ndarray) -> bool:
         return self.speech_prob(frame) >= SPEECH_PROB_THRESHOLD

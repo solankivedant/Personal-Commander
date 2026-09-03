@@ -52,7 +52,16 @@ router:
     model: multilingual-e5-small
     threshold: 0.75
     examples: config/examples
+  slots:
+    fuzzy_app_cutoff: 75         # rapidfuzz score_cutoff for app-name correction,
+                                  # per docs/architecture-and-router.md's spec value
   teach_mode: true
+
+tools:
+  volume_step_pct: 10            # relative nudge size for "louder"/"quieter" with no explicit level
+  brightness_step_pct: 10        # relative nudge size for "brighter"/"dimmer" with no explicit level
+  subprocess_timeout_s: 10       # timeout for shutdown/netsh/PnP subprocess calls in tools/system.py
+  fuzzy_app_cutoff: 75           # rapidfuzz score_cutoff for resolving app names in tools/apps.py
 
 llm:
   enabled: true
@@ -79,9 +88,9 @@ ui:
   overlay:
     enabled: true
     position: bottom_center       # bottom_center | bottom_left | bottom_right
-    width_px: 320
-    height_px: 56
-    margin_px: 40                 # gap from the screen edge
+    width_px: 220                 # slim Whisper-Flow/Gemini-style pill, not a window
+    height_px: 40
+    margin_px: 28                 # gap from the screen edge
     opacity: 0.92
     transcript_display_s: 3.0     # how long the last transcript stays shown
                                    # before the pill reverts to the state label

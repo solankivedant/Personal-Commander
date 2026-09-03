@@ -1,10 +1,10 @@
 import "./style.css";
-import { DEMO_FRAMES, ROADMAP_PHASES, TOOLS } from "./data";
+import { DEMO_FRAMES, TOOLS } from "./data";
 import { CommandDemo } from "./demo";
 import { Waveform } from "./waveform";
 import { initScrollReveal } from "./reveal";
 import { renderBento } from "./bento";
-import { renderPhaseTrack } from "./roadmap";
+import { initFloatingHeader } from "./header";
 
 function byId<T extends HTMLElement>(id: string): T {
   const el = document.getElementById(id);
@@ -26,9 +26,9 @@ function main(): void {
   new Waveform(byId<HTMLCanvasElement>("wave")).start();
 
   renderBento(byId("bentoGrid"), TOOLS);
-  renderPhaseTrack(byId("phaseTrack"), ROADMAP_PHASES);
 
   initScrollReveal();
+  initFloatingHeader();
 }
 
 if (document.readyState === "loading") {

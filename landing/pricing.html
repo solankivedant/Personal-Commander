@@ -8,68 +8,119 @@
 <link rel="icon" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600&family=Noto+Sans+Gujarati:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600&family=Noto+Sans+Gujarati:wght@500;600&display=swap">
 </head>
 <body>
 
-<div class="topbar">
+<div class="topbar" id="topbar">
   <div class="wrap">
-    <span>🪔 The preview build is downloadable right now - for Windows</span>
+    <span class="topbar-badge">Preview</span>
+    <span>The preview build is downloadable right now - for Windows</span>
     <a href="/index.html#download">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <button type="button" class="topbar-close" id="topbarClose" aria-label="Dismiss announcement">✕</button>
   </div>
 </div>
 
-<header class="site">
-  <div class="wrap">
+<header class="site" id="siteHeader">
+  <div class="nav-pill">
     <a class="wordmark" href="/"><span class="glyph">M</span><span class="name">Munshiji</span></a>
     <nav class="site-links">
       <a class="textlink" href="/index.html#controls">Features</a>
       <a class="textlink" href="/pricing.html">Pricing</a>
       <a class="textlink" href="/docs.html">Docs</a>
       <a class="textlink" href="/about.html">About</a>
-      <a class="btn primary pulse" href="/index.html#download">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
-        Download
-      </a>
     </nav>
+    <div class="nav-cta">
+      <a class="btn ghost" href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">View source</a>
+      <a class="btn primary with-arrow" href="/index.html#download">
+        Download
+        <span class="btn-arrow-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
   </div>
 </header>
 
 <main>
-  <section class="page-hero">
+  <section class="page-hero" style="text-align:center;">
     <div class="hero-blobs" aria-hidden="true"></div>
     <div class="hero-grid" aria-hidden="true"></div>
     <div class="wrap">
       <span class="eyebrow"><span class="dot"></span>Pricing</span>
-      <h1>Free right now. Long-term pricing isn't decided - and we'd rather say that than fake a number.</h1>
-      <p class="lede">
-        Munshiji is pre-alpha software. There is no account, no subscription,
-        and no payment flow anywhere in this repository today. This page
-        exists to say exactly where that stands, not to dress up an
-        undecided business model as a finished one.
+      <h1 style="max-width:18ch; margin-left:auto; margin-right:auto;">Free today. Simple, honest pricing once it ships.</h1>
+      <p class="lede" style="margin-left:auto; margin-right:auto;">
+        Munshiji is pre-alpha - the preview build is free, full stop. The
+        tiers below are the planned pricing for the finished product, built
+        around what's already on the roadmap and in
+        <a href="https://github.com/solankivedant/Personal-Commander/blob/main/future-scope.md" target="_blank" rel="noopener" style="color:var(--accent-strong); font-weight:600;">future-scope.md</a>.
+        Target prices, not a live checkout - they'll firm up as launch gets
+        closer, and this page will say so when they do.
       </p>
     </div>
   </section>
 
   <section class="band warm">
     <div class="wrap">
-      <div class="band-head">
+      <div class="band-head" style="border-bottom:none; margin-bottom:20px;">
         <div>
-          <div class="kicker" data-reveal>TODAY</div>
-          <h2 data-reveal>The preview build costs nothing.</h2>
+          <div class="kicker" data-reveal>PLANNED AT LAUNCH</div>
+          <h2 data-reveal>Three tiers, built for how far you want to take it.</h2>
         </div>
         <p class="lede" data-reveal>
-          Clone the repository, build it yourself, or grab the desktop preview
-          installer - all of it is free, source-available, and runs entirely
-          on your own machine. No usage caps, because nothing is metered on a
-          server you don't control.
+          Every tier - including free - runs the full local voice loop with
+          no audio ever leaving the device. Paid tiers add capability, not a
+          different privacy model.
         </p>
       </div>
-      <div class="stat-row" data-reveal>
-        <div class="stat"><div class="v">$0</div><div class="l">Cost of the current preview build, no account needed</div></div>
-        <div class="stat"><div class="v">0</div><div class="l">API keys required for anything that ships today</div></div>
-        <div class="stat"><div class="v">100%</div><div class="l">Of the source is in the public repository, right now</div></div>
-        <div class="stat"><div class="v">TBD</div><div class="l">The long-term licence and pricing model - see below</div></div>
+
+      <div class="pricing-grid" data-reveal>
+        <div class="pricing-card">
+          <span class="plan-badge">Free</span>
+          <h3>Preview</h3>
+          <p class="plan-desc">Everything Munshiji does locally, no account, no limits.</p>
+          <div class="price"><span class="amount">$0</span><span class="period">/ forever</span></div>
+          <div class="price-note">What's downloadable today</div>
+          <a class="btn ghost" href="/index.html#download">Download the preview</a>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Full local voice loop - wake word, ASR, TTS</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Router + system, apps, and file tools</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>English, Hindi, and Gujarati, one voice</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>No account, no telemetry, no cloud calls</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Community support on GitHub</li>
+          </ul>
+        </div>
+
+        <div class="pricing-card featured">
+          <span class="plan-badge">Most capable</span>
+          <h3>Pro</h3>
+          <p class="plan-desc">For when a request is genuinely beyond a local 3B model.</p>
+          <div class="price"><span class="amount">$9</span><span class="period">/ month</span></div>
+          <div class="price-note">Billed annually - $12/mo month-to-month</div>
+          <a class="btn primary" href="/index.html#download">Notify me at launch</a>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Everything in Preview</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Cloud LLM escalation - your own key, or 500 requests/mo included</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Outlook, Excel, and Word automation via COM</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Cowork mode - standing, multi-step voice sessions</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Priority router and Indic voice updates</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Email support</li>
+          </ul>
+        </div>
+
+        <div class="pricing-card">
+          <span class="plan-badge">Teams</span>
+          <h3>Team</h3>
+          <p class="plan-desc">For a small team that wants it wired into shared work.</p>
+          <div class="price"><span class="amount">$19</span><span class="period">/ user / mo</span></div>
+          <div class="price-note">3 seats minimum</div>
+          <a class="btn ghost" href="/about.html">Talk to us</a>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Everything in Pro, per seat</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Admin console and seat management</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Shared taught-skill library across the team</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Meeting cowork mode - transcripts to action items</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l4 4L19 6"/></svg>Priority feature requests and onboarding</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -78,14 +129,13 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>WHAT'S ACTUALLY BEING WEIGHED</div>
-          <h2 data-reveal>Two directions, genuinely still open.</h2>
+          <div class="kicker" data-reveal>THE LICENCE, HONESTLY</div>
+          <h2 data-reveal>One decision genuinely still open.</h2>
         </div>
         <p class="lede" data-reveal>
-          These aren't marketing placeholders - they're the literal two
-          options recorded in the repository's own licensing audit, tracked
-          as an open decision rather than something already decided and
-          withheld from this page.
+          The tiers above are about capability, not source availability -
+          that's a separate, real decision recorded in the repository's own
+          licensing audit, not settled here for the sake of a tidy page.
         </p>
       </div>
       <div class="trust-grid" data-reveal>
@@ -106,24 +156,23 @@
       <div class="band-head">
         <div>
           <div class="kicker" data-reveal>WHAT WON'T CHANGE</div>
-          <h2 data-reveal>Whatever the model, three things hold.</h2>
+          <h2 data-reveal>Whatever the tier, three things hold.</h2>
         </div>
         <p class="lede" data-reveal>
-          The pricing model is open. The privacy architecture is not up for
-          negotiation - it's the reason this exists.
+          Pricing is where Munshiji competes on capability. Privacy was
+          never meant to be a paid tier.
         </p>
       </div>
       <div class="status-grid" data-reveal>
         <div class="status-card">
           <h3>Your voice and files stay local</h3>
-          <p>No pricing tier will require sending audio or documents off this
+          <p>No tier will require sending audio or documents off this
           device for a feature that works locally today.</p>
         </div>
         <div class="status-card">
           <h3>No surprise metering</h3>
-          <p>If a cloud LLM or a paid API becomes an option (see the future
-          scope), it will be opt-in, with your own key or a clearly-priced
-          add-on - never a silent default.</p>
+          <p>Cloud LLM escalation is opt-in, with your own key or a
+          clearly-priced included quota - never a silent default.</p>
         </div>
       </div>
     </div>
@@ -161,7 +210,6 @@
       <a href="/index.html#how-it-decides">How it works</a>
       <a href="/index.html#controls">What it controls</a>
       <a href="/index.html#trust">Security</a>
-      <a href="/index.html#status">Status</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Company</div>
@@ -177,7 +225,7 @@
       <a href="https://github.com/solankivedant/Personal-Commander/blob/main/future-scope.md" target="_blank" rel="noopener">Future scope</a>
     </div>
   </div>
-  <div class="wrap footer-bottom">© 2026 Munshiji. Built in the open, pre-alpha.</div>
+  <div class="wrap footer-bottom">Â© 2026 Munshiji. Built in the open, pre-alpha.</div>
 </footer>
 
 <script type="module" src="/src/common.ts"></script>

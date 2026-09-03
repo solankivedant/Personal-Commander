@@ -66,10 +66,22 @@ class EmbeddingsConfig(BaseModel):
     examples: str
 
 
+class SlotsConfig(BaseModel):
+    fuzzy_app_cutoff: int
+
+
 class RouterConfig(BaseModel):
     grammar: GrammarConfig
     embeddings: EmbeddingsConfig
+    slots: SlotsConfig
     teach_mode: bool
+
+
+class ToolsConfig(BaseModel):
+    volume_step_pct: int
+    brightness_step_pct: int
+    subprocess_timeout_s: int
+    fuzzy_app_cutoff: int
 
 
 class LlmConfig(BaseModel):
@@ -156,6 +168,7 @@ class MunshijiConfig(BaseSettings):
     wake: WakeConfig
     asr: AsrConfig
     router: RouterConfig
+    tools: ToolsConfig
     llm: LlmConfig
     cloud: CloudConfig
     tts: TtsConfig

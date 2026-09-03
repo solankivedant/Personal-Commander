@@ -42,3 +42,57 @@ intents:
       - sentences:
           - "set brightness to {level} [percent]"
           - "[make it|screen] (brighter|dimmer)"
+
+  # --- New Phase 2 intents below (system.yaml). Grammar templates are
+  # English-only, matching the existing style in this file — hi/gu coverage
+  # for these comes from config/examples/{hi,gu}.jsonl, same division of
+  # labour as the pre-existing intents above.
+
+  get_volume:
+    data:
+      - sentences:
+          - "(what's|what is|check) [the] [current] volume [level]"
+          - "how loud is it"
+
+  get_brightness:
+    data:
+      - sentences:
+          - "(what's|what is|check) [the] [current] brightness [level]"
+          - "how bright is [the] screen"
+
+  shutdown:
+    data:
+      - sentences:
+          - "shut down [the] (computer|laptop|pc)"
+          - "shutdown [the] (computer|laptop|pc)"
+          - "turn off [the] (computer|laptop|pc)"
+
+  restart:
+    data:
+      - sentences:
+          - "restart [the] (computer|laptop|pc)"
+          - "reboot [the] (computer|laptop|pc)"
+
+  wifi_toggle:
+    data:
+      - sentences:
+          - "(turn|switch) [the] wifi {state}"
+          - "wifi {state}"
+
+  bluetooth_toggle:
+    data:
+      - sentences:
+          - "(turn|switch) [the] bluetooth {state}"
+          - "bluetooth {state}"
+
+  wifi_status:
+    data:
+      - sentences:
+          - "(what's|what is|check) [the] wifi status"
+          - "is wifi (on|off|connected)"
+
+  bluetooth_status:
+    data:
+      - sentences:
+          - "(what's|what is|check) [the] bluetooth status"
+          - "is bluetooth (on|off|connected)"

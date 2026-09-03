@@ -1,4 +1,40 @@
 {"text": "chrome kholo", "intent": "open_app", "args": {"app": "chrome"}}
+{"text": "spotify chalu karo", "intent": "open_app", "args": {"app": "spotify"}}
+{"text": "firefox kholo", "intent": "open_app", "args": {"app": "firefox"}}
+{"text": "chrome band karo", "intent": "close_app", "args": {"app": "chrome"}}
+{"text": "spotify band karo", "intent": "close_app", "args": {"app": "spotify"}}
+{"text": "chrome par java", "intent": "focus_app", "args": {"app": "chrome"}}
+{"text": "word par switch karo", "intent": "focus_app", "args": {"app": "word"}}
+{"text": "aa window nanu karo", "intent": "minimize_app", "args": {}}
+{"text": "spotify ne nanu karo", "intent": "minimize_app", "args": {"app": "spotify"}}
+{"text": "window ne motu karo", "intent": "maximize_app", "args": {}}
+{"text": "chrome ne full screen karo", "intent": "maximize_app", "args": {"app": "chrome"}}
+{"text": "kaya apps chalu che", "intent": "list_apps", "args": {}}
+{"text": "chalta apps batavo", "intent": "list_apps", "args": {}}
 {"text": "avaaj thodi ochi karo", "intent": "set_volume", "args": {"direction": "down"}}
-{"text": "મારી બેટરી કેની છે", "intent": "battery_status", "args": {}}
+{"text": "avaaj vadhu karo", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "sound vadharo", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "avaaj band karo", "intent": "mute", "args": {}}
+{"text": "chup karo", "intent": "mute", "args": {}}
+{"text": "screen ni roshni ochi karo", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "brightness vadhu karo", "intent": "set_brightness", "args": {"direction": "up"}}
+{"text": "volume ketlu che", "intent": "get_volume", "args": {}}
+{"text": "atyare volume shu che", "intent": "get_volume", "args": {}}
+{"text": "brightness ketli che", "intent": "get_brightness", "args": {}}
+{"text": "મારી બેટરી કેટલી છે", "intent": "battery_status", "args": {}}
+{"text": "battery ketli bachi che", "intent": "battery_status", "args": {}}
 {"text": "screen lock karo", "intent": "lock_screen", "args": {}}
+{"text": "laptop lock karo", "intent": "lock_screen", "args": {}}
+{"text": "laptop ne sulao", "intent": "sleep", "args": {}}
+{"text": "sleep mode ma muko", "intent": "sleep", "args": {}}
+{"text": "computer band karo", "intent": "shutdown", "args": {}}
+{"text": "laptop shutdown karo", "intent": "shutdown", "args": {}}
+{"text": "computer restart karo", "intent": "restart", "args": {}}
+{"text": "system ne restart karo", "intent": "restart", "args": {}}
+{"text": "wifi chalu karo", "intent": "wifi_toggle", "args": {"state": "on"}}
+{"text": "wifi band karo", "intent": "wifi_toggle", "args": {"state": "off"}}
+{"text": "bluetooth chalu karo", "intent": "bluetooth_toggle", "args": {"state": "on"}}
+{"text": "bluetooth band karo", "intent": "bluetooth_toggle", "args": {"state": "off"}}
+{"text": "wifi chalu che ke nahi", "intent": "wifi_status", "args": {}}
+{"text": "wifi connect thayel che ke nahi", "intent": "wifi_status", "args": {}}
+{"text": "bluetooth chalu che ke nahi", "intent": "bluetooth_status", "args": {}}

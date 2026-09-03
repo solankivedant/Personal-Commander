@@ -8,30 +8,35 @@
 <link rel="icon" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600&family=Noto+Sans+Gujarati:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600&family=Noto+Sans+Gujarati:wght@500;600&display=swap">
 </head>
 <body>
 
-<div class="topbar">
+<div class="topbar" id="topbar">
   <div class="wrap">
-    <span>🪔 The preview build is downloadable right now - for Windows</span>
+    <span class="topbar-badge">Preview</span>
+    <span>The preview build is downloadable right now - for Windows</span>
     <a href="#download">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <button type="button" class="topbar-close" id="topbarClose" aria-label="Dismiss announcement">✕</button>
   </div>
 </div>
 
-<header class="site">
-  <div class="wrap">
+<header class="site" id="siteHeader">
+  <div class="nav-pill">
     <a class="wordmark" href="/"><span class="glyph">M</span><span class="name">Munshiji</span></a>
     <nav class="site-links">
       <a class="textlink" href="#controls">Features</a>
       <a class="textlink" href="/pricing.html">Pricing</a>
       <a class="textlink" href="/docs.html">Docs</a>
       <a class="textlink" href="/about.html">About</a>
-      <a class="btn primary pulse" href="#download">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
-        Download
-      </a>
     </nav>
+    <div class="nav-cta">
+      <a class="btn ghost" href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">View source</a>
+      <a class="btn primary with-arrow" href="#download">
+        Download
+        <span class="btn-arrow-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -39,33 +44,32 @@
   <section class="hero">
     <div class="hero-blobs" aria-hidden="true"></div>
     <div class="hero-grid" aria-hidden="true"></div>
-    <div class="wrap hero-layout">
-      <div class="hero-copy">
-        <span class="eyebrow"><span class="dot"></span>Pre-alpha · built in the open · Windows 10/11</span>
-        <h1>A <span class="accent-em">munshi</span> for your laptop, not the cloud.</h1>
-        <p class="lede">
-          A munshi was the person you trusted with your letters, your accounts,
-          your affairs - never a stranger's. Munshiji brings that back: a voice
-          assistant that controls your files, apps, and inbox by listening for
-          its name, and never sends your voice anywhere to do it.
-        </p>
-        <div class="cta-row">
-          <a class="btn primary" href="#download">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
-            Get the preview build
-          </a>
-          <a class="btn ghost" href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6a4.6 4.6 0 0 1 1.2-3.2 4.3 4.3 0 0 1 .1-3.2s1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2a4.3 4.3 0 0 1 .1 3.2 4.6 4.6 0 0 1 1.2 3.2c0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg>
-            View source
-          </a>
-        </div>
-        <ul class="hero-proof">
-          <li><strong>0%</strong> audio leaves this device</li>
-          <li><strong>3</strong> languages, one voice</li>
-          <li><strong>~950ms</strong> fast-path latency</li>
-        </ul>
+    <div class="wrap hero-centered">
+      <span class="eyebrow"><span class="dot"></span>Pre-alpha · built in the open · Windows 10/11</span>
+      <h1>A <span class="accent-em">munshi</span> for your laptop,<br>not the cloud.</h1>
+      <p class="lede">
+        A munshi was the person you trusted with your letters and accounts -
+        never a stranger. Munshiji brings that back: a voice assistant for
+        your files, apps, and inbox that never sends your voice anywhere.
+      </p>
+      <div class="cta-row centered">
+        <a class="btn primary with-arrow lg" href="#download">
+          Get the preview build
+          <span class="btn-arrow-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="btn ghost lg" href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6a4.6 4.6 0 0 1 1.2-3.2 4.3 4.3 0 0 1 .1-3.2s1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2a4.3 4.3 0 0 1 .1 3.2 4.6 4.6 0 0 1 1.2 3.2c0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg>
+          View source
+        </a>
       </div>
+      <ul class="hero-proof centered">
+        <li><strong>0%</strong> audio leaves this device</li>
+        <li><strong>3</strong> languages, one voice</li>
+        <li><strong>~950ms</strong> fast-path latency</li>
+      </ul>
+    </div>
 
+    <div class="wrap">
       <div class="hero-visual">
         <div class="mockup-window" data-reveal aria-hidden="true">
           <div class="mockup-titlebar">
@@ -131,15 +135,13 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>01 · WHY LOCAL-FIRST</div>
+          <div class="kicker" data-reveal>WHY LOCAL-FIRST</div>
           <h2 data-reveal>Everything a munshi handles stays with the munshi.</h2>
         </div>
         <p class="lede" data-reveal>
-          Files, Office documents, and email are exactly the things you don't
-          hand to a stranger - so Munshiji runs entirely on this laptop's CPU
-          and integrated graphics. No cloud round-trip is required for anything
-          it does by default; the internet is opt-in, per feature, and only for
-          what you explicitly allow.
+          Files, email, and Office documents aren't things you hand to a
+          stranger. Munshiji runs entirely on this laptop - no cloud, no
+          account, by default.
         </p>
       </div>
       <div class="stat-row" data-reveal>
@@ -155,13 +157,12 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>02 · WHAT IT CONTROLS</div>
+          <div class="kicker" data-reveal>WHAT IT CONTROLS</div>
           <h2 data-reveal>Eight tool packs, one voice.</h2>
         </div>
         <p class="lede" data-reveal>
-          Each pack ships behind the same contract - a tier (what it can touch),
-          a risk level (whether it asks first), and an undo. None are wired up
-          yet; this is the shape the assistant is being built toward.
+          Every tool follows the same rule: what it can touch, whether it
+          asks first, and how to undo it.
         </p>
       </div>
       <div class="bento" id="bentoGrid" data-reveal></div>
@@ -172,42 +173,46 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>03 · HOW IT DECIDES</div>
+          <div class="kicker" data-reveal>HOW IT DECIDES</div>
           <h2 data-reveal>A cascade, not a chatbot loop.</h2>
         </div>
         <p class="lede" data-reveal>
-          Most assistants send every request to a language model and wait several
-          seconds. Munshiji tries the cheap, deterministic paths first - a 3B
-          model only gets involved when a request is genuinely compositional,
-          and it never needs to for the four in five commands that aren't.
+          Most assistants send every request to a language model and wait.
+          Munshiji tries the fast, free paths first - a bigger model only
+          steps in when it truly has to.
         </p>
       </div>
-      <div class="cascade-line" data-reveal>
-        <div class="cascade-track">
-          <div class="cascade-node">
-            <div class="pin">01</div>
-            <h3>Grammar</h3>
-            <p>Deterministic YAML templates. Under 10ms, zero RAM.</p>
-            <div class="coverage">~50%</div>
-          </div>
-          <div class="cascade-node">
-            <div class="pin">02</div>
-            <h3>Embeddings</h3>
-            <p>One multilingual example set matches en, hi, and gu phrasings alike.</p>
-            <div class="coverage">~35%</div>
-          </div>
-          <div class="cascade-node">
-            <div class="pin">03</div>
-            <h3>LLM escalation</h3>
-            <p>A local 3B model, only when both above miss. Five-step cap.</p>
-            <div class="coverage">~15%</div>
-          </div>
-          <div class="cascade-node">
-            <div class="pin">04</div>
-            <h3>Teach mode</h3>
-            <p>Asks what you meant, then remembers it - the assistant gets faster with use.</p>
-            <div class="coverage mono" style="font-size:16px;">fallback</div>
-          </div>
+      <div class="stage-grid" data-reveal>
+        <span class="stage-arrow a1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <span class="stage-arrow a2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <span class="stage-arrow a3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <div class="stage-card">
+          <div class="mark c-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z M8 7h8M8 11h8"/></svg></div>
+          <div class="stage-num">01</div>
+          <h3>Grammar</h3>
+          <p>Deterministic YAML templates. Under 10ms, zero RAM.</p>
+          <div class="coverage">~50%</div>
+        </div>
+        <div class="stage-card">
+          <div class="mark c-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.8 2.8M14.9 14.9l2.8 2.8M17.7 6.3l-2.8 2.8M9.1 14.9l-2.8 2.8"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div class="stage-num">02</div>
+          <h3>Embeddings</h3>
+          <p>One multilingual example set matches en, hi, and gu phrasings alike.</p>
+          <div class="coverage">~35%</div>
+        </div>
+        <div class="stage-card">
+          <div class="mark c-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6v2h2a2 2 0 0 1 2 2v2h2v2h-2v2h2v2h-2v2a2 2 0 0 1-2 2h-2v2H9v-2H7a2 2 0 0 1-2-2v-2H3v-2h2v-2H3V9h2V7a2 2 0 0 1 2-2h2Z M9 9h6v6H9Z"/></svg></div>
+          <div class="stage-num">03</div>
+          <h3>LLM escalation</h3>
+          <p>A local 3B model, only when both above miss. Five-step cap.</p>
+          <div class="coverage">~15%</div>
+        </div>
+        <div class="stage-card">
+          <div class="mark c-rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.55 1 1.3 1 2.5h6c0-1.2.4-1.95 1-2.5A6 6 0 0 0 12 3Z"/></svg></div>
+          <div class="stage-num">04</div>
+          <h3>Teach mode</h3>
+          <p>Asks what you meant, then remembers it - the assistant gets faster with use.</p>
+          <div class="coverage mono">fallback</div>
         </div>
       </div>
     </div>
@@ -215,63 +220,23 @@
 
   <section class="band surface" id="trust">
     <div class="wrap">
-      <div class="band-head">
-        <div>
-          <div class="kicker" data-reveal>04 · WHAT IT WON'T DO WITHOUT ASKING</div>
-          <h2 data-reveal>Shell access is the whole risk. These rules aren't optional.</h2>
+      <h2 style="text-align:center; max-width:none; margin:0 auto 40px;" data-reveal>These rules aren't optional.</h2>
+      <div class="trust-visual-grid" data-reveal>
+        <div class="trust-tile c-blue">
+          <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/></svg></div>
+          <h3>Never obeys a stranger's words</h3>
         </div>
-        <p class="lede" data-reveal>
-          Munshiji reads content written by strangers - web pages, email, PDFs -
-          and has the ability to act on your machine. Treating a stray sentence
-          in a fetched page as a command is the specific failure this is built
-          to resist.
-        </p>
-      </div>
-      <div class="trust-grid" data-reveal>
-        <div class="trust-item">
-          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/></svg></div>
-          <div><h3>Untrusted content is never obeyed</h3><p>Fetched pages, email, and PDFs are summarized and reasoned about - never followed as instructions.</p></div>
+        <div class="trust-tile c-gold">
+          <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg></div>
+          <h3>Always asks before it acts</h3>
         </div>
-        <div class="trust-item">
-          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg></div>
-          <div><h3>Confirmation always comes by voice</h3><p>Anything that deletes, sends, spends, or overwrites speaks its intent and waits for a spoken yes - a tool result can't trigger it directly.</p></div>
+        <div class="trust-tile c-green">
+          <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+          <h3>Every action can be undone</h3>
         </div>
-        <div class="trust-item">
-          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
-          <div><h3>Every mutation registers its undo first</h3><p>The inverse operation is queued before anything runs, not after - up to 20 steps back.</p></div>
-        </div>
-        <div class="trust-item">
-          <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5M12 16h.01M10.3 3.6 2.7 17a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"/></svg></div>
-          <div><h3>Some things are structurally unreachable</h3><p>Credential access, registry writes, and mass deletion aren't discouraged by a prompt - the LLM's tool path can't reach them at all.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="band warm" id="status">
-    <div class="wrap">
-      <div class="band-head">
-        <div>
-          <div class="kicker" data-reveal>05 · WHERE IT ACTUALLY STANDS</div>
-          <h2 data-reveal>Built in phase order, in public - nothing here is oversold.</h2>
-        </div>
-        <p class="lede" data-reveal>
-          This is a solo, pre-alpha project. The number below is real: Munshiji
-          is on phase 1 of 9, and the section under it says exactly what that
-          means today.
-        </p>
-      </div>
-      <div class="phase-track" id="phaseTrack" data-reveal aria-hidden="true"></div>
-      <div class="phase-caption"><span>Phase 0 · Spike</span><span>Phase 9 · Commercial</span></div>
-
-      <div class="status-grid" data-reveal>
-        <div class="status-card">
-          <h3>Listens and talks back</h3>
-          <p>Wake word, push-to-talk, Whisper transcription, and streaming speech output all run end to end - echoing what you say. Not yet verified on live hardware.</p>
-        </div>
-        <div class="status-card">
-          <h3>Doesn't act on anything yet</h3>
-          <p>The router and tool registry are phase 2, not started. The preview build below shows the planned control surface - it can't run a command today.</p>
+        <div class="trust-tile c-rose">
+          <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5M12 16h.01M10.3 3.6 2.7 17a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"/></svg></div>
+          <h3>Some things it just can't do</h3>
         </div>
       </div>
     </div>
@@ -317,7 +282,6 @@
       <a href="/index.html#how-it-decides">How it works</a>
       <a href="/index.html#controls">What it controls</a>
       <a href="/index.html#trust">Security</a>
-      <a href="/index.html#status">Status</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Company</div>

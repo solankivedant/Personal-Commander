@@ -12,7 +12,7 @@ function buildCard(tool: ToolCard): HTMLElement {
   card.className = `bento-card${modifier}`;
 
   const mark = document.createElement("div");
-  mark.className = "mark";
+  mark.className = `mark c-${tool.color}`;
   mark.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="${tool.iconPath}"/></svg>`;
 
   const body = document.createElement("div");

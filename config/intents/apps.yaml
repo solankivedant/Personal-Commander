@@ -17,10 +17,23 @@ intents:
   focus_app:
     data:
       - sentences:
-          - "(switch to|go to|focus) {app}"
+          - "(switch to|focus [on]) {app}"
 
   minimize_app:
     data:
       - sentences:
           - "minimize {app}"
           - "minimize [this|current] window"
+
+  maximize_app:
+    data:
+      - sentences:
+          - "maximize {app}"
+          - "maximize [this|current] window"
+
+  list_apps:
+    data:
+      - sentences:
+          - "(what|which) apps are [open|running]"
+          - "list [running|open] apps"
+          - "show [me] [running|open] apps"

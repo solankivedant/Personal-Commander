@@ -13,11 +13,14 @@ never imports or calls into audio/wake/asr/tts directly.
 from __future__ import annotations
 
 from PySide6.QtCore import QEasingCurve, QObject, QPropertyAnimation, Qt, QTimer, Signal
-from PySide6.QtGui import QColor, QGuiApplication, QPainter, QPaintEvent
+from PySide6.QtGui import QColor, QFont, QFontMetrics, QGuiApplication, QPainter, QPaintEvent
 from PySide6.QtWidgets import QGraphicsOpacityEffect, QLabel, QVBoxLayout, QWidget
 
 from munshiji.bus import EventBus
 from munshiji.config import OverlayConfig
+
+_LABEL_FONT_PX = 12
+_LAYOUT_MARGINS = (10, 6, 10, 6)  # left, top, right, bottom
 
 # state value -> (label text, pill color). idle is intentionally label-less
 # and dim so the bar doesn't sit on screen as visual clutter between commands.
@@ -73,10 +76,18 @@ class StatusOverlay(QWidget):
         self._label = QLabel("", self)
         self._label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._label.setStyleSheet(
-            "color: white; font-size: 14px; font-weight: 600; background: transparent;"
+            f"color: white; font-size: {_LABEL_FONT_PX}px; font-weight: 600; "
+            "background: transparent;"
         )
+        # Set the QFont explicitly (not just the stylesheet) so
+        # QFontMetrics(...) below reflects the actual rendered size when
+        # eliding a transcript that's wider than this now-slim pill.
+        font = QFont(self._label.font())
+        font.setPixelSize(_LABEL_FONT_PX)
+        font.setBold(True)
+        self._label.setFont(font)
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(12, 8, 12, 8)
+        layout.setContentsMargins(*_LAYOUT_MARGINS)
         layout.addWidget(self._label)
 
         self._opacity_effect = QGraphicsOpacityEffect(self)
@@ -141,7 +152,12 @@ class StatusOverlay(QWidget):
     def _on_transcript(self, text: str) -> None:
         if not text:
             return
-        self._label.setText(text)
+        available_width = self.width() - _LAYOUT_MARGINS[0] - _LAYOUT_MARGINS[2]
+        elided = QFontMetrics(self._label.font()).elidedText(
+            text, Qt.TextElideMode.ElideRight, available_width
+        )
+        self._label.setText(elided)
+        self._label.setToolTip(text if elided != text else "")
         self._set_pulsing(False)
         self._transcript_timer.start(int(self._config.transcript_display_s * 1000))
 

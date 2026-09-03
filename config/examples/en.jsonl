@@ -1,6 +1,56 @@
 {"text": "open chrome", "intent": "open_app", "args": {"app": "chrome"}}
 {"text": "launch spotify", "intent": "open_app", "args": {"app": "spotify"}}
+{"text": "fire up firefox", "intent": "open_app", "args": {"app": "firefox"}}
+{"text": "get outlook open for me", "intent": "open_app", "args": {"app": "outlook"}}
+{"text": "shut spotify down", "intent": "close_app", "args": {"app": "spotify"}}
+{"text": "get rid of chrome", "intent": "close_app", "args": {"app": "chrome"}}
+{"text": "kill the notepad window", "intent": "close_app", "args": {"app": "notepad"}}
+{"text": "switch over to word", "intent": "focus_app", "args": {"app": "word"}}
+{"text": "bring up outlook", "intent": "focus_app", "args": {"app": "outlook"}}
+{"text": "pull up the chrome window", "intent": "focus_app", "args": {"app": "chrome"}}
+{"text": "minimize that window please", "intent": "minimize_app", "args": {}}
+{"text": "put spotify in the background", "intent": "minimize_app", "args": {"app": "spotify"}}
+{"text": "get this out of my way", "intent": "minimize_app", "args": {}}
+{"text": "maximize the window", "intent": "maximize_app", "args": {}}
+{"text": "make chrome full screen", "intent": "maximize_app", "args": {"app": "chrome"}}
+{"text": "blow this window up to full size", "intent": "maximize_app", "args": {}}
+{"text": "what do I have open right now", "intent": "list_apps", "args": {}}
+{"text": "show me my open programs", "intent": "list_apps", "args": {}}
+{"text": "which applications are running", "intent": "list_apps", "args": {}}
 {"text": "make it a bit louder", "intent": "set_volume", "args": {"direction": "up"}}
 {"text": "turn the volume down", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "crank it up", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "bring the volume way down", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "silence it", "intent": "mute", "args": {}}
+{"text": "turn the sound off completely", "intent": "mute", "args": {}}
+{"text": "cut the audio", "intent": "mute", "args": {}}
+{"text": "dim the screen a bit", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "brighten up the display", "intent": "set_brightness", "args": {"direction": "up"}}
+{"text": "the screen is too dark", "intent": "set_brightness", "args": {"direction": "up"}}
+{"text": "what's the volume set to", "intent": "get_volume", "args": {}}
+{"text": "tell me the volume level", "intent": "get_volume", "args": {}}
+{"text": "how loud am I set right now", "intent": "get_volume", "args": {}}
+{"text": "what's the screen brightness", "intent": "get_brightness", "args": {}}
+{"text": "how bright is my screen", "intent": "get_brightness", "args": {}}
 {"text": "how much battery do I have left", "intent": "battery_status", "args": {}}
+{"text": "what's my battery percentage", "intent": "battery_status", "args": {}}
 {"text": "lock my laptop", "intent": "lock_screen", "args": {}}
+{"text": "secure my screen before I leave", "intent": "lock_screen", "args": {}}
+{"text": "sleep now", "intent": "sleep", "args": {}}
+{"text": "send the laptop to sleep", "intent": "sleep", "args": {}}
+{"text": "power down the machine", "intent": "shutdown", "args": {}}
+{"text": "switch off my computer", "intent": "shutdown", "args": {}}
+{"text": "turn everything off", "intent": "shutdown", "args": {}}
+{"text": "reboot my pc", "intent": "restart", "args": {}}
+{"text": "restart it", "intent": "restart", "args": {}}
+{"text": "can you restart the system", "intent": "restart", "args": {}}
+{"text": "turn on the wifi", "intent": "wifi_toggle", "args": {"state": "on"}}
+{"text": "disable the wifi", "intent": "wifi_toggle", "args": {"state": "off"}}
+{"text": "connect to wifi", "intent": "wifi_toggle", "args": {"state": "on"}}
+{"text": "turn on bluetooth please", "intent": "bluetooth_toggle", "args": {"state": "on"}}
+{"text": "disable bluetooth", "intent": "bluetooth_toggle", "args": {"state": "off"}}
+{"text": "switch bluetooth off for me", "intent": "bluetooth_toggle", "args": {"state": "off"}}
+{"text": "am I connected to wifi", "intent": "wifi_status", "args": {}}
+{"text": "do I have wifi right now", "intent": "wifi_status", "args": {}}
+{"text": "is my bluetooth working", "intent": "bluetooth_status", "args": {}}
+{"text": "check if bluetooth is on", "intent": "bluetooth_status", "args": {}}

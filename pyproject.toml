@@ -28,6 +28,15 @@ dependencies = [
     # explicit decision (see docs/ROADMAP.md); the full tray/dashboard/
     # onboarding wizard is still Phase 8.
     "pyside6>=6.7",
+    # Phase 2 — router (router/) and Tier 0/1 tools (tools/system.py, apps.py)
+    "hassil>=3.12",
+    "rapidfuzz>=3.14",
+    "sentence-transformers>=2.7",
+    "pywin32>=306",
+    "pycaw>=20240210",
+    "comtypes>=1.4",
+    "screen-brightness-control>=0.24",
+    "psutil>=5.9",
 ]
 
 [dependency-groups]

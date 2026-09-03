@@ -1,5 +1,6 @@
 """IDLE -> LISTENING -> TRANSCRIBING -> ROUTING -> ACTING -> SPEAKING state
-machine, plus push-to-talk hotkey entry. Phase 1."""
+machine, plus push-to-talk hotkey entry. Phase 1 voice loop; Phase 2 wires
+real routing/tool-execution into ROUTING/ACTING (see _route_and_act below)."""
 
 from __future__ import annotations
 
@@ -16,10 +17,12 @@ import structlog
 
 from munshiji.audio.vad import Endpointer, SileroVad
 from munshiji.bus import EventBus
+from munshiji.tools.registry import REGISTRY, ToolRegistry
 
 if TYPE_CHECKING:
     from munshiji.asr.whisper import WhisperAsr
     from munshiji.audio.capture import AudioCapture
+    from munshiji.router.router import Router
     from munshiji.tts.kokoro import KokoroTts
     from munshiji.wake.detector import WakeWordDetector
 
@@ -40,11 +43,11 @@ class VoiceState(Enum):
 class VoiceFSM:
     """Orchestrates the L1 state machine: consumes frames from AudioCapture,
     runs wake-word detection in IDLE, closes LISTENING on VAD silence, calls
-    ASR, then — since the router and tool registry don't exist until Phase
-    2/3 — passes the transcript straight through ROUTING/ACTING (states still
-    fire, so bus subscribers and later phases have a real hook) to TTS for
-    an echo-back. Barge-in during SPEAKING (wake re-fire or hotkey) stops
-    playback and re-enters LISTENING.
+    ASR, then routes the transcript through the Phase 2 router/tool registry
+    in ROUTING/ACTING (falling back to a Phase-1-style echo-back if no
+    router is wired, e.g. in tests) before handing the result to TTS.
+    Barge-in during SPEAKING (wake re-fire or hotkey) stops playback and
+    re-enters LISTENING.
     """
 
     def __init__(
@@ -59,6 +62,8 @@ class VoiceFSM:
         silence_ms: int,
         min_speech_ms: int,
         now_fn: Callable[[], float] = time.monotonic,
+        router: Router | None = None,
+        registry: ToolRegistry = REGISTRY,
     ) -> None:
         self._capture = capture
         self._wake_detector = wake_detector
@@ -70,6 +75,8 @@ class VoiceFSM:
         self._silence_ms = silence_ms
         self._min_speech_ms = min_speech_ms
         self._now_fn = now_fn
+        self._router = router
+        self._registry = registry
 
         self.state = VoiceState.IDLE
         self._endpointer: Endpointer | None = None
@@ -107,15 +114,51 @@ class VoiceFSM:
         text = self._asr.transcribe(audio, self._capture.sample_rate)
         self._bus.publish("asr.transcript", text)
 
-        # Phase 2 wires real intent routing in here; for Phase 1's echo-back
-        # deliverable the transcript passes straight through.
         self._transition(VoiceState.ROUTING)
-        response = text
-        # Phase 2+ tool execution hooks in here.
+        response = self._route(text) if (self._router is not None and text) else text
         self._transition(VoiceState.ACTING)
 
         self._transition(VoiceState.SPEAKING)
         self._speak(response)
+
+    def _route(self, text: str) -> str:
+        """Run the Phase 2 cascade and, for anything that doesn't need
+        confirmation, execute the resolved tool. Phase 3 owns the real
+        spoken confirm gate (security/confirm.py doesn't exist yet), so a
+        route that needs confirmation — or whose tool isn't registered yet,
+        e.g. Phase 3's file tools — fails safe: it is described back to the
+        user rather than either silently executed or silently dropped.
+        Voice-driven teach mode (asking the user what an unmatched utterance
+        should do) is deferred past Phase 2 — the FSM has no multi-turn
+        dialogue state yet, only single-utterance routing — so a "teach"
+        result just reports that nothing matched.
+        """
+        assert self._router is not None
+        route = self._router.route(text)
+        self._bus.publish(
+            "router.route",
+            {"tool": route.tool, "stage": route.stage, "args": route.args},
+        )
+
+        if route.tool is None:
+            return "I don't know how to do that yet."
+        if route.confirm_required is not False:
+            # True, or None (tool not registered / risk unknown) — both must
+            # block execution per security-and-privacy.md; only an explicit
+            # False clears it.
+            return f"That needs confirmation, which isn't wired up yet: {route.tool}."
+
+        spec = self._registry.get(route.tool)
+        if spec is None:
+            return f"I don't have a way to do that yet ({route.tool})."
+        try:
+            return spec(**route.args)
+        except Exception as exc:
+            # Tools already catch their own execution errors and return a
+            # readable string (engineering-standards.md); this guards only
+            # the integration seam — e.g. router-extracted args that don't
+            # match the tool's actual parameters.
+            return f"Something went wrong trying to do that: {exc}"
 
     def _speak(self, text: str) -> None:
         self._interrupted = False

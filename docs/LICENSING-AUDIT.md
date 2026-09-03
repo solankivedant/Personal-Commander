@@ -15,6 +15,12 @@ or consulting a lawyer before commercial launch. See
 | Silero VAD | MIT | ✓ |
 | hassil | Apache 2.0 | ✓ |
 | multilingual-e5-small | MIT | ✓ |
+| sentence-transformers | Apache 2.0 | ✓ (verified 2026-09-03, pip package v3.x — encodes multilingual-e5-small in `router/embeddings.py`) |
+| rapidfuzz | MIT | ✓ (verified 2026-09-03, pip package v3.x — fuzzy app-name matching in `router/slots.py`) |
+| pycaw | MIT | ✓ (verified 2026-09-03, pip package v20251023 — volume/mute control in `tools/system.py`) |
+| comtypes | MIT | ✓ (verified 2026-09-03, pycaw's COM dependency) |
+| screen-brightness-control | MIT | ✓ (verified 2026-09-03, pip package v0.24+ — `tools/system.py`) |
+| psutil | BSD-3-Clause | ✓ (verified 2026-09-03, pip package v5.9+ — process listing/termination in `tools/apps.py`) |
 | Kokoro-82M | Apache 2.0 | ✓ |
 | ChromaDB | Apache 2.0 | ✓ |
 | Ollama | MIT | ✓ |

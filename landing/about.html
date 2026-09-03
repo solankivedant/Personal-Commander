@@ -8,30 +8,35 @@
 <link rel="icon" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600&family=Noto+Sans+Gujarati:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600&family=Noto+Sans+Gujarati:wght@500;600&display=swap">
 </head>
 <body>
 
-<div class="topbar">
+<div class="topbar" id="topbar">
   <div class="wrap">
-    <span>🪔 The preview build is downloadable right now - for Windows</span>
+    <span class="topbar-badge">Preview</span>
+    <span>The preview build is downloadable right now - for Windows</span>
     <a href="/index.html#download">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <button type="button" class="topbar-close" id="topbarClose" aria-label="Dismiss announcement">✕</button>
   </div>
 </div>
 
-<header class="site">
-  <div class="wrap">
+<header class="site" id="siteHeader">
+  <div class="nav-pill">
     <a class="wordmark" href="/"><span class="glyph">M</span><span class="name">Munshiji</span></a>
     <nav class="site-links">
       <a class="textlink" href="/index.html#controls">Features</a>
       <a class="textlink" href="/pricing.html">Pricing</a>
       <a class="textlink" href="/docs.html">Docs</a>
       <a class="textlink" href="/about.html">About</a>
-      <a class="btn primary pulse" href="/index.html#download">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
-        Download
-      </a>
     </nav>
+    <div class="nav-cta">
+      <a class="btn ghost" href="https://github.com/solankivedant/Personal-Commander" target="_blank" rel="noopener">View source</a>
+      <a class="btn primary with-arrow" href="/index.html#download">
+        Download
+        <span class="btn-arrow-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -56,7 +61,7 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>01 - THE PREMISE</div>
+          <div class="kicker" data-reveal>THE PREMISE</div>
           <h2 data-reveal>Local-first isn't a privacy feature bolted on. It's the architecture.</h2>
         </div>
         <p class="lede" data-reveal>
@@ -93,14 +98,14 @@
     <div class="wrap">
       <div class="band-head">
         <div>
-          <div class="kicker" data-reveal>02 - BUILT IN THE OPEN</div>
+          <div class="kicker" data-reveal>BUILT IN THE OPEN</div>
           <h2 data-reveal>Nothing here is oversold, on purpose.</h2>
         </div>
         <p class="lede" data-reveal>
           This is an independent, pre-alpha project, built and shipped phase
-          by phase in public. The status section on the homepage states
-          plainly what works today and what doesn't - that page gets updated
-          as each phase actually lands, not before.
+          by phase in public. The two cards below say plainly what works
+          today and what doesn't - updated as each phase actually lands, not
+          before.
         </p>
       </div>
       <div class="status-grid" data-reveal>
@@ -153,7 +158,6 @@
       <a href="/index.html#how-it-decides">How it works</a>
       <a href="/index.html#controls">What it controls</a>
       <a href="/index.html#trust">Security</a>
-      <a href="/index.html#status">Status</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Company</div>
@@ -169,7 +173,7 @@
       <a href="https://github.com/solankivedant/Personal-Commander/blob/main/future-scope.md" target="_blank" rel="noopener">Future scope</a>
     </div>
   </div>
-  <div class="wrap footer-bottom">© 2026 Munshiji. Built in the open, pre-alpha.</div>
+  <div class="wrap footer-bottom">Â© 2026 Munshiji. Built in the open, pre-alpha.</div>
 </footer>
 
 <script type="module" src="/src/common.ts"></script>
