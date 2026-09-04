@@ -1,4 +1,3 @@
-import "./style.css";
 import { DEMO_FRAMES, TOOLS, SHOWCASE } from "./data";
 import { CommandDemo } from "./demo";
 import { Waveform } from "./waveform";

@@ -15,6 +15,7 @@ export default defineConfig({
         about: page("about.html"),
         pricing: page("pricing.html"),
         docs: page("docs.html"),
+        features: page("features.html"),
         download: page("download.html"),
         terms: page("terms.html"),
         privacy: page("privacy.html"),

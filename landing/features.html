@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Features - Munshiji</title>
+<meta name="description" content="Eight tool packs, one voice: Office, system, apps, files, web, mail, calendar and your phone - all driven by voice, entirely on your own machine.">
+<link rel="icon" href="/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@500;600;700&family=Noto+Sans+Gujarati:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+<div class="topbar" id="topbar">
+  <div class="wrap">
+    <span class="topbar-badge">New</span>
+    <span>Munshiji 1.0 for Windows - voice control that never leaves your device</span>
+    <a href="/download.html">Download<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <button type="button" class="topbar-close" id="topbarClose" aria-label="Dismiss announcement">✕</button>
+  </div>
+</div>
+
+<header class="site" id="siteHeader">
+  <div class="nav-pill">
+    <a class="wordmark" href="/"><span class="glyph">M</span><span class="name">Munshiji</span></a>
+
+    <nav class="site-links">
+      <a class="textlink" href="/index.html">Home</a>
+      <a class="textlink" href="/about.html">About</a>
+      <a class="textlink" href="/pricing.html">Pricing</a>
+      <a class="textlink" href="/features.html" aria-current="page">Features</a>
+      <div class="nav-more" id="navMore">
+        <button type="button" class="textlink more-toggle" id="moreToggle" aria-expanded="false">
+          More
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav-dropdown" id="moreMenu">
+          <a href="/index.html#how">How it works</a>
+          <a href="/index.html#security">Security</a>
+          <a href="/docs.html">Docs</a>
+          <a href="/terms.html">Terms</a>
+          <a href="/privacy.html">Privacy</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="nav-cta">
+      <a class="btn download sm with-arrow" href="/download.html">
+        Get Started
+        <span class="btn-arrow-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero centered">
+    <div class="hero-blobs" aria-hidden="true"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="eyebrow"><span class="dot"></span>Features</span>
+      <h1>Everything on your machine, answering to your voice.</h1>
+      <p class="lede">Eight tool packs, one wake word. Each one declares what it can touch, whether it asks first, and how to undo it.</p>
+      <div class="cta-row centered" style="display:flex; justify-content:center; gap:12px; margin-top:30px;">
+        <a class="btn download lg" href="/download.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
+          Download for Windows
+        </a>
+        <a class="btn ghost lg" href="#showcase">See it work</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top: 40px;">
+    <div class="wrap">
+      <div class="band-head">
+        <div>
+          <div class="kicker">The tool packs</div>
+          <h2 data-reveal>What it controls, end to end.</h2>
+        </div>
+        <p class="lede" data-reveal>Local packs never touch the network. Network packs send only the argument they need - never your voice.</p>
+      </div>
+      <div class="feature-grid" id="featureGrid" data-reveal></div>
+    </div>
+  </section>
+
+  <section class="band warm showcase" id="showcase">
+    <div class="wrap">
+      <div class="band-head">
+        <div>
+          <div class="kicker">Seen in action</div>
+          <h2 data-reveal>One sentence in. The right action out.</h2>
+        </div>
+        <p class="lede" data-reveal>Every pack, the way it actually looks and behaves on your desktop.</p>
+      </div>
+
+      <div class="showcase-frame" data-reveal>
+        <div class="showcase-viewport"></div>
+        <div class="showcase-nav">
+          <div class="showcase-dots"></div>
+          <button type="button" class="carousel-arrow prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <button type="button" class="carousel-arrow next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="band-head">
+        <div>
+          <div class="kicker">Three tiers of reach</div>
+          <h2 data-reveal>Every tool says where it can go.</h2>
+        </div>
+        <p class="lede" data-reveal>The tier is part of the tool, not a setting you have to trust. Switch the machine offline and the network packs simply disappear.</p>
+      </div>
+      <div class="steps-row" data-reveal>
+        <div class="step-tile">
+          <div class="step-num">1</div>
+          <h3>Local</h3>
+          <p>Never opens a socket. System, apps, files and Office all live here.</p>
+        </div>
+        <div class="step-tile">
+          <div class="step-num">2</div>
+          <h3>LAN</h3>
+          <p>Your own network only, for the phone bridge. No third-party relay.</p>
+        </div>
+        <div class="step-tile">
+          <div class="step-num">3</div>
+          <h3>Network</h3>
+          <p>Leaves the machine, through one allowlisted client, with the query only.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band warm">
+    <div class="wrap">
+      <div class="band-head">
+        <div>
+          <div class="kicker">Spoken in three languages</div>
+          <h2 data-reveal>Say it however you say it.</h2>
+        </div>
+        <p class="lede" data-reveal>English, Hindi and Gujarati share one example set, so the same intent resolves in whichever you reach for - including mid-sentence.</p>
+      </div>
+      <div class="req-grid" data-reveal>
+        <div class="req-cell"><div class="l">English</div><div class="v">"turn the volume down"</div></div>
+        <div class="req-cell"><div class="l">हिन्दी</div><div class="v devanagari">आवाज़ कम करो</div></div>
+        <div class="req-cell"><div class="l">ગુજરાતી</div><div class="v gujarati">અવાજ ઓછો કરો</div></div>
+        <div class="req-cell"><div class="l">Result</div><div class="v mono">set_volume(20)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="guardrails">
+    <div class="wrap">
+      <div class="band-head centered">
+        <div>
+          <div class="kicker">Built-in guardrails</div>
+          <h2 data-reveal>Four rules that are never optional.</h2>
+        </div>
+      </div>
+      <div class="trust-visual-grid" data-reveal>
+        <div class="trust-tile">
+          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.7 8 9 4.6-1.3 8-4.5 8-9V6l-8-3Z"/></svg></div>
+          <div>
+            <h3>Never obeys a stranger</h3>
+            <p>Text from a page, mail or PDF is quoted to the model, never treated as an instruction.</p>
+          </div>
+        </div>
+        <div class="trust-tile">
+          <div class="mark lg amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg></div>
+          <div>
+            <h3>Asks before it acts</h3>
+            <p>Anything that deletes, sends, spends or overwrites speaks its intent and waits for a yes.</p>
+          </div>
+        </div>
+        <div class="trust-tile">
+          <div class="mark lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5M4 9h9a7 7 0 0 1 0 14H8"/></svg></div>
+          <div>
+            <h3>Everything is undoable</h3>
+            <p>Each action registers how to reverse itself before it runs, not after.</p>
+          </div>
+        </div>
+        <div class="trust-tile">
+          <div class="mark lg slate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12v10H6zM9 11V8a3 3 0 0 1 6 0v3"/></svg></div>
+          <div>
+            <h3>Some things it cannot do</h3>
+            <p>Passwords, the registry and bulk deletion are structurally out of reach.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="hero-blobs" aria-hidden="true" style="opacity:0.6;"></div>
+    <div class="wrap">
+      <h2 data-reveal>Try it on your own machine.</h2>
+      <p class="lede" data-reveal>Free for personal use. Installs in under a minute, no account needed.</p>
+      <div class="cta-row" data-reveal>
+        <a class="btn download lg" href="/download.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
+          Download for Windows
+        </a>
+        <a class="btn ghost lg" href="/pricing.html">See pricing</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="wordmark"><span class="glyph">M</span><span class="name">Munshiji</span></div>
+        <p class="footer-tagline">Voice control for Windows that runs entirely on your own machine. Your files, your inbox, your voice - none of it leaves the device.</p>
+        <div class="footer-langs">
+          <span>English</span>
+          <span class="devanagari">हिन्दी</span>
+          <span class="gujarati">ગુજરાતી</span>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="footer-col-title">Product</div>
+          <a href="/features.html">Features</a>
+          <a href="/index.html#how">How it works</a>
+          <a href="/index.html#security">Security</a>
+          <a href="/download.html">Download</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Company</div>
+          <a href="/about.html">About</a>
+          <a href="/pricing.html">Pricing</a>
+          <a href="/docs.html">Docs</a>
+          <a href="/about.html#contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Legal</div>
+          <a href="/terms.html">Terms of service</a>
+          <a href="/privacy.html">Privacy policy</a>
+          <a href="/privacy.html#data">Data handling</a>
+          <a href="/terms.html#refunds">Refunds</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Munshiji. All rights reserved.</span>
+      <div class="links">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/index.html#security">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="/src/common.ts"></script>
+</body>
+</html>
