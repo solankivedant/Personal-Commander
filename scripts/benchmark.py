@@ -87,13 +87,18 @@ def benchmark_asr(runs: int = 5, duration_s: float = 2.0, wav_path: Path | None 
     load_start = time.perf_counter()
     model = WhisperModel("small", device="cpu", compute_type="int8")
     load_s = time.perf_counter() - load_start
-    print(f"Model load time: {load_s:.2f}s (one-time cost; keep the model warm — construct once at boot, never per-request)")
+    print(
+        f"Model load time: {load_s:.2f}s (one-time cost; keep the model warm — "
+        "construct once at boot, never per-request)"
+    )
 
     latencies_ms: list[float] = []
     transcript = ""
     for i in range(runs):
         start = time.perf_counter()
-        segments, info = model.transcribe(str(wav_path), language="en", vad_filter=not using_synthetic)
+        segments, info = model.transcribe(
+            str(wav_path), language="en", vad_filter=not using_synthetic
+        )
         segs = list(segments)  # force full decode
         transcript = " ".join(s.text.strip() for s in segs)
         elapsed_ms = (time.perf_counter() - start) * 1000
@@ -102,7 +107,10 @@ def benchmark_asr(runs: int = 5, duration_s: float = 2.0, wav_path: Path | None 
 
     p50 = statistics.median(latencies_ms)
     p95 = sorted(latencies_ms)[max(0, int(len(latencies_ms) * 0.95) - 1)]
-    print(f"\nASR p50: {p50:.0f} ms | p95: {p95:.0f} ms | target: < 600 ms (gate), < 350 ms (ideal, §9.3)")
+    print(
+        f"\nASR p50: {p50:.0f} ms | p95: {p95:.0f} ms | "
+        "target: < 600 ms (gate), < 350 ms (ideal, §9.3)"
+    )
     if p50 > 600:
         print("GATE FAILED: ASR p50 exceeds 600ms. Consider the OpenVINO backend "
               "(§9.2 #4) or revisit the model size before Phase 1.")
@@ -151,7 +159,10 @@ def benchmark_llm(model: str, runs: int = 5) -> None:
             eval_duration_ns = data.get("eval_duration", 0)
             rate = (eval_count / (eval_duration_ns / 1e9)) if eval_duration_ns else 0.0
             tok_per_s.append(rate)
-            print(f"  run {i + 1}/{runs}: {rate:.1f} tok/s ({eval_count} tokens, {elapsed:.2f}s wall)")
+            print(
+                f"  run {i + 1}/{runs}: {rate:.1f} tok/s "
+                f"({eval_count} tokens, {elapsed:.2f}s wall)"
+            )
 
     median_rate = statistics.median(tok_per_s) if tok_per_s else 0.0
     print(f"\nLLM median throughput: {median_rate:.1f} tok/s | gate: >= 10 tok/s (§11 Phase 0)")
@@ -170,10 +181,14 @@ def main() -> None:
     parser.add_argument("--llm-only", action="store_true")
     parser.add_argument("--llm-model", default="qwen2.5:3b-instruct-q4_K_M")
     parser.add_argument("--runs", type=int, default=5)
-    parser.add_argument("--asr-duration", type=float, default=2.0,
-                         help="Synthetic-fallback clip length in seconds (only used without --wav)")
-    parser.add_argument("--wav", type=Path, default=None,
-                         help="Path to a real speech WAV clip — strongly preferred over the synthetic fallback")
+    parser.add_argument(
+        "--asr-duration", type=float, default=2.0,
+        help="Synthetic-fallback clip length in seconds (only used without --wav)",
+    )
+    parser.add_argument(
+        "--wav", type=Path, default=None,
+        help="Path to a real speech WAV clip — strongly preferred over the synthetic fallback",
+    )
     args = parser.parse_args()
 
     if not args.llm_only:

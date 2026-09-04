@@ -3,7 +3,8 @@ import { initFloatingHeader } from "./header";
 import { initBillingToggle } from "./pricing";
 import { renderFeatures } from "./features";
 import { renderShowcase } from "./carousel";
-import { TOOLS, SHOWCASE } from "./data";
+import { renderFaq } from "./faq";
+import { TOOLS, SHOWCASE, FAQS } from "./data";
 
 /** Entry point for every page that isn't the homepage. The feature grid and
  * the showcase carousel render wherever a page provides their container, so
@@ -18,6 +19,9 @@ function main(): void {
 
   const showcase = document.getElementById("showcase");
   if (showcase) renderShowcase(showcase, SHOWCASE);
+
+  const faq = document.getElementById("faqList");
+  if (faq) renderFaq(faq, FAQS);
 }
 
 if (document.readyState === "loading") {

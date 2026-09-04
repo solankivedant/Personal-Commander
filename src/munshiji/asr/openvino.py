@@ -1,4 +1,5 @@
-"""OpenVINO IR backend for Whisper on Intel iGPU (optimum-intel / whisper.cpp). Phase 6 hardware optimization.
+"""OpenVINO IR backend for Whisper on Intel iGPU (optimum-intel / whisper.cpp).
+Phase 6 hardware optimization.
 
 Phase 0 finding (docs/PHASE-0-RESULTS.md), don't rediscover this the hard way:
 OpenVINO's speedup is NOT automatic from converting to IR format. The default

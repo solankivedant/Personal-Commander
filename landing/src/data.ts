@@ -180,3 +180,35 @@ export const SHOWCASE: ShowcaseSlide[] = [
     chips: ["Send texts", "Notifications", "Find phone"],
   },
 ];
+
+export interface Faq {
+  q: string;
+  a: string;
+}
+
+export const FAQS: Faq[] = [
+  {
+    q: "What is Munshiji?",
+    a: "A voice assistant for Windows that runs on your own laptop. It opens apps, sorts files, edits Office documents, reads your inbox and changes system settings - all from a spoken sentence, in English, Hindi or Gujarati.",
+  },
+  {
+    q: "Does anything I say leave my device?",
+    a: "No. Speech recognition, routing and speech synthesis all run locally, so audio and transcripts never leave the machine. Only a net-tier tool sends anything out, and then only its arguments - a city name for weather, a search query for mail - never the recording.",
+  },
+  {
+    q: "Do I need an internet connection?",
+    a: "Not for the everyday things. Files, apps, Office and system control work fully offline. Turn on local_only mode and the tools that reach the network are removed from the registry entirely.",
+  },
+  {
+    q: "What hardware does it need?",
+    a: "A Windows 10 or 11 laptop with 16 GB of RAM and integrated graphics. No discrete GPU - about 85% of commands never touch a language model, so most of the work is a few milliseconds of matching rather than heavy inference.",
+  },
+  {
+    q: "Can it delete or send something by mistake?",
+    a: "Anything that deletes, sends, spends or overwrites speaks its intent first and waits for a spoken yes. Every action also registers how to reverse itself before it runs, so \"undo that\" always works.",
+  },
+  {
+    q: "How well does it understand Hindi and Gujarati?",
+    a: "As well as English, by design. One multilingual encoder places all three languages in the same vector space, so a single set of examples covers every phrasing - and if it ever mishears you, teach it your wording once and it remembers.",
+  },
+];

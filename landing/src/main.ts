@@ -1,10 +1,11 @@
-import { DEMO_FRAMES, TOOLS, SHOWCASE } from "./data";
+import { DEMO_FRAMES, TOOLS, SHOWCASE, FAQS } from "./data";
 import { CommandDemo } from "./demo";
 import { Waveform } from "./waveform";
 import { initScrollReveal } from "./reveal";
 import { renderFeatures } from "./features";
 import { renderShowcase } from "./carousel";
 import { initFloatingHeader } from "./header";
+import { renderFaq } from "./faq";
 
 function byId<T extends HTMLElement>(id: string): T {
   const el = document.getElementById(id);
@@ -27,6 +28,7 @@ function main(): void {
 
   renderFeatures(byId("featureGrid"), TOOLS);
   renderShowcase(byId("showcase"), SHOWCASE);
+  renderFaq(byId("faqList"), FAQS);
 
   initScrollReveal();
   initFloatingHeader();
