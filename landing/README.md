@@ -76,3 +76,25 @@ Pages at this directory (build command `npm run build`, publish directory
 `dist`) with no server-side requirements. The clean URLs need no host-specific
 rewrite rules: they're real directories with an `index.html` inside, which
 every static host resolves natively.
+
+## The Download button
+
+`/download`'s primary button links straight to the installer:
+
+```
+https://github.com/<owner>/<repo>/releases/latest/download/Munshiji-Setup-x64.exe
+```
+
+The URL is hardcoded in `download/index.html` so it works without
+JavaScript, and re-applied from `DOWNLOAD_URL` in `src/release.ts` so no page
+can drift to a stale copy. `src/release.ts` also fills the version, size, date
+and checksum line from the GitHub API at page load - those were previously
+hardcoded ("Version 1.0.2 - 180 MB") for a build that did not exist. If the
+API is offline, rate-limited, or no release is published yet, the fallback
+copy in the markup stands and the button still works.
+
+Header "Download" links elsewhere on the site point at `/download`, not at the
+`.exe` - that page carries the SmartScreen warning and the checksum, which
+someone installing an unsigned binary needs to see first.
+
+Release process and its prerequisites: `desktop-preview/README.md`.

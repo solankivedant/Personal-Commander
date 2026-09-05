@@ -1,29 +1,57 @@
 name: Desktop preview release
 
 # Builds the Tauri UI-preview shell (desktop-preview/) for Windows and
-# publishes the installer to a GitHub Release. Windows-only: the real
-# Munshiji product only ever targets Windows (Office COM automation has no
-# macOS/Linux equivalent), so this preview doesn't build those either. This
-# is NOT the real Munshiji installer pipeline (that's scripts/package.py +
-# installer/, gated on the engine actually existing) — see
-# desktop-preview/README.md.
+# publishes a Windows installer to a GitHub Release, under a filename that
+# never changes. That stable name is what lets the website's Download button
+# be a permanent link:
+#
+#   https://github.com/<owner>/<repo>/releases/latest/download/Munshiji-Setup-x64.exe
+#
+# GitHub resolves /releases/latest/ server-side to the newest published
+# release and streams the asset, so the button keeps working after every
+# release with no edit to the site.
+#
+# This is NOT yet the real Munshiji installer pipeline. The engine's installer
+# is scripts/package.py + installer/ (PyInstaller + Inno Setup, Phase 8). When
+# that lands it should publish under this same asset name so the download link
+# and every mirror of it keep working - see desktop-preview/README.md.
 on:
   push:
     tags:
       - "desktop-preview-v*"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to build and publish (e.g. desktop-preview-v0.1.0)"
+        required: true
+
+# The release step creates a Release and uploads assets to it.
+permissions:
+  contents: write
+
+env:
+  # Change this in one place only. The website links to it by name, so a
+  # rename silently breaks every published download link.
+  ASSET_NAME: Munshiji-Setup-x64.exe
 
 jobs:
   release:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
 
       - uses: dtolnay/rust-toolchain@stable
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Resolve tag
+        id: meta
+        shell: bash
+        run: echo "tag=${{ github.event.inputs.tag || github.ref_name }}" >> "$GITHUB_OUTPUT"
 
       - name: Install frontend deps
         working-directory: desktop-preview
@@ -34,15 +62,83 @@ jobs:
         run: npx tauri icon src-tauri/icon-source.png -o src-tauri/icons
 
       - uses: tauri-apps/tauri-action@v0
+        id: tauri
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           projectPath: desktop-preview
-          tagName: ${{ github.ref_name }}
-          releaseName: "Munshiji preview build ${{ github.ref_name }}"
+          tagName: ${{ steps.meta.outputs.tag }}
+          releaseName: "Munshiji preview ${{ steps.meta.outputs.tag }}"
           releaseBody: |
-            UI preview of the Munshiji Control Center, for Windows. No voice,
-            file, or system control is wired up yet — see the Roadmap tab
-            in-app or docs/ROADMAP.md. This is not the shipping product.
-          releaseDraft: true
-          prerelease: true
+            **Windows installer for the Munshiji Control Center preview.**
+
+            Download `Munshiji-Setup-x64.exe` below, or use the Download
+            button on the website, which always points at the newest release.
+
+            ### What this build is
+            The Control Center interface, running as a real desktop app, with
+            sample data. You can click through every screen and play the
+            command examples.
+
+            ### What it is not
+            The engine is not in here. Voice, file and system control are not
+            wired up in this build - see the Roadmap tab inside the app, or
+            `docs/ROADMAP.md`.
+
+            ### Note on the SmartScreen warning
+            This installer is not code-signed yet, so Windows will show
+            "Windows protected your PC". Choose **More info -> Run anyway**.
+            Verify the download against `Munshiji-Setup-x64.exe.sha256`
+            published alongside it:
+
+            ```powershell
+            Get-FileHash .\Munshiji-Setup-x64.exe -Algorithm SHA256
+            ```
+          # Both must stay false. GitHub's /releases/latest/ permalink skips
+          # drafts and prereleases, so marking this either way would 404 the
+          # website's Download button until someone published it by hand.
+          releaseDraft: false
+          prerelease: false
+
+      - name: Publish installer under a stable name, with a checksum
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $nsis = Get-ChildItem -Recurse -Filter *-setup.exe `
+            -Path desktop-preview/src-tauri/target/release/bundle/nsis |
+            Select-Object -First 1
+          if (-not $nsis) { throw "No NSIS installer was produced." }
+
+          # Tauri names the installer with the version in it, which changes
+          # every release. Copy it to a fixed name so the download URL is a
+          # permalink; the versioned original stays on the release too.
+          $stable = Join-Path $nsis.DirectoryName $env:ASSET_NAME
+          Copy-Item $nsis.FullName $stable -Force
+
+          $hash = (Get-FileHash $stable -Algorithm SHA256).Hash.ToLower()
+          "$hash  $env:ASSET_NAME" | Out-File "$stable.sha256" -Encoding ascii -NoNewline
+
+          $mb = [math]::Round((Get-Item $stable).Length / 1MB, 1)
+          Write-Host "Built $env:ASSET_NAME ($mb MB), sha256 $hash"
+
+          gh release upload ${{ steps.meta.outputs.tag }} `
+            $stable "$stable.sha256" --clobber
+
+      - name: Verify the download permalink resolves
+        shell: pwsh
+        run: |
+          # The website links to /releases/latest/download/<asset>. Fetch it
+          # the way a visitor's browser would, so a broken release fails here
+          # rather than on someone's download click.
+          $url = "https://github.com/${{ github.repository }}/releases/latest/download/$env:ASSET_NAME"
+          for ($i = 1; $i -le 5; $i++) {
+            try {
+              $r = Invoke-WebRequest -Uri $url -Method Head -MaximumRedirection 5
+              if ($r.StatusCode -eq 200) { Write-Host "OK: $url"; exit 0 }
+            } catch {
+              Write-Host "Attempt $i not ready yet, waiting..."
+              Start-Sleep -Seconds 10
+            }
+          }
+          throw "Download permalink did not resolve: $url"

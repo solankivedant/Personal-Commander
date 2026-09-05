@@ -66,12 +66,19 @@
       <div class="os-card" data-reveal>
         <div class="os-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10.5 4.4V11H3V5.5ZM11.5 4.3 21 3v8H11.5V4.3ZM3 12h7.5v6.6L3 17.4V12ZM11.5 12H21v9l-9.5-1.3V12Z"/></svg></div>
         <div class="os-name">Munshiji for Windows</div>
-        <div class="os-meta">Version 1.0.2 · 64-bit · 180 MB · Windows 10 &amp; 11</div>
-        <a class="btn download lg block" href="https://github.com/solankivedant/Personal-Commander/releases" rel="noopener">
+        <!-- Fallback text only. src/release.ts replaces this with the real
+             version, size and date read from the published GitHub release, so
+             the page cannot drift from what actually downloads. -->
+        <div class="os-meta" id="releaseMeta">64-bit · Windows 10 &amp; 11 · preview build</div>
+        <!-- href is set from DOWNLOAD_URL in src/release.ts, but hardcoded
+             here too so the button still downloads with JavaScript off. -->
+        <a class="btn download lg block" data-download
+           href="https://github.com/solankivedant/Personal-Commander/releases/latest/download/Munshiji-Setup-x64.exe"
+           rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg>
           Download installer
         </a>
-        <div class="os-checksum mono">SHA-256 published with every release</div>
+        <div class="os-checksum mono" id="releaseChecksum">SHA-256 published with every build</div>
       </div>
     </div>
   </section>

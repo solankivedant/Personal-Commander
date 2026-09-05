@@ -4,6 +4,7 @@ import { initBillingToggle } from "./pricing";
 import { renderFeatures } from "./features";
 import { renderShowcase } from "./carousel";
 import { renderFaq } from "./faq";
+import { initDownload } from "./release";
 import { TOOLS, SHOWCASE, FAQS } from "./data";
 
 /** Entry point for every page that isn't the homepage. The feature grid and
@@ -13,6 +14,8 @@ function main(): void {
   initScrollReveal();
   initFloatingHeader();
   initBillingToggle();
+  // No-op on pages with no download card.
+  initDownload();
 
   const grid = document.getElementById("featureGrid");
   if (grid) renderFeatures(grid, TOOLS);

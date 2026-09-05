@@ -105,13 +105,58 @@ layout/CSS iteration. Port 5181, not 5180: 5180 belongs to the engine
 (`config/default.yaml`, `ui.control_center.port`), and taking it would stop
 the real Control Center from starting.
 
-## Getting a build without installing Rust
+## Publishing a downloadable installer
 
-Push a tag matching `desktop-preview-v*` (e.g. `git tag desktop-preview-v0.1.0
-&& git push origin desktop-preview-v0.1.0`) and
-`.github/workflows/desktop-preview-release.yml` builds a Windows installer in
-CI and attaches it to a GitHub Release — that Release page is what the
-landing page's download button links to.
+The website's Download button is a plain link to a GitHub permalink:
+
+```
+https://github.com/<owner>/<repo>/releases/latest/download/Munshiji-Setup-x64.exe
+```
+
+GitHub resolves `/releases/latest/` server-side to the newest published
+release and streams the `.exe`, so the link never needs editing and works
+with JavaScript disabled. It needs a network connection, since the file is
+served from GitHub rather than bundled with the site.
+
+To cut a release:
+
+```bash
+git tag desktop-preview-v0.1.0
+git push origin desktop-preview-v0.1.0
+```
+
+`.github/workflows/desktop-preview-release.yml` then builds on
+`windows-latest`, copies the versioned NSIS output to the fixed name
+`Munshiji-Setup-x64.exe`, writes a `.sha256` beside it, uploads both, and
+finally HEADs the public permalink so a broken release fails in CI rather
+than on someone's download click. `workflow_dispatch` runs the same job for
+an existing tag.
+
+**Three things this depends on. All three will silently break the button.**
+
+1. **The repository must be public.** Release assets on a private repo need
+   an authenticated request, so the permalink returns 404 for every visitor.
+   Nothing in the workflow can work around this.
+2. **The release must not be a draft or a prerelease.** `/releases/latest/`
+   skips both, so the workflow pins `releaseDraft: false` and
+   `prerelease: false`. Do not "helpfully" mark a build as a prerelease.
+3. **The asset name is a contract.** `ASSET_NAME` in the workflow and
+   `ASSET_NAME` in `landing/src/release.ts` must match, and renaming it
+   invalidates every download link anyone has already shared.
+
+### Not code-signed
+
+There is no code-signing certificate yet, so Windows SmartScreen shows
+"Windows protected your PC" and users must choose **More info -> Run anyway**.
+That warning costs real installs. Buying an OV/EV certificate and signing in
+CI is Phase 8 work (`docs/ROADMAP.md`), tracked alongside the real installer.
+
+### When the real installer exists
+
+The engine ships through PyInstaller + Inno Setup (`scripts/package.py`,
+`installer/`), not through this Tauri shell. Publish it under the **same**
+asset name and the website, the docs and every shared link keep working with
+no change - which is the reason the name is fixed rather than versioned.
 
 ## Updating the UI
 
