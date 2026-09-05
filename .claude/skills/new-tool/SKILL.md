@@ -45,9 +45,19 @@ hints and docstring — keep both precise, not just readable.
 Requirements:
 - Catch every exception internally; return a short, readable failure string.
   Never let an exception propagate to the LLM loop as a traceback.
-- If `risk="confirm"`, the caller (loop/confirm gate) is what speaks the intent
-  and blocks on a yes — the tool itself just executes once approved. Don't
-  build a second confirmation inside the tool function.
+- If `risk="confirm"`, the caller (`security/confirm.py`) is what speaks the
+  intent and blocks on a yes — the tool itself just executes once approved.
+  Don't build a second confirmation inside the tool function.
+- If `risk="confirm"` **and the effect can't be read off the arguments**, pass
+  `preview=` too: a function taking the same arguments that returns what the
+  tool *would* do, without doing it. §8.2 wants "I'll move 14 PDFs from Desktop
+  to Documents/Invoices. Proceed?" — only the tool can turn "all the PDFs" into
+  a count and a folder, and a prompt that just names arguments gives the user
+  nothing to catch a misroute with. See `tools/files.py::_preview_move_files`.
+- Anything with a free-text slot the embedding stage can't re-derive (a
+  filename, a folder, a message body) belongs in
+  `router/slots.py::_UNDERIVABLE_TEXT_SLOTS`, so an embedding match arrives
+  with the slot missing rather than inheriting the nearest example's value.
 - If it mutates state, implement and register the inverse function alongside
   it, in the same file, before the tool is considered complete.
 - If it's `net` tier, call out through `net/client.py`'s shared allowlisted
@@ -88,6 +98,21 @@ Run the golden test set (`.claude/skills/golden-test/`) and confirm:
 - the new case matches the intended tool and stage
 - overall accuracy is still ≥92% exact tool match, ≥85% args match
 - `expect_confirm` cases are 100% — this one never gets a pass
+
+The runner grades against the **real** registry, so three further tests will
+fail on an incomplete change, and each is telling you something specific:
+- `test_every_golden_tool_is_registered` — the golden set names a tool that
+  doesn't exist. (This is how `battery_status` was found in Phase 3: grammar,
+  examples and golden cases since Phase 2, no tool behind any of them.)
+- `test_confirm_risk_matches_golden_expectations` — `expect_confirm` and
+  `risk=` disagree, in either direction.
+- `test_every_confirm_tool_has_a_golden_case` — a destructive tool with no
+  case exercising its gate.
+
+Watch for grammar templates that are too greedy, especially for free-text
+slots. `"put {query} in {destination}"` looks harmless and silently swallowed
+"put spotify in the background". The golden set catches these — read a failure
+on an *unrelated* intent as your new template stealing it.
 
 If touching anything in `tools/`, `net/`, or `security/`, consider invoking the
 `security-auditor` agent before merging.

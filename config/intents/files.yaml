@@ -1,28 +1,56 @@
 # hassil grammar templates — file operation intents.
 # All of these map to risk="confirm" tools (see .claude/rules/security-and-privacy.md)
 # except find_file, which only searches and does not mutate anything.
+#
+# Slot names are a contract, not a style choice: the router passes matched
+# slots to the tool as **kwargs, so {query}/{source}/{destination}/{new_name}/
+# {folder} must keep matching the parameter names in src/munshiji/tools/files.py.
+#
+# The grammar stage matters more here than anywhere else in the intent set.
+# These are the only templates whose slots are *free text*, and free text
+# cannot be recovered by the embedding stage — a nearest-neighbour match tells
+# you the user wants to move something, never what or where to (see
+# router/slots.py's _UNDERIVABLE_TEXT_SLOTS). So an utterance these templates
+# miss reaches the tool with no arguments and gets asked for detail rather
+# than acted on. Adding a phrasing here is what turns a question into an
+# answer; it is not just a latency optimization.
+#
+# The folder-qualified variants are listed before their bare counterparts
+# because hassil takes the first template that matches: "delete old logs in
+# downloads" must bind folder=downloads, not swallow the whole tail into
+# {query} and search for a file named "old logs in downloads".
 
 intents:
   find_file:
     data:
       - sentences:
+          - "find {query} in [my] {folder}"
+          - "(search for|look for) {query} in [my] {folder}"
           - "find {query}"
           - "(search for|look for) {query}"
-          - "where is {query}"
+          - "where (is|are) [my] {query}"
 
+  # No "put {query} in {destination}" template. It reads naturally but it is
+  # unusably greedy: it captured "put spotify in the background" (minimize_app)
+  # as a file move to a folder called "the background". Same reason delete_files
+  # below has no "get rid of {query}" — that stole "get rid of chrome" from
+  # close_app. Both phrasings survive as embedding examples, where they compete
+  # on similarity instead of claiming the utterance outright at Stage 1.
   move_files:
     data:
       - sentences:
-          - "move {query} to {destination}"
-          - "move [all] {query} from {source} to {destination}"
+          - "move [all] [my] {query} from [my] {source} to [my] {destination}"
+          - "move [all] [my] {query} to [my] {destination}"
 
   rename_file:
     data:
       - sentences:
           - "rename {query} to {new_name}"
+          - "call {query} {new_name} instead"
 
   delete_files:
     data:
       - sentences:
-          - "delete {query}"
-          - "(remove|trash) {query}"
+          - "(delete|remove|trash) [all] [my] {query} (in|from) [my] {folder}"
+          - "(delete|remove|trash) [all] [my] {query}"
+          - "clear out [all] [my] {query}"

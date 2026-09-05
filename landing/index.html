@@ -80,61 +80,86 @@
 
     <div class="wrap">
       <div class="hero-visual">
-        <div class="mockup-window" data-reveal>
+        <div class="mockup-window dash" id="dash" data-reveal>
           <div class="mockup-titlebar">
             <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
             <span class="mockup-title">Munshiji · Control Center</span>
-            <span class="mockup-status"><span class="mockup-status-dot"></span>Listening</span>
+            <span class="dash-hotkey mono">Ctrl + Alt + Space</span>
+            <span class="mockup-status"><span class="mockup-status-dot"></span><span id="dashStatusText">Listening</span></span>
           </div>
           <div class="mockup-body">
-            <div class="mockup-sidebar">
-              <span class="mockup-navdot on"></span>
-              <span class="mockup-navdot"></span>
-              <span class="mockup-navdot"></span>
-              <span class="mockup-navdot"></span>
+            <div class="mockup-sidebar dash-rail" aria-hidden="true">
+              <span class="rail-mark">M</span>
+              <span class="rail-ico on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3ZM19 11a7 7 0 0 1-14 0M12 18v4"/></svg></span>
+              <span class="rail-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v4H4zM4 12h7v7H4zM13 12h7v7h-7z"/></svg></span>
+              <span class="rail-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg></span>
+              <span class="rail-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg></span>
+              <span class="rail-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></span>
+              <span class="rail-ico foot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg></span>
             </div>
-            <div class="mockup-main">
-              <div class="mockup-split">
-                <div class="mockup-col">
-                  <div class="mockup-row">
-                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h6v6H4zM14 4h6v6h-6zM14 14h6v6h-6zM4 14h6v6H4z"/></svg>Office</span>
+            <div class="mockup-main dash-main">
+              <div class="dash-grid">
+                <div class="dash-voice">
+                  <button type="button" class="dial" id="voiceDial" aria-pressed="false" aria-label="Pause listening">
+                    <svg class="dial-svg" id="dialSvg" viewBox="0 0 300 168" aria-hidden="true"></svg>
+                    <span class="dial-core">
+                      <span class="dial-glyph">
+                        <svg class="ic-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3ZM19 11a7 7 0 0 1-14 0M12 18v4"/></svg>
+                        <svg class="ic-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5.5 19 12 9 18.5Z"/></svg>
+                      </span>
+                      <span class="dial-label" id="dialLabel">Listening</span>
+                      <span class="dial-hint" id="dialHint">Click to pause</span>
+                    </span>
+                  </button>
+                  <div class="dial-meta">
+                    <span class="dial-stat"><b>8ms</b>fast path</span>
+                    <span class="dial-stat"><b>0%</b>to cloud</span>
                   </div>
-                  <div class="mockup-row">
-                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v10M12 13a4 4 0 0 0 4-4V7a4 4 0 0 0-8 0v2a4 4 0 0 0 4 4Z"/></svg>System</span>
-                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v4H4zM4 12h7v7H4zM13 12h7v7h-7z"/></svg>Apps</span>
+                  <p class="dial-foot">Say <b>&ldquo;hey munshiji&rdquo;</b>, or hold the hotkey</p>
+                </div>
+
+                <div class="dash-side">
+                  <div class="mockup-activity">
+                    <div class="act-title">This session<span class="act-count">4 actions</span></div>
+                    <div class="act-row">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4L19 6"/></svg>
+                      Moved 14 PDFs to Invoices
+                      <span class="act-undo">undo</span>
+                    </div>
+                    <div class="act-row">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg>
+                      Drafted a reply to Ravi
+                      <span class="act-undo">undo</span>
+                    </div>
+                    <div class="act-row">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v10M12 13a4 4 0 0 0 4-4V7a4 4 0 0 0-8 0v2a4 4 0 0 0 4 4Z"/></svg>
+                      Volume set to 20%
+                      <span class="act-undo">undo</span>
+                    </div>
+                    <div class="act-row">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M12 3a13 13 0 0 1 0 18 13 13 0 0 1 0-18ZM12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z"/></svg>
+                      Weather · Ahmedabad, 31°
+                      <span class="act-tier mono">net</span>
+                    </div>
                   </div>
-                  <div class="mockup-row">
-                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>Files</span>
-                    <span class="mockup-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg>Mail</span>
-                  </div>
-                  <div class="mockup-row">
+                  <div class="dash-packs">
+                    <span class="mockup-chip" data-tone="orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h6v6H4zM14 4h6v6h-6zM14 14h6v6h-6zM4 14h6v6H4z"/></svg>Office</span>
+                    <span class="mockup-chip" data-tone="violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v10M12 13a4 4 0 0 0 4-4V7a4 4 0 0 0-8 0v2a4 4 0 0 0 4 4Z"/></svg>System</span>
+                    <span class="mockup-chip" data-tone="blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v4H4zM4 12h7v7H4zM13 12h7v7h-7z"/></svg>Apps</span>
+                    <span class="mockup-chip" data-tone="amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>Files</span>
+                    <span class="mockup-chip" data-tone="rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg>Mail</span>
                     <span class="mockup-chip ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6l8-3Z"/></svg>asks first</span>
                   </div>
                 </div>
-                <div class="mockup-activity">
-                  <div class="act-title">This session</div>
-                  <div class="act-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4L19 6"/></svg>
-                    Moved 14 PDFs to Invoices
-                    <span class="act-undo">undo</span>
-                  </div>
-                  <div class="act-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg>
-                    Drafted a reply to Ravi
-                  </div>
-                  <div class="act-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v10M12 13a4 4 0 0 0 4-4V7a4 4 0 0 0-8 0v2a4 4 0 0 0 4 4Z"/></svg>
-                    Volume set to 20%
-                  </div>
-                  <div class="act-row">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M12 3a13 13 0 0 1 0 18 13 13 0 0 1 0-18Z"/></svg>
-                    Weather · Ahmedabad, 31°
-                  </div>
-                </div>
               </div>
+
               <div class="mockup-wave">
                 <canvas id="wave" aria-hidden="true"></canvas>
-                <span class="mockup-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3ZM19 11a7 7 0 0 1-14 0M12 18v4"/></svg></span>
+                <div class="wave-caption">
+                  <span class="wave-tag mono">heard</span>
+                  <span class="wave-text">"turn the volume down"</span>
+                  <span class="wave-stage mono">grammar · 8ms</span>
+                </div>
               </div>
             </div>
           </div>
@@ -228,11 +253,13 @@
       </div>
 
       <div class="showcase-frame" data-reveal>
+        <div class="showcase-arrows">
+          <button type="button" class="carousel-arrow prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <button type="button" class="carousel-arrow next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
         <div class="showcase-viewport"></div>
         <div class="showcase-nav">
           <div class="showcase-dots"></div>
-          <button type="button" class="carousel-arrow prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg></button>
-          <button type="button" class="carousel-arrow next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
         </div>
       </div>
     </div>

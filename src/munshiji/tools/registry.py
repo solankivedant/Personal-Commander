@@ -36,6 +36,17 @@ class ToolSpec:
     undo: str | None
     description: str
     schema: dict[str, Any]
+    # Optional dry-run describer for `risk="confirm"` tools. Takes the same
+    # arguments as the tool and returns what it *would* do, without doing it
+    # — "I'll move 14 PDFs from Desktop to Documents/Invoices."
+    #
+    # security-and-privacy.md §8.2 requires the gate to speak a summary of
+    # the real effect, and a schema-derived description cannot produce one:
+    # only the tool can resolve "all the PDFs" into a count and a folder. A
+    # gate that can only say "run move_files?" gives the user nothing to
+    # catch a misroute with. Must never raise — same contract as the tool
+    # body (see security/confirm.py's describe(), which guards it anyway).
+    preview: Callable[..., str] | None = None
 
     def __call__(self, *args: Any, **kwargs: Any) -> str:
         return self.func(*args, **kwargs)
@@ -153,6 +164,7 @@ def tool(
     risk: Risk,
     tags: list[str] | None = None,
     undo: str | None = None,
+    preview: Callable[..., str] | None = None,
 ) -> Callable[[Callable[..., str]], Callable[..., str]]:
     """Register a function as a router/LLM-callable tool.
 
@@ -167,6 +179,10 @@ def tool(
           audit log — the tool body itself is responsible for pushing the
           actual inverse closure onto security.undo.UNDO_STACK before it
           mutates anything.
+    preview: dry-run describer for confirm-risk tools; see ToolSpec.preview.
+          Strongly recommended on anything whose effect depends on matching
+          files or messages, where the argument list alone doesn't tell the
+          user what is about to happen.
     """
 
     def decorator(func: Callable[..., str]) -> Callable[..., str]:
@@ -180,6 +196,7 @@ def tool(
             undo=undo,
             description=description or func.__name__,
             schema=_build_schema(func),
+            preview=preview,
         )
         REGISTRY.register(spec)
         return func

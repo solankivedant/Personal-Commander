@@ -24,7 +24,19 @@ See `docs/ARCHITECTURE.md` §9 before adding anything that assumes a discrete GP
 8–14s per response — unusable for voice. ~85% of commands are routed through a
 deterministic grammar matcher (`router/grammar.py`) and a multilingual embedding
 classifier (`router/embeddings.py`), both sub-20ms. Only genuinely compositional
-requests escalate to the local 3B LLM (`brain/`) or, opt-in, a cloud API.
+requests escalate at all.
+
+**And the local LLM is not the default escalation target** — see
+[`docs/decisions/0001-local-llm-off-the-default-path.md`](docs/decisions/0001-local-llm-off-the-default-path.md).
+Phase 0 measured 11.3 tok/s (~88ms/token), on a benchmark that only generated
+4–6 tokens; a realistic tool-call JSON is ~4.4s and a paragraph ~10.6s. For
+knowledge questions a 3B model is slow *and* unreliable — the worst
+combination for voice, where the user can't skim and has no source to check.
+So `llm.enabled` defaults to **false**: escalation goes to cloud (opt-in,
+spoken-confirm gated), and the local 3B is an opt-in privacy mode for users
+who accept the latency. Knowledge questions are their own route — classified
+by the embedding layer in <20ms, answered by cloud or refused honestly when
+offline.
 
 This is not a hardware compromise — it is the better architecture for the
 differentiating feature too: a multilingual sentence encoder places Hindi and
@@ -34,7 +46,9 @@ non-LLM path is *more* accurate in Indic languages, not less (§10.2).
 **Do not "fix" slow responses by routing more through the LLM.** If something
 feels slow, the fix is almost always a new grammar template or embedding example,
 not a bigger model. See `router/teach.py` — the assistant is supposed to get
-faster with use.
+faster with use. This cuts the other way too: **do not "fix" a coverage gap by
+turning the local LLM back on by default.** Every route must be fast and
+deterministic, or slow and good, or honest — never slow and unreliable.
 
 ## Repository layout
 

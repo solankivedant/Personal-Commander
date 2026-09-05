@@ -1,4 +1,7 @@
-"""Volume, mute, brightness, power, Wi-Fi/Bluetooth toggles. Tier 0. Phase 2."""
+"""Volume, mute, brightness, power, Wi-Fi/Bluetooth toggles. Tier 0. Phase 2.
+
+Also hosts the Phase 3 undo commands (undo_last, what_can_i_undo) — see the
+note above them for why they live here rather than in their own module."""
 
 from __future__ import annotations
 
@@ -499,3 +502,90 @@ def bluetooth_status() -> str:
         return f"Bluetooth is {'on' if enabled else 'off'}."
     except Exception as exc:
         return f"Could not read Bluetooth status: {exc}"
+
+
+# ---------------------------------------------------------------------------
+# Battery
+# ---------------------------------------------------------------------------
+#
+# Added in Phase 3, but it belongs to the Phase 2 intent set: battery_status
+# had a grammar template, examples in all three languages and golden cases
+# from the start, and no tool behind any of them. Nothing caught it because
+# the golden runner graded against a fake registry built *from the golden set
+# itself* — so the tool existed by construction, and routing "how much battery
+# do I have" returned a match that could never execute. The runner now uses
+# the real registry (tests/test_router.py::test_every_golden_tool_is_registered).
+
+
+def _battery_state() -> tuple[int, bool, int | None] | None:
+    """(percent, plugged_in, seconds_left) or None on a desktop with no
+    battery. Isolated like the other OS boundaries so tests can fake it."""
+    import psutil
+
+    battery = psutil.sensors_battery()
+    if battery is None:
+        return None
+    raw = battery.secsleft
+    # psutil reports POWER_TIME_UNLIMITED/UNKNOWN as negative sentinels rather
+    # than None, and Windows returns UNKNOWN while a charge estimate settles.
+    unknown = (psutil.POWER_TIME_UNLIMITED, psutil.POWER_TIME_UNKNOWN)
+    seconds: int | None = None if (raw in unknown or raw < 0) else int(raw)
+    return int(round(battery.percent)), bool(battery.power_plugged), seconds
+
+
+@tool(tier="local", risk="safe", tags=["system", "power"])
+def battery_status() -> str:
+    """Report the current battery level and whether it is charging."""
+    try:
+        state = _battery_state()
+    except Exception as exc:
+        return f"Could not read the battery: {exc}"
+    if state is None:
+        return "This machine doesn't have a battery."
+
+    percent, plugged, seconds = state
+    if plugged:
+        charged = " and fully charged" if percent >= 99 else " and charging"
+        return f"Battery is at {percent}%{charged}."
+    if seconds is not None:
+        hours, remainder = divmod(seconds, 3600)
+        minutes = remainder // 60
+        if hours:
+            left = f"about {hours} hour{'s' if hours != 1 else ''} {minutes} minutes"
+        else:
+            left = f"about {minutes} minutes"
+        return f"Battery is at {percent}%, {left} left."
+    return f"Battery is at {percent}%, on battery power."
+
+
+# ---------------------------------------------------------------------------
+# Undo (Phase 3)
+# ---------------------------------------------------------------------------
+#
+# Lives here rather than in a new module: it is a command about the machine's
+# state, like lock/sleep, and repo-structure discipline
+# (engineering-standards.md) says a new capability belongs in an existing
+# module unless it genuinely needs its own.
+
+
+@tool(tier="local", risk="safe", tags=["system", "undo"])
+def undo_last() -> str:
+    """Reverse the last action that changed something."""
+    try:
+        if not UNDO_STACK.can_undo():
+            return "There's nothing to undo."
+        return UNDO_STACK.undo_last()
+    except Exception as exc:
+        return f"Could not undo the last action: {exc}"
+
+
+@tool(tier="local", risk="safe", tags=["system", "undo"])
+def what_can_i_undo() -> str:
+    """Say what the next undo would reverse, without reversing it."""
+    try:
+        description = UNDO_STACK.peek_description()
+        if description is None:
+            return "There's nothing to undo."
+        return f"The next undo would: {description.lower()}."
+    except Exception as exc:
+        return f"Could not check the undo history: {exc}"

@@ -1,0 +1,139 @@
+# Out-of-domain set — utterances the Phase 2 router must REFUSE.
+#
+# Nothing here has a correct Phase 2 tool. Each one is either a knowledge
+# question (Phase 4's own route, per .claude/rules/architecture-and-router.md:
+# "Knowledge questions are a route, not an LLM fallback"), a request for a
+# capability that does not exist yet (phone, email, reminders — Phase 5), or
+# plain conversation. The only correct Phase 2 behaviour for all of them is to
+# fall through the cascade to teach mode.
+#
+# Why this file exists: utterances.yaml and paraphrases.yaml both only ask
+# "when the router answers, is the answer right?" Neither asks "does it know
+# when to shut up?" — and the answer turned out to be no. With the shipped
+# threshold of 0.75, *zero* of the 18 utterances below were refused; every
+# one matched some Phase 2 tool with apparent confidence, because
+# multilingual-e5-small is contrastively trained and scores unrelated text at
+# 0.78-0.93 rather than near zero. "meri maa ko phone lagao" ("call my
+# mother") resolved to `restart`. The threshold is now calibrated against
+# this file; see docs/PHASE-2-RESULTS.md.
+#
+# Graded only against the real encoder — the threshold being tested is a
+# property of that model's score distribution, so measuring it against
+# tests/test_router.py's `_fake_encoder` would be meaningless.
+#
+# `still_matches: true` marks a known leaker: it is expected to slip through
+# at the calibrated threshold and is recorded rather than hidden. Most are
+# knowledge questions, which Phase 4's knowledge-question route is meant to
+# claim before Stage 2 ever sees them. Remove the marker when that lands.
+#
+# Phase 3 note — what a leak now costs. Refusal went 14/18 -> 13/18 when the
+# file intents were added (the index gained "find/search" examples, and a
+# gu imperative like "mane ek varta kaho" sits near them). But the *severity*
+# of a leak dropped at the same time, which matters more than the rate:
+# router/slots.py no longer lets the embedding stage inherit free-text args,
+# so a leaked file intent arrives with none and the assistant asks "which
+# files do you mean?" instead of acting. The clearest case is
+# "meri maa ko phone lagao" ("call my mother"), which used to resolve to
+# `restart` — a confirm-tier action a user could have said yes to by
+# reflex — and now resolves to `find_file` with no arguments, i.e. a
+# question. Read this file's rate alongside that: a leak that asks is not
+# the same failure as a leak that acts.
+
+# --- knowledge questions (Phase 4's knowledge route) ---
+- text: "what is the GST rate on cement"
+  lang: en
+
+- text: "who won the cricket match last night"
+  lang: en
+
+- text: "what is the capital of Australia"
+  lang: en
+
+- text: "explain quantum computing"
+  lang: en
+
+- text: "what is 17 times 23"
+  lang: en
+
+- text: "aaj mausam kaisa hai"
+  lang: hi
+  still_matches: true
+
+- text: "stock market ka kya haal hai"
+  lang: hi
+  still_matches: true
+
+- text: "kal chhutti hai kya"
+  lang: hi
+  still_matches: true
+
+# --- capabilities Phase 2 does not have (Phase 5: office, web, phone) ---
+- text: "book me a flight to delhi"
+  lang: en
+
+- text: "summarize this email for me"
+  lang: en
+
+- text: "remind me to call mummy at 6pm"
+  lang: en
+
+- text: "translate this into french"
+  lang: en
+
+- text: "write an invoice for 5000 rupees"
+  lang: en
+
+- text: "meri maa ko phone lagao"
+  lang: hi
+  still_matches: true
+  # Was the worst leak in Phase 2: resolved to `restart`. Now resolves to
+  # find_file with no args and asks a question instead. Still a leak, but no
+  # longer one a reflexive "haan" could turn into a reboot.
+
+# --- unbuilt capabilities, in Hindi and Gujarati ---
+# Added after auditing the desktop preview's "coming next" card, which was
+# advertising unbuilt features using phrases that in fact resolved to a live
+# tool: "aaj mausam kaisa hai" ("how's the weather") ran set_volume, and
+# "aaje hava kevi che" ran mute. The four below are the same class of miss and
+# are recorded here so the gap is tracked rather than rediscovered.
+#
+# They expose a language asymmetry the 18-case set had been too small to show:
+# English out-of-domain phrases score ~0.0 against this index and refuse
+# cleanly, while romanized Hindi/Gujarati ones score 0.88-0.91 and match
+# something. Romanized Indic text is thinly represented in multilingual-e5's
+# training, so it clusters loosely - unrelated Indic sentences land near the
+# Indic examples regardless of meaning. Native-script examples are the likely
+# fix and that is Phase 6 work, not a threshold tweak.
+- text: "excel me ek row jodo"
+  lang: hi
+  still_matches: true
+
+- text: "mane email mokalvo che"
+  lang: gu
+  still_matches: true
+
+- text: "excel ma ek row umero"
+  lang: gu
+  still_matches: true
+
+- text: "kal mate reminder muko"
+  lang: gu
+  still_matches: true
+
+# --- conversation, not commands ---
+- text: "compose a haiku about mangoes"
+  lang: en
+
+- text: "tell me a joke"
+  lang: en
+
+- text: "how do I make paneer butter masala"
+  lang: en
+
+- text: "mane ek varta kaho"
+  lang: gu
+  still_matches: true
+  # "Tell me a story." Began leaking in Phase 3 when the Gujarati find_file
+  # examples entered the index — it is lexically close to their imperative
+  # form. Resolves to find_file with no args, so it answers "which files do
+  # you mean?" rather than doing anything.

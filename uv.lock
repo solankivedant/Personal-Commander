@@ -1024,6 +1024,7 @@ dev = [
     { name = "pytest" },
     { name = "ruff" },
     { name = "types-keyboard" },
+    { name = "types-psutil" },
     { name = "types-pyyaml" },
 ]
 
@@ -1057,6 +1058,7 @@ dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "ruff", specifier = ">=0.6" },
     { name = "types-keyboard", specifier = ">=0.13" },
+    { name = "types-psutil", specifier = ">=7.2.2.20260827" },
     { name = "types-pyyaml", specifier = ">=6.0" },
 ]
 
@@ -5716,6 +5718,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/2e/1b/349dfe00552b9106ec91a689fb06d0c61795837fa60f1dcc5362069b8ab5/types_keyboard-0.13.2.20260508.tar.gz", hash = "sha256:0a621ef06f4324ed1c23cc90e2500e12d7fc84256d736db9cbf668ba231333b3", size = 11010, upload-time = "2026-05-08T04:47:01.826Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/64/31/508081076a5f0c09e485a4a434d762534313300960b6aaf2d0a43ebbe054/types_keyboard-0.13.2.20260508-py3-none-any.whl", hash = "sha256:cc4a3d29c90a9fc79c3f24047ce422ffbea2d2992d0d932277d4fc0974f34c0a", size = 11849, upload-time = "2026-05-08T04:47:00.79Z" },
+]
+
+[[package]]
+name = "types-psutil"
+version = "7.2.2.20260827"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/89/ea/23a949b56d3a226a142b43c5c32404fae7044400296d18e8eda63d5d03a4/types_psutil-7.2.2.20260827.tar.gz", hash = "sha256:3c6067dba47c700495ca493f07b11e866ba13de223aabb26da555f9c86ae0b1f", size = 27294, upload-time = "2026-08-27T12:06:22.279Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4b/1b/7e0f5cfad4faa4a2e0845f69e9206eeefc6659dfa11d07da04e2fa47d08b/types_psutil-7.2.2.20260827-py3-none-any.whl", hash = "sha256:62364359cf85482aa698a62488e5420cae5c576e8acec450ce7fb3b91cdb3d96", size = 33365, upload-time = "2026-08-27T12:06:21.444Z" },
 ]
 
 [[package]]

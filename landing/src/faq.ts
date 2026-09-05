@@ -1,8 +1,7 @@
 import type { Faq } from "./data";
 
-/** Renders the FAQ accordion and keeps exactly one answer open at a time -
- * a closed list reads as a scannable index of questions, which is the point
- * of the section. */
+/** Renders the FAQ accordion. Every row starts closed so the section reads as
+ * a scannable index of questions, and at most one answer is open at a time. */
 export function renderFaq(container: HTMLElement, items: Faq[]): void {
   container.innerHTML = items.map(itemMarkup).join("");
 
@@ -17,8 +16,6 @@ export function renderFaq(container: HTMLElement, items: Faq[]): void {
       rows.forEach((other) => setOpen(other, other === row && opening));
     });
   });
-
-  if (rows[0]) setOpen(rows[0], true);
 }
 
 function setOpen(row: HTMLElement, open: boolean): void {

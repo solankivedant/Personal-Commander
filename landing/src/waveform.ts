@@ -32,6 +32,10 @@ export class Waveform {
   private barWidth = 3 * this.dpr;
   private gap = 5 * this.dpr;
   private rafId: number | null = null;
+  // Eased 0..1. The dial's pause control drives the target; bars settle to a
+  // flat resting line rather than freezing mid-wave.
+  private energy = 1;
+  private energyTarget = 1;
 
   constructor(private canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d");
@@ -50,6 +54,7 @@ export class Waveform {
   }
 
   private renderFrame(t: number): void {
+    this.energy += (this.energyTarget - this.energy) * 0.07;
     const accentStrong = cssVar("--accent-strong", "#103e38");
     const accent = cssVar("--accent", "#1f7a6c");
     const gold = cssVar("--gold", "#9c6a1e");
@@ -66,7 +71,7 @@ export class Waveform {
           Math.sin(t * 0.0006 + phase * 1.8) * 0.35 +
           Math.sin(phase * 2.6) * 0.2,
       );
-      const barH = Math.max(3 * this.dpr, amp * this.height * 0.72);
+      const barH = Math.max(3 * this.dpr, amp * this.height * 0.72 * this.energy);
       const frac = i / count;
       const color =
         frac < 0.55
@@ -77,16 +82,31 @@ export class Waveform {
     }
   }
 
+  /** Drive the bars from the dial's pause control. */
+  setActive(active: boolean): void {
+    this.energyTarget = active ? 1 : 0;
+    if (PREFERS_REDUCED_MOTION) {
+      this.energy = this.energyTarget;
+      this.renderFrame(0);
+      return;
+    }
+    if (this.rafId === null) this.rafId = requestAnimationFrame(this.loop);
+  }
+
+  private readonly loop = (t: number): void => {
+    this.renderFrame(t);
+    // Nothing left to animate once the bars are flat - hand the frame budget
+    // back instead of redrawing a static line.
+    const settled = this.energyTarget === 0 && this.energy < 0.01;
+    this.rafId = settled ? null : requestAnimationFrame(this.loop);
+  };
+
   start(): void {
     if (PREFERS_REDUCED_MOTION) {
       this.renderFrame(0);
       return;
     }
-    const loop = (t: number) => {
-      this.renderFrame(t);
-      this.rafId = requestAnimationFrame(loop);
-    };
-    this.rafId = requestAnimationFrame(loop);
+    this.rafId = requestAnimationFrame(this.loop);
   }
 
   stop(): void {

@@ -77,8 +77,16 @@ class Router:
         if self._config.embeddings.enabled:
             embedding_match = self._embeddings.match(text, self._config.embeddings.threshold)
             if embedding_match is not None:
+                # args_from_example=True: embedding_match.args are the
+                # stored args of the nearest *example*, not of this
+                # utterance. See enrich_slots' docstring — a nearest-
+                # neighbour hit is evidence about the intent only.
                 args = enrich_slots(
-                    embedding_match.intent, text, embedding_match.args, self._known_apps
+                    embedding_match.intent,
+                    text,
+                    embedding_match.args,
+                    self._known_apps,
+                    args_from_example=True,
                 )
                 return self._finalize(
                     embedding_match.intent,

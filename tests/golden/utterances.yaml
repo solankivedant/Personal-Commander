@@ -3,13 +3,24 @@
 # See .claude/rules/engineering-standards.md and .claude/skills/golden-test/
 # CI gate: >=92% exact tool match, >=85% args match, 100% on expect_confirm cases.
 #
-# Phase 2 scope note: expect_stage: llm entries (the files.yaml intents —
-# find_file/move_files/rename_file/delete_files) cannot pass yet, because
-# Phase 4's LLM escalation (brain/) does not exist in this codebase. They are
-# kept here (not deleted) and explicitly xfailed by tests/test_router.py's
-# golden-set runner, which computes the CI gates only over entries whose
-# expect_stage is grammar or embeddings — see that file's `run_golden_case`
-# and `test_golden_set_phase2_gates` for the exact grading logic.
+# Phase 3 update: the files.yaml intents now have real tools
+# (src/munshiji/tools/files.py), so the concrete phrasings of them are graded
+# like any other case. What stays `expect_stage: llm` is only what genuinely
+# needs Phase 4 — a date range ("from last week", with no date NER in
+# router/slots.py) and a compositional Hindi sentence that names source,
+# filter and destination at once. Those are kept here, not deleted, and
+# explicitly xfailed by tests/test_router.py's golden-set runner, which
+# computes the CI gates only over entries whose expect_stage is grammar or
+# embeddings.
+#
+# Note what the file-intent cases below do and don't assert. Grammar-stage
+# cases carry full expect_args, because a template captures slots from the
+# actual utterance. Embedding-stage cases assert the tool only and expect no
+# args at all: router/slots.py deliberately drops query/source/destination at
+# that stage rather than inheriting them from the nearest example (a
+# nearest-neighbour hit is evidence about the intent, never about which files).
+# The assistant asks for the missing detail instead of guessing — so "no args"
+# is the correct expectation here, not a gap in the test.
 #
 # Fixed during Phase 2 integration: apps.yaml's focus_app used to include a
 # bare "go to {app}" alternative that collided with system.yaml's sleep
@@ -19,13 +30,17 @@
 # The golden set below still uses "sleep now" rather than "go to sleep" for
 # the sleep intent, which remains true regardless.
 #
-# Known remaining issue, not yet fixed: system.yaml's set_volume/
-# set_brightness `{level}` wildcard is untyped, so it can greedily capture
-# non-numeric text (e.g. a Hindi/Gujarati "how much is it" phrase) instead of
-# falling through to get_volume/get_brightness's embedding examples — see
-# docs/ROADMAP.md's Phase 2 notes. The two golden entries below that probe
-# get_volume/get_brightness in hi/gu are phrased to avoid the collision
-# rather than relying on a fix that doesn't exist yet.
+# Also fixed (was the second known Phase 2 grammar issue): system.yaml's
+# set_volume/set_brightness `{level}` was an untyped wildcard, so
+# "volume {level}" greedily captured non-numeric text — "volume kitna hai"
+# ("what's the volume") matched set_volume with level="kitna hai" at Stage 1,
+# never reaching get_volume's embedding examples. `{level}` is now a hassil
+# RangeSlotList bounded by config.router.grammar.level_range, and direction
+# phrasings ("volume up") got their own {direction} TextSlotList instead of
+# matching by accident as junk level captures. The hi/gu get_volume entries
+# below are back to the natural phrasings that used to be blocked by this,
+# and are the regression guard for it — if `{level}` ever loses its numeric
+# constraint they fail immediately.
 
 # --- open_app ---
 - text: "open chrome"
@@ -184,6 +199,24 @@
   expect_args: {level: 50}
   expect_stage: grammar
 
+- text: "set volume to fifty percent"
+  lang: en
+  expect_tool: set_volume
+  expect_args: {level: 50}
+  expect_stage: grammar
+  # hassil's RangeSlotList resolves number *words*, not just digits, so
+  # constraining {level} to a numeric range didn't cost this phrasing its
+  # grammar-stage match.
+
+- text: "volume up"
+  lang: en
+  expect_tool: set_volume
+  expect_args: {direction: up}
+  expect_stage: grammar
+  # Matches via the {direction} TextSlotList. It used to "work" only as a
+  # side effect of the untyped {level} wildcard capturing the word "up",
+  # which meant set_volume received level="up".
+
 - text: "make it a bit louder"
   lang: en
   expect_tool: set_volume
@@ -313,6 +346,12 @@
   expect_args: {level: 20}
   expect_stage: grammar
 
+- text: "brightness down"
+  lang: en
+  expect_tool: set_brightness
+  expect_args: {direction: down}
+  expect_stage: grammar
+
 - text: "brighten up the display"
   lang: en
   expect_tool: set_brightness
@@ -349,20 +388,28 @@
   expect_tool: get_volume
   expect_args: {}
   expect_stage: embeddings
-  # NOT "volume kitna hai" — diagnosed grammar-cascade bug, see header note
-  # above: pre-existing set_volume template "volume {level}" is an untyped
-  # wildcard and greedily swallows "kitna hai" as if it were a level value,
-  # intercepting the utterance at grammar before embeddings ever sees it.
-  # Real fix is out of scope here (system.yaml is "keep as-is" for this
-  # change) — it needs {level} constrained to numeric text, e.g. hassil's
-  # RangeSlotList, in a follow-up.
+
+- text: "volume kitna hai"
+  lang: hi
+  expect_tool: get_volume
+  expect_args: {}
+  expect_stage: embeddings
+  # Regression guard for the {level} wildcard bug (see header). Before
+  # {level} was constrained to a numeric range this matched set_volume at
+  # the grammar stage with level="kitna hai".
 
 - text: "atyare volume shu che"
   lang: gu
   expect_tool: get_volume
   expect_args: {}
   expect_stage: embeddings
-  # NOT "volume ketlu che" — same diagnosed bug as the hi case above.
+
+- text: "volume ketlu che"
+  lang: gu
+  expect_tool: get_volume
+  expect_args: {}
+  expect_stage: embeddings
+  # Same regression guard as "volume kitna hai" above, in Gujarati.
 
 # --- get_brightness ---
 - text: "how bright is the screen"
@@ -559,26 +606,177 @@
   expect_args: {}
   expect_stage: embeddings
 
-# --- files.yaml intents: Phase 3 tools don't exist yet, LLM (Phase 4)
-# doesn't exist yet either. Kept, xfailed, excluded from the Phase 2 gates.
+# --- files.yaml intents (Phase 3 tools now exist) ---
+
+# find_file
+- text: "find the budget report"
+  lang: en
+  expect_tool: find_file
+  expect_args: {query: "the budget report"}
+  expect_stage: grammar
+
+- text: "find my invoices in documents"
+  lang: en
+  expect_tool: find_file
+  expect_args: {query: "my invoices", folder: documents}
+  expect_stage: grammar
+
+- text: "where is my tax return"
+  lang: en
+  expect_tool: find_file
+  expect_args: {query: "tax return"}
+  expect_stage: grammar
+
+- text: "meri file dhundo"
+  lang: hi
+  expect_tool: find_file
+  expect_args: {}
+  expect_stage: embeddings
+
+- text: "mari file shodho"
+  lang: gu
+  expect_tool: find_file
+  expect_args: {}
+  expect_stage: embeddings
+
+# move_files (risk=confirm)
+- text: "move all pdfs from desktop to documents"
+  lang: en
+  expect_tool: move_files
+  expect_args: {query: pdfs, source: desktop, destination: documents}
+  expect_stage: grammar
+  expect_confirm: true
+
+- text: "move all my photos to pictures"
+  lang: en
+  expect_tool: move_files
+  expect_args: {query: photos, destination: pictures}
+  expect_stage: grammar
+  expect_confirm: true
+  # Was "put all my photos in pictures" until the golden set caught the
+  # "put {query} in {destination}" template swallowing "put spotify in the
+  # background" (minimize_app). See config/intents/files.yaml.
+
+- text: "ye files dusre folder me daal do"
+  lang: hi
+  expect_tool: move_files
+  expect_args: {}
+  expect_stage: embeddings
+  expect_confirm: true
+
+- text: "aa files biji folder ma muko"
+  lang: gu
+  expect_tool: move_files
+  expect_args: {}
+  expect_stage: embeddings
+  expect_confirm: true
+
+# rename_file (risk=confirm)
+- text: "rename budget report to budget 2026"
+  lang: en
+  expect_tool: rename_file
+  expect_args: {query: "budget report", new_name: "budget 2026"}
+  expect_stage: grammar
+  expect_confirm: true
+
+- text: "file ka naam badal do"
+  lang: hi
+  expect_tool: rename_file
+  expect_args: {}
+  expect_stage: embeddings
+  expect_confirm: true
+
+- text: "file nu naam badlo"
+  lang: gu
+  expect_tool: rename_file
+  expect_args: {}
+  expect_stage: embeddings
+  expect_confirm: true
+
+# delete_files (risk=confirm)
+- text: "delete all files in downloads"
+  lang: en
+  expect_tool: delete_files
+  expect_args: {folder: downloads}
+  expect_stage: grammar
+  expect_confirm: true
+
+- text: "delete all screenshots"
+  lang: en
+  expect_tool: delete_files
+  expect_args: {query: screenshots}
+  expect_stage: grammar
+  expect_confirm: true
+  # Was "get rid of all screenshots" until that template was found stealing
+  # "get rid of chrome" (close_app) at Stage 1.
+
+- text: "purani files hata do"
+  lang: hi
+  expect_tool: delete_files
+  expect_args: {}
+  expect_stage: embeddings
+  expect_confirm: true
+
+- text: "juni files kadhi nakho"
+  lang: gu
+  expect_tool: delete_files
+  expect_args: {}
+  expect_stage: embeddings
+  expect_confirm: true
+
+# --- undo (Phase 3). The safety net has to be reachable by voice. ---
+- text: "undo that"
+  lang: en
+  expect_tool: undo_last
+  expect_args: {}
+  expect_stage: grammar
+
+- text: "put that back the way it was"
+  lang: en
+  expect_tool: undo_last
+  expect_args: {}
+  expect_stage: embeddings
+
+- text: "undo karo"
+  lang: hi
+  expect_tool: undo_last
+  expect_args: {}
+  expect_stage: embeddings
+
+- text: "pachhu pehla jevu kari do"
+  lang: gu
+  expect_tool: undo_last
+  expect_args: {}
+  expect_stage: embeddings
+
+- text: "what can I undo"
+  lang: en
+  expect_tool: what_can_i_undo
+  expect_args: {}
+  expect_stage: grammar
+
+# --- Still Phase 4 (escalation). Kept and xfailed, not deleted. ---
 - text: "desktop par jitni PDF hai sab Documents me daal do"
   lang: hi
   expect_tool: move_files
   expect_stage: llm
   expect_confirm: true
-
-- text: "delete all files in downloads"
-  lang: en
-  expect_tool: delete_files
-  expect_stage: llm
-  expect_confirm: true
+  # Compositional: names the source, the filter and the destination in one
+  # Hindi sentence. The grammar templates are English-only and the embedding
+  # stage can supply the intent but not the three free-text slots, so this
+  # needs escalation — not another template.
 
 - text: "find the budget report from last week"
   lang: en
   expect_tool: find_file
   expect_stage: llm
+  # "from last week" is a date range. router/slots.py has no date NER (spaCy
+  # is deliberately still not a dependency), so the grammar match would put
+  # the words into the filename pattern and find nothing. A date filter is
+  # Phase 4/spaCy work, not a phrasing gap.
 
 - text: "gayel mahina ni badhi PDF file shodhi aapo"
   lang: gu
   expect_tool: find_file
   expect_stage: llm
+  # Same date-range problem as above, in Gujarati.

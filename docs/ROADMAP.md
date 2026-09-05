@@ -110,39 +110,60 @@ person present.
 - [x] 20 system and app tools (`tools/system.py`, `tools/apps.py`) — 19
       tools, all with real undo paths except the handful with no sensible
       inverse (lock_screen, sleep, read-only getters)
-- [x] Golden test set v1 (`tests/golden/utterances.yaml`) — 86 entries across
+- [x] Golden test set v1 (`tests/golden/utterances.yaml`) — 91 entries across
       en/hi/gu; Phase-2-scoped (grammar + embeddings) pass rate 100%
-      exact-tool, 100% args, 100% confirm (`shutdown`/`restart`) against the
-      fake test encoder — **the real `multilingual-e5-small` accuracy is not
-      yet verified**, see note below
+      exact-tool, 100% args, 100% confirm, verified against **both** the fake
+      test encoder and the real `multilingual-e5-small` weights
 - [x] Router wired into the voice loop (`wake/fsm.py`'s ROUTING/ACTING
       states, assembled in `__main__.py`) — this was implicit in the
       deliverable but not its own checklist line; a transcript now actually
       resolves to a tool call and executes, rather than echoing
+- [x] Held-out semantic test set (`tests/golden/paraphrases.yaml`) — 53
+      unseen paraphrases across en/hi/gu, none in `config/examples/` and none
+      grammar-matchable. **New**, and the reason the caveats below could be
+      closed honestly rather than declared closed
+- [x] Out-of-domain refusal set (`tests/golden/out_of_domain.yaml`) — 18
+      utterances with no Phase 2 tool, which must reach teach mode. **New**
 
-**Deliverable: genuinely useful daily driver, no LLM required — met**, with
-three caveats to close out before calling Phase 2 fully hardened:
+**Deliverable: genuinely useful daily driver, no LLM required — met.** All
+three caveats that were open here are now closed; full numbers, method and
+residual limitations in [`docs/PHASE-2-RESULTS.md`](PHASE-2-RESULTS.md).
 
-1. **Real-encoder verification pending.** The golden set's embeddings-stage
-   cases were graded against a deterministic fake encoder (no network access
-   in the dev sandbox for the ~470MB `multilingual-e5-small` pull) — it
-   validates cascade mechanics (ordering, thresholding, confirm resolution)
-   correctly, but genuine semantic-paraphrase accuracy needs re-running with
-   the real model once it's downloaded. Do this before trusting the 100%
-   figure above as a real accuracy number.
-2. **Two known grammar issues in `config/intents/`**, not yet fixed:
-   `apps.yaml`'s `focus_app` ("go to {app}") and `system.yaml`'s `sleep`
-   ("go to sleep") collide on the literal phrase "go to sleep" — whichever
-   file's intents dict merges first wins arbitrarily. And `system.yaml`'s
-   `set_volume` `{level}` wildcard is untyped, so it can greedily capture
-   non-numeric text (diagnosed during golden-set construction) instead of
-   falling through to `get_volume`'s embedding examples. Needs a numeric
-   slot constraint (hassil `RangeSlotList`) or reordering, not a prompt-level
-   workaround.
-3. **Cross-script ASR recovery is unhandled.** `rapidfuzz` fixes Latin-script
-   mangling ("Chrom" → "Chrome") but not Devanagari ("क्रोम") — that needs a
-   transliteration step before fuzzy-matching, tracked as Indic-language-
-   specialist work, likely Phase 6.
+1. **Real-encoder verification — done, and it changed the answer.** Re-running
+   the golden set with real weights returned 100% again, but that number was
+   never meaningful: all 62 embedding-stage cases were *verbatim copies* of
+   lines in `config/examples/*.jsonl`, so similarity is 1.0 and any encoder
+   scores 100%. A genuinely held-out set was added, and on first measurement
+   the router scored **75.5% tool / 73.6% args / 66.7% confirm** — a failing
+   confirm gate. Three fixes brought it to **92.5% / 100% / 100%** (hi: 61.1%
+   → 94.4%):
+   - The embedding stage was **inheriting its arguments from the nearest
+     example**, so "excel kholo" opened Chrome and "wifi ko off kar do"
+     turned wifi on. Args are now re-derived from the utterance
+     (`enrich_slots(..., args_from_example=True)`).
+   - `router.embeddings.threshold` was recalibrated **0.75 → 0.88**. e5's
+     cosine range is compressed, so unrelated text scores 0.78–0.93: at 0.75,
+     *zero* of 18 out-of-domain utterances fell through to teach mode
+     ("call my mother" → `restart`, caught only by the confirm gate). At 0.88
+     in-domain accuracy is unchanged and 14/18 are correctly refused.
+   - Example set grown 136 → 294 entries, targeting the observed confusions.
+     (Top-k voting was tried as an alternative and is *worse* — see the ADR
+     note in PHASE-2-RESULTS.md before re-attempting it.)
+2. **Both grammar issues fixed.** `{level}` is now a hassil `RangeSlotList`
+   bounded by `config.router.grammar.level_range`, so `"volume {level}"` no
+   longer swallows "volume kitna hai"; direction phrasings got their own
+   `{direction}` slot sharing `router/slots.py`'s vocabulary. The
+   `focus_app`/`sleep` "go to" collision had in fact already been fixed
+   during Phase 2 integration — that note was stale.
+3. **Cross-script ASR recovery is still unhandled** — unchanged, and still
+   correctly Phase 6. `rapidfuzz` fixes Latin-script mangling ("Chrom" →
+   "Chrome") but not Devanagari ("क्रोम"); that needs a transliteration step
+   before fuzzy-matching, which is Indic-language-specialist work.
+
+Known limitation carried forward: the held-out set has now informed two
+rounds of example additions, so 92.5% is an optimistic bound rather than a
+clean estimate. Refresh `paraphrases.yaml` with genuinely unseen phrasings
+before the next tuning round.
 
 Also out of scope for this phase, deliberately: `router/slots.py` doesn't use
 spaCy (nothing in the Phase 2 intent set needs date/time NER — add it when
@@ -153,21 +174,119 @@ Phase 4/7 territory than a router concern.
 
 ## Phase 3 — Files + confirmation + undo (2 weeks, ~50h)
 
-- [ ] Everything CLI integration (`tools/files.py`)
-- [ ] File tools with confirm gating
-- [ ] Undo stack (`security/undo.py`)
-- [ ] Audit log
+- [x] Everything CLI integration (`tools/files.py`) — `es.exe` when present,
+      with a bounded filesystem walk as fallback. The walk also runs when
+      Everything returns *nothing*, not just when it's missing: its index
+      updates asynchronously, so a file saved seconds ago is routinely absent,
+      and "the file I just saved" is what people actually ask about
+- [x] File tools with confirm gating (`find_file`, `move_files`,
+      `rename_file`, `delete_files`) — every path resolved and checked against
+      `tools.files.roots` *after* `resolve()`, so `..` and symlinks can't
+      escape; batches capped at `max_batch`; deletion goes to the Recycle Bin,
+      never `os.remove`
+- [x] Spoken confirmation gate (`security/confirm.py`) + the FSM's CONFIRMING
+      state — the first multi-turn state in the voice loop. Only an ASR
+      transcript can confirm; pending proposals expire; ambiguity is re-asked
+      and then dropped. All three fail closed
+- [x] Undo stack (`security/undo.py`) reachable by voice (`undo_last`,
+      `what_can_i_undo`) — the safety net is only useful if the user can get
+      to it without knowing it exists
+- [x] Audit log (`security/audit.py`) — append-only JSONL, attached to the
+      event bus as a subscriber rather than called by the FSM, recording the
+      action, arguments, result, timestamp and deciding router stage
+- [x] `preview=` on the tool registry — a confirm prompt now says "Move 2
+      files from Desktop to Documents", which is what §8.2 actually requires;
+      an argument dump gives the user nothing to catch a misroute with
+- [x] `battery_status` implemented — see the note below
 
-**Deliverable:** safe to point at real files.
+**Deliverable: safe to point at real files — met.** Verified end to end on
+this machine against the real router, the real encoder, real tools and a real
+audit log, in a temp sandbox configured as the file roots: search, a
+confirm-gated move answered "nahi" (nothing moved), the same move answered
+"haan" then reversed with "undo that", a delete to the Recycle Bin, and an
+out-of-scope question refused.
 
-## Phase 4 — LLM escalation (2 weeks, ~50h)
+**Two findings worth carrying forward:**
 
-- [ ] Ollama orchestrator, bounded loop (`brain/ollama.py`, `brain/loop.py`)
-- [ ] Stable-prefix prompt assembly (`brain/prompt.py`)
+1. **`battery_status` never existed.** It had a grammar template, examples in
+   all three languages and golden cases since Phase 2 — and no tool. Nothing
+   caught it because the golden runner graded against a fake registry built
+   *from the golden set itself*, so every tool the set named existed by
+   construction. The runner now uses the real `REGISTRY`, plus three new
+   tests: every golden tool is registered, `expect_confirm` and `risk=` agree
+   in both directions, and every confirm-risk tool has a golden case. The
+   Phase 2 confirm-gate figure of "100%" held only because the fake registry
+   declared confirm exactly the two tools the golden set expected to be
+   confirm — it was checking a copy of the answer, not the registry.
+2. **Grammar templates for file intents are unusually greedy**, and the golden
+   set caught two of mine immediately: `"put {query} in {destination}"` ate
+   "put spotify in the background" (minimize_app), and
+   `"get rid of {query}"` ate "get rid of chrome" (close_app). Both were
+   dropped rather than patched around — those phrasings live as embedding
+   examples now, where they compete on similarity instead of claiming the
+   utterance outright at Stage 1.
+
+**Deliberately not done, and why:**
+
+- **Undo of a delete is guided, not automatic.** `move_files` and
+  `rename_file` register real inverses that run. `delete_files` sends files to
+  the Recycle Bin and its undo names them and says where they are. Windows has
+  no supported API for restoring a specific item; it can be driven through the
+  shell namespace, but items there are identified by an internal `$R…` path and
+  the original location is only available as a localized detail column, so
+  matching on it breaks on non-English Windows. Building the mutating half of
+  undo on that would be worse than not having it. Measured on this machine
+  before deciding — see `tools/files.py::_undo_delete_files`.
+- **No date filtering.** "find the budget report from last week" stays
+  `expect_stage: llm`. `router/slots.py` still has no date NER (spaCy remains
+  deliberately absent), so the words would land in the filename pattern and
+  match nothing. That is Phase 4 work, not a missing template.
+- **Indic file-type vocabulary** ("tasveerein", "gaane") is not in
+  `_TYPE_EXTENSIONS` — Phase 6, with the rest of the Indic layer. Hindi and
+  Gujarati file commands route to the right *intent* today and are asked for
+  specifics, which degrades to "finds less", never to "deletes something
+  unexpected".
+
+**One consequence to keep an eye on:** out-of-domain refusal fell 14/18 →
+13/18 when the file intents entered the index (`mane ek varta kaho`, "tell me
+a story", now sits near the Gujarati find_file examples). The *severity* of a
+leak dropped at the same time, which matters more: the embedding stage no
+longer inherits free-text args, so a leaked file intent arrives with none and
+the assistant asks "which files do you mean?" instead of acting.
+"meri maa ko phone lagao" — Phase 2's worst leak, which resolved to `restart`
+— now resolves to `find_file` with no arguments, i.e. a question. See
+`tests/golden/out_of_domain.yaml`.
+
+## Phase 4 — Escalation (2 weeks, ~50h)
+
+**Re-scoped by [ADR 0001](decisions/0001-local-llm-off-the-default-path.md).**
+Was "LLM escalation," built around Ollama as the default target. The local 3B
+measured 11.3 tok/s (~88ms/token) on a benchmark that only generated 4–6
+tokens — realistically ~4.4s for a tool call, ~10.6s for a paragraph, and
+unreliable on facts. It is now an **opt-in privacy mode**, not the default.
+The orchestration work below is unchanged; what it points at is now pluggable.
+
+- [ ] Escalation dispatcher honouring `router.escalation` (`brain/loop.py`) —
+      ordered targets, bounded loop, hard cap 5 iterations
+- [ ] Cloud target (`brain/cloud.py`) — **the default**; spoken-confirm gated
+      before anything leaves the machine, BYO-key first
+- [ ] Knowledge-question route — embedding-classified question-vs-command,
+      answered by cloud or **refused honestly when offline**. New; there is no
+      such route in `config/intents/` today.
+- [ ] Stable-prefix prompt assembly (`brain/prompt.py`) — stable core tool set
+      in the cached prefix, per-query retrieved tools in the volatile tail
+      (the KV-cache/tool-retrieval contradiction ADR 0001 corrects)
 - [ ] Tool subsetting by embedding
 - [ ] Dry-run plan summarization
+- [ ] Local target (`brain/ollama.py`) — opt-in, `llm.enabled: false` by
+      default; use constrained decoding (GBNF/outlines) for tool-call JSON
+- [ ] Re-benchmark the local path at realistic output lengths (50 and 150
+      tokens) so the opt-in mode's latency claim is measured, not extrapolated
+- [ ] Golden-set entries for escalation and the offline-refusal case
 
-**Deliverable:** handles compositional requests.
+**Deliverable:** handles compositional requests and knowledge questions —
+every route either fast and deterministic, or slow and good, or honest. No
+route is both slow and unreliable.
 
 ## Phase 5 — Office + network (3 weeks, ~70h)
 

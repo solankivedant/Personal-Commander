@@ -44,8 +44,13 @@ export const ICONS = {
   alert: "M12 8v5M12 16h.01M10.3 3.6 2.7 17a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z",
 } as const;
 
+/** Each tool pack owns a hue so the grid reads as seven distinct things
+ * rather than one repeated card. */
+export type ToolTone = "orange" | "violet" | "blue" | "amber" | "cyan" | "rose" | "moss";
+
 export interface ToolCard {
   name: string;
+  tone: ToolTone;
   tier: ToolTier;
   risk?: "confirm";
   desc: string;
@@ -58,6 +63,7 @@ export interface ToolCard {
 export const TOOLS: ToolCard[] = [
   {
     name: "Office",
+    tone: "orange",
     tier: "local",
     risk: "confirm",
     desc: "Draft an Outlook reply, read a live Excel sheet, format a Word doc - spoken, not clicked.",
@@ -65,24 +71,28 @@ export const TOOLS: ToolCard[] = [
     chips: ["Outlook", "Excel", "Word"],
     span2: true,
   },
-  { name: "System", tier: "local", desc: "Volume, brightness, power, Wi-Fi.", icon: ICONS.system },
-  { name: "Apps", tier: "local", desc: "Launch, focus, and close windows.", icon: ICONS.apps },
-  { name: "Files", tier: "local", risk: "confirm", desc: "Search, move, rename - every action undoable.", icon: ICONS.files, amber: true },
-  { name: "Web & weather", tier: "net", desc: "Live search and weather lookups.", icon: ICONS.web },
+  { name: "System", tone: "violet", tier: "local", desc: "Volume, brightness, power, Wi-Fi.", icon: ICONS.system },
+  { name: "Apps", tone: "blue", tier: "local", desc: "Launch, focus, and close windows.", icon: ICONS.apps },
+  { name: "Files", tone: "amber", tier: "local", risk: "confirm", desc: "Search, move, rename - every action undoable.", icon: ICONS.files, amber: true },
+  { name: "Web & weather", tone: "cyan", tier: "net", desc: "Live search and weather lookups.", icon: ICONS.web },
   {
     name: "Gmail & Calendar",
+    tone: "rose",
     tier: "net",
     desc: "Read, draft, and search mail; check and create events.",
     icon: ICONS.mail,
     span2: true,
     chips: ["Search mail", "Draft replies", "Create events"],
   },
-  { name: "Phone bridge", tier: "lan", desc: "Texts, notifications, find your phone - over your own network.", icon: ICONS.phone },
+  { name: "Phone bridge", tone: "moss", tier: "lan", desc: "Texts, notifications, find your phone - over your own network.", icon: ICONS.phone },
 ];
 
 /** One slide per tool pack for the full-width showcase carousel. */
 export interface ShowcaseSlide {
   name: string;
+  /** Same hue the pack carries in the tool grid, so a reader who saw the card
+   * recognises the slide as the same thing. */
+  tone: ToolTone;
   icon: string;
   tier: ToolTier;
   risk?: "confirm";
@@ -98,6 +108,7 @@ export interface ShowcaseSlide {
 export const SHOWCASE: ShowcaseSlide[] = [
   {
     name: "Office",
+    tone: "orange",
     icon: ICONS.office,
     tier: "local",
     risk: "confirm",
@@ -110,6 +121,7 @@ export const SHOWCASE: ShowcaseSlide[] = [
   },
   {
     name: "System",
+    tone: "violet",
     icon: ICONS.system,
     tier: "local",
     desc: "Volume, brightness, power and Wi-Fi, resolved deterministically in under ten milliseconds.",
@@ -121,6 +133,7 @@ export const SHOWCASE: ShowcaseSlide[] = [
   },
   {
     name: "Apps",
+    tone: "blue",
     icon: ICONS.apps,
     tier: "local",
     desc: "Launch, focus and close windows by name - fuzzy matched, so close enough is enough.",
@@ -132,6 +145,7 @@ export const SHOWCASE: ShowcaseSlide[] = [
   },
   {
     name: "Files",
+    tone: "amber",
     icon: ICONS.files,
     tier: "local",
     risk: "confirm",
@@ -145,6 +159,7 @@ export const SHOWCASE: ShowcaseSlide[] = [
   },
   {
     name: "Web & weather",
+    tone: "cyan",
     icon: ICONS.web,
     tier: "net",
     desc: "Live lookups through one allowlisted client - fetched text is quoted to the model, never obeyed.",
@@ -156,6 +171,7 @@ export const SHOWCASE: ShowcaseSlide[] = [
   },
   {
     name: "Gmail & Calendar",
+    tone: "rose",
     icon: ICONS.mail,
     tier: "net",
     risk: "confirm",
@@ -168,6 +184,7 @@ export const SHOWCASE: ShowcaseSlide[] = [
   },
   {
     name: "Phone bridge",
+    tone: "moss",
     icon: ICONS.phone,
     tier: "lan",
     risk: "confirm",

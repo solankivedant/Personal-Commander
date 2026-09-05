@@ -38,3 +38,74 @@
 {"text": "wifi chal raha hai kya", "intent": "wifi_status", "args": {}}
 {"text": "wifi connect hai kya", "intent": "wifi_status", "args": {}}
 {"text": "bluetooth chalu hai kya", "intent": "bluetooth_status", "args": {}}
+{"text": "word khol do", "intent": "open_app", "args": {"app": "word"}}
+{"text": "notepad chalu karo", "intent": "open_app", "args": {"app": "notepad"}}
+{"text": "teams kholo", "intent": "open_app", "args": {"app": "teams"}}
+{"text": "excel chalu karo", "intent": "open_app", "args": {"app": "excel"}}
+{"text": "mere liye outlook khol do", "intent": "open_app", "args": {"app": "outlook"}}
+{"text": "word band karo", "intent": "close_app", "args": {"app": "word"}}
+{"text": "notepad ko band kar do", "intent": "close_app", "args": {"app": "notepad"}}
+{"text": "teams band kar do", "intent": "close_app", "args": {"app": "teams"}}
+{"text": "excel ko close karo", "intent": "close_app", "args": {"app": "excel"}}
+{"text": "excel par jao", "intent": "focus_app", "args": {"app": "excel"}}
+{"text": "teams pe jao", "intent": "focus_app", "args": {"app": "teams"}}
+{"text": "chrome ki window dikhao", "intent": "focus_app", "args": {"app": "chrome"}}
+{"text": "outlook ko saamne lao", "intent": "focus_app", "args": {"app": "outlook"}}
+{"text": "window chhota karo", "intent": "minimize_app", "args": {}}
+{"text": "ise minimize kar do", "intent": "minimize_app", "args": {}}
+{"text": "window ko full kar do", "intent": "maximize_app", "args": {}}
+{"text": "ise bada kar do", "intent": "maximize_app", "args": {}}
+{"text": "kya kya chal raha hai", "intent": "list_apps", "args": {}}
+{"text": "khule hue apps ki list do", "intent": "list_apps", "args": {}}
+{"text": "volume tez kar do", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "awaaz oonchi karo", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "volume badhao", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "volume ghata do", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "awaaz dhimi karo", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "sound kam kar do", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "mute kar do", "intent": "mute", "args": {}}
+{"text": "koi awaaz nahi chahiye", "intent": "mute", "args": {}}
+{"text": "sab awaaz band kar do", "intent": "mute", "args": {}}
+{"text": "screen bahut tez hai", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "screen ki brightness kam kar do", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "display dhimi karo", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "screen thodi tez karo", "intent": "set_brightness", "args": {"direction": "up"}}
+{"text": "display ki roshni badhao", "intent": "set_brightness", "args": {"direction": "up"}}
+{"text": "battery ka status batao", "intent": "battery_status", "args": {}}
+{"text": "charge kitna bacha hai", "intent": "battery_status", "args": {}}
+{"text": "computer lock kar do", "intent": "lock_screen", "args": {}}
+{"text": "screen ko lock karo", "intent": "lock_screen", "args": {}}
+{"text": "laptop ko sleep me daal do", "intent": "sleep", "args": {}}
+{"text": "laptop ko shut down kar do", "intent": "shutdown", "args": {}}
+{"text": "poora system band kar do", "intent": "shutdown", "args": {}}
+{"text": "computer ko off kar do", "intent": "shutdown", "args": {}}
+{"text": "computer ko dobara chalu karo", "intent": "restart", "args": {}}
+{"text": "system reboot kar do", "intent": "restart", "args": {}}
+{"text": "laptop ko restart kar do", "intent": "restart", "args": {}}
+{"text": "wifi on kar do", "intent": "wifi_toggle", "args": {"state": "on"}}
+{"text": "wifi enable kar do", "intent": "wifi_toggle", "args": {"state": "on"}}
+{"text": "wifi disable kar do", "intent": "wifi_toggle", "args": {"state": "off"}}
+{"text": "wifi hata do", "intent": "wifi_toggle", "args": {"state": "off"}}
+{"text": "bluetooth enable karo", "intent": "bluetooth_toggle", "args": {"state": "on"}}
+{"text": "bluetooth off kar do", "intent": "bluetooth_toggle", "args": {"state": "off"}}
+{"text": "wifi ka status kya hai", "intent": "wifi_status", "args": {}}
+{"text": "bluetooth ka status batao", "intent": "bluetooth_status", "args": {}}
+{"text": "spotify shuru karo", "intent": "open_app", "args": {"app": "spotify"}}
+{"text": "word shuru kar do", "intent": "open_app", "args": {"app": "word"}}
+{"text": "word pe le chalo", "intent": "focus_app", "args": {"app": "word"}}
+{"text": "chrome pe le jao", "intent": "focus_app", "args": {"app": "chrome"}}
+{"text": "awaaz mat karo", "intent": "mute", "args": {}}
+{"text": "bilkul chup", "intent": "mute", "args": {}}
+{"text": "meri file dhundo", "intent": "find_file", "args": {}}
+{"text": "ek document kahin kho gaya hai", "intent": "find_file", "args": {}}
+{"text": "file khoj ke do", "intent": "find_file", "args": {}}
+{"text": "ye files dusre folder me daal do", "intent": "move_files", "args": {}}
+{"text": "in documents ko kahin aur move karo", "intent": "move_files", "args": {}}
+{"text": "file ka naam badal do", "intent": "rename_file", "args": {}}
+{"text": "is document ko naya naam do", "intent": "rename_file", "args": {}}
+{"text": "purani files hata do", "intent": "delete_files", "args": {}}
+{"text": "ye kachra delete kar do", "intent": "delete_files", "args": {}}
+{"text": "undo karo", "intent": "undo_last", "args": {}}
+{"text": "wapas pehle jaisa kar do", "intent": "undo_last", "args": {}}
+{"text": "galti ho gayi, palat do", "intent": "undo_last", "args": {}}
+{"text": "main kya undo kar sakta hoon", "intent": "what_can_i_undo", "args": {}}

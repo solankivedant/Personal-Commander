@@ -8,7 +8,7 @@ import winreg
 from pathlib import Path
 from typing import Any
 
-import psutil  # type: ignore[import-untyped]
+import psutil
 import win32con  # type: ignore[import-untyped]
 import win32gui  # type: ignore[import-untyped]
 import win32process  # type: ignore[import-untyped]

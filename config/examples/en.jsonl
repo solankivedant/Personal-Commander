@@ -54,3 +54,74 @@
 {"text": "do I have wifi right now", "intent": "wifi_status", "args": {}}
 {"text": "is my bluetooth working", "intent": "bluetooth_status", "args": {}}
 {"text": "check if bluetooth is on", "intent": "bluetooth_status", "args": {}}
+{"text": "start up excel", "intent": "open_app", "args": {"app": "excel"}}
+{"text": "I want to use word", "intent": "open_app", "args": {"app": "word"}}
+{"text": "run notepad", "intent": "open_app", "args": {"app": "notepad"}}
+{"text": "can you open teams", "intent": "open_app", "args": {"app": "teams"}}
+{"text": "pull excel up for me", "intent": "open_app", "args": {"app": "excel"}}
+{"text": "close firefox", "intent": "close_app", "args": {"app": "firefox"}}
+{"text": "exit out of word", "intent": "close_app", "args": {"app": "word"}}
+{"text": "quit the zoom app", "intent": "close_app", "args": {"app": "zoom"}}
+{"text": "go back to chrome", "intent": "focus_app", "args": {"app": "chrome"}}
+{"text": "take me to slack", "intent": "focus_app", "args": {"app": "slack"}}
+{"text": "focus the excel window", "intent": "focus_app", "args": {"app": "excel"}}
+{"text": "put outlook in front", "intent": "focus_app", "args": {"app": "outlook"}}
+{"text": "hide this window", "intent": "minimize_app", "args": {}}
+{"text": "shrink this down", "intent": "minimize_app", "args": {}}
+{"text": "make this bigger", "intent": "maximize_app", "args": {}}
+{"text": "expand this window", "intent": "maximize_app", "args": {}}
+{"text": "what programs are running", "intent": "list_apps", "args": {}}
+{"text": "list everything I have open", "intent": "list_apps", "args": {}}
+{"text": "turn it up", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "raise the sound", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "turn it down", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "lower the volume", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "that is too loud", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "mute everything", "intent": "mute", "args": {}}
+{"text": "shut the sound off", "intent": "mute", "args": {}}
+{"text": "the screen is too bright", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "lower the brightness", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "make the screen darker", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "increase the brightness", "intent": "set_brightness", "args": {"direction": "up"}}
+{"text": "make the screen lighter", "intent": "set_brightness", "args": {"direction": "up"}}
+{"text": "how is the battery doing", "intent": "battery_status", "args": {}}
+{"text": "how much power is left", "intent": "battery_status", "args": {}}
+{"text": "lock the computer", "intent": "lock_screen", "args": {}}
+{"text": "lock the screen now", "intent": "lock_screen", "args": {}}
+{"text": "lock this machine while I am gone", "intent": "lock_screen", "args": {}}
+{"text": "put it to sleep", "intent": "sleep", "args": {}}
+{"text": "suspend the laptop", "intent": "sleep", "args": {}}
+{"text": "shut it all down", "intent": "shutdown", "args": {}}
+{"text": "power off the laptop", "intent": "shutdown", "args": {}}
+{"text": "reboot the computer", "intent": "restart", "args": {}}
+{"text": "enable wifi", "intent": "wifi_toggle", "args": {"state": "on"}}
+{"text": "disconnect from wifi", "intent": "wifi_toggle", "args": {"state": "off"}}
+{"text": "enable bluetooth", "intent": "bluetooth_toggle", "args": {"state": "on"}}
+{"text": "switch bluetooth off", "intent": "bluetooth_toggle", "args": {"state": "off"}}
+{"text": "is wifi on", "intent": "wifi_status", "args": {}}
+{"text": "check my wifi connection", "intent": "wifi_status", "args": {}}
+{"text": "is bluetooth enabled", "intent": "bluetooth_status", "args": {}}
+{"text": "boot up firefox", "intent": "open_app", "args": {"app": "firefox"}}
+{"text": "jump to chrome", "intent": "focus_app", "args": {"app": "chrome"}}
+{"text": "move over to word", "intent": "focus_app", "args": {"app": "word"}}
+{"text": "switch across to teams", "intent": "focus_app", "args": {"app": "teams"}}
+{"text": "the sound is too low", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "it is too quiet", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "can you find a file for me", "intent": "find_file", "args": {}}
+{"text": "I've lost a document somewhere", "intent": "find_file", "args": {}}
+{"text": "track down that spreadsheet", "intent": "find_file", "args": {}}
+{"text": "look through my folders for it", "intent": "find_file", "args": {}}
+{"text": "tidy these files into another folder", "intent": "move_files", "args": {}}
+{"text": "shift those documents somewhere else", "intent": "move_files", "args": {}}
+{"text": "file these away properly", "intent": "move_files", "args": {}}
+{"text": "give that file a different name", "intent": "rename_file", "args": {}}
+{"text": "change the name of this document", "intent": "rename_file", "args": {}}
+{"text": "get rid of some old files", "intent": "delete_files", "args": {}}
+{"text": "clear out the junk in there", "intent": "delete_files", "args": {}}
+{"text": "bin those documents", "intent": "delete_files", "args": {}}
+{"text": "undo that", "intent": "undo_last", "args": {}}
+{"text": "put that back the way it was", "intent": "undo_last", "args": {}}
+{"text": "that was a mistake, reverse it", "intent": "undo_last", "args": {}}
+{"text": "actually I didn't want that", "intent": "undo_last", "args": {}}
+{"text": "what can I undo", "intent": "what_can_i_undo", "args": {}}
+{"text": "what would you reverse if I said undo", "intent": "what_can_i_undo", "args": {}}

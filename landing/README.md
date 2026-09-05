@@ -63,9 +63,11 @@ them in sync by hand when nav or footer links change.
 Change copy directly in the relevant `index.html`. Change the tool list,
 showcase slides, or FAQs in `src/data.ts` - the DOM is rendered from those
 arrays, so nothing else needs editing to add or reorder an entry. Speculative
-product ideas beyond the committed roadmap belong in `../future-scope.md`,
+product ideas beyond the committed roadmap belong in `../future-scope/future-scope.md`,
 not on the pricing or docs pages - keep those two scoped to what's actually
-true today.
+true today. Market-positioning claims live in `../future-scope/gaps.md`;
+anything there marked `[verify]` is an unsourced number and must not be put
+on a public page until it has a citation.
 
 ## Deploying
 

@@ -28,6 +28,13 @@ rationale — this is the reference map, not the argument for it.
         ╎ Cross-cutting: Event Bus · Config · Audit Log ╎
 ```
 
+The audit log (`security/audit.py`, Phase 3) is a bus *subscriber*, not a
+collaborator any layer calls — that is what keeps it, the GUI and the future
+HTTP API decoupled from internals, and it means nothing in it can change what
+the assistant does. It records the action, its arguments, its result, a
+timestamp and the deciding router stage; that last field is what answers "why
+did it delete that" three days later.
+
 ★ = the layer that defines this product — see
 `.claude/rules/architecture-and-router.md`.
 
@@ -57,9 +64,12 @@ SPEAKING ◀── ACTING ◀── ROUTING ◀───────────
 ## Router cascade (L3) — see `.claude/rules/architecture-and-router.md`
 
 1. Grammar (hassil) — <10ms, ~50% coverage
-2. Embeddings (multilingual-e5-small, threshold 0.75) — ~15ms, ~35% coverage
-3. LLM escalation (Qwen2.5-3B) — ~15% coverage
-4. Teach mode — fallback when LLM disabled or also fails
+2. Embeddings (multilingual-e5-small, threshold 0.88 — calibrated, see
+   `PHASE-2-RESULTS.md`) — ~15ms, ~35% coverage
+3. Escalation (`router.escalation`, default `[cloud]`) — ~15% coverage.
+   Cloud is the default target; the local Qwen2.5-3B is opt-in and off by
+   default, see `decisions/0001-local-llm-off-the-default-path.md`
+4. Teach mode — fallback when escalation is disabled, offline, or also fails
 
 ## Performance targets (§1, §9.3)
 
@@ -67,11 +77,17 @@ SPEAKING ◀── ACTING ◀── ROUTING ◀───────────
 |---|---|---|
 | Grammar match | ~50% | < 900 ms end-to-end |
 | Embedding match | ~35% | < 950 ms end-to-end |
-| Local 3B LLM | ~15% | 4–5 s |
-| Cloud escalation (opt-in) | < 5% | 2–3 s |
+| Cloud escalation (default target) | ~15% | 2–3 s |
+| Local 3B LLM (opt-in, off by default) | — | ~4.4 s tool call, ~10.6 s paragraph |
 
 Weighted average at 85% fast-path coverage: ~1.5s, comparable to Siri/Google
 Assistant felt-responsiveness on a laptop with no GPU.
+
+**The local 3B row is why it is no longer the default** (ADR 0001). Phase 0's
+11.3 tok/s was measured on 4-6 token generations; at ~88ms/token a realistic
+tool call is ~4.4s and a paragraph ~10.6s. The original "4-5 s" figure here
+was an estimate that a length-realistic benchmark does not support. Re-measure
+before trusting any local-path latency claim.
 
 ## Memory budget at 16GB RAM (§9.1)
 

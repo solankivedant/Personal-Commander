@@ -38,3 +38,63 @@
 {"text": "wifi chalu che ke nahi", "intent": "wifi_status", "args": {}}
 {"text": "wifi connect thayel che ke nahi", "intent": "wifi_status", "args": {}}
 {"text": "bluetooth chalu che ke nahi", "intent": "bluetooth_status", "args": {}}
+{"text": "word kholo", "intent": "open_app", "args": {"app": "word"}}
+{"text": "notepad chalu karo", "intent": "open_app", "args": {"app": "notepad"}}
+{"text": "teams kholo", "intent": "open_app", "args": {"app": "teams"}}
+{"text": "excel chalu karo", "intent": "open_app", "args": {"app": "excel"}}
+{"text": "word band karo", "intent": "close_app", "args": {"app": "word"}}
+{"text": "notepad ne band karo", "intent": "close_app", "args": {"app": "notepad"}}
+{"text": "teams ne band karo", "intent": "close_app", "args": {"app": "teams"}}
+{"text": "excel par jao", "intent": "focus_app", "args": {"app": "excel"}}
+{"text": "slack par switch karo", "intent": "focus_app", "args": {"app": "slack"}}
+{"text": "chrome ni window batavo", "intent": "focus_app", "args": {"app": "chrome"}}
+{"text": "window ne nanu kari do", "intent": "minimize_app", "args": {}}
+{"text": "aa window ne niche karo", "intent": "minimize_app", "args": {}}
+{"text": "chrome ne motu karo", "intent": "maximize_app", "args": {"app": "chrome"}}
+{"text": "window full screen karo", "intent": "maximize_app", "args": {}}
+{"text": "shu shu chalu che", "intent": "list_apps", "args": {}}
+{"text": "khulla apps batavo", "intent": "list_apps", "args": {}}
+{"text": "avaaj motho karo", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "volume vadhari do", "intent": "set_volume", "args": {"direction": "up"}}
+{"text": "avaaj ochi kari do", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "volume ghatado", "intent": "set_volume", "args": {"direction": "down"}}
+{"text": "mute kari do", "intent": "mute", "args": {}}
+{"text": "koi avaaj nahi joie", "intent": "mute", "args": {}}
+{"text": "screen ni brightness ochi karo", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "display dhimi karo", "intent": "set_brightness", "args": {"direction": "down"}}
+{"text": "screen thodi tej karo", "intent": "set_brightness", "args": {"direction": "up"}}
+{"text": "brightness vadhari do", "intent": "set_brightness", "args": {"direction": "up"}}
+{"text": "battery kevi che", "intent": "battery_status", "args": {}}
+{"text": "power ketlo bachyo che", "intent": "battery_status", "args": {}}
+{"text": "screen ne lock kari do", "intent": "lock_screen", "args": {}}
+{"text": "computer ne sula do", "intent": "sleep", "args": {}}
+{"text": "computer ne shut down karo", "intent": "shutdown", "args": {}}
+{"text": "aakhu system band karo", "intent": "shutdown", "args": {}}
+{"text": "computer ne off kari do", "intent": "shutdown", "args": {}}
+{"text": "computer ne pachhu chalu karo", "intent": "restart", "args": {}}
+{"text": "system reboot karo", "intent": "restart", "args": {}}
+{"text": "laptop ne restart kari do", "intent": "restart", "args": {}}
+{"text": "wifi on kari do", "intent": "wifi_toggle", "args": {"state": "on"}}
+{"text": "wifi enable karo", "intent": "wifi_toggle", "args": {"state": "on"}}
+{"text": "wifi disable karo", "intent": "wifi_toggle", "args": {"state": "off"}}
+{"text": "bluetooth enable karo", "intent": "bluetooth_toggle", "args": {"state": "on"}}
+{"text": "bluetooth off kari do", "intent": "bluetooth_toggle", "args": {"state": "off"}}
+{"text": "wifi no status shu che", "intent": "wifi_status", "args": {}}
+{"text": "bluetooth no status batavo", "intent": "bluetooth_status", "args": {}}
+{"text": "laptop ne fari chalu karo", "intent": "restart", "args": {}}
+{"text": "computer ne fari thi start karo", "intent": "restart", "args": {}}
+{"text": "computer ne puru band karo", "intent": "shutdown", "args": {}}
+{"text": "laptop ne kayam band karo", "intent": "shutdown", "args": {}}
+{"text": "mari file shodho", "intent": "find_file", "args": {}}
+{"text": "ek document kyank khovai gayu che", "intent": "find_file", "args": {}}
+{"text": "file kholi aapo", "intent": "find_file", "args": {}}
+{"text": "aa files biji folder ma muko", "intent": "move_files", "args": {}}
+{"text": "aa documents ne bija folder ma move karo", "intent": "move_files", "args": {}}
+{"text": "file nu naam badlo", "intent": "rename_file", "args": {}}
+{"text": "aa document ne navu naam aapo", "intent": "rename_file", "args": {}}
+{"text": "juni files kadhi nakho", "intent": "delete_files", "args": {}}
+{"text": "aa kachro delete kari do", "intent": "delete_files", "args": {}}
+{"text": "undo karo", "intent": "undo_last", "args": {}}
+{"text": "pachhu pehla jevu kari do", "intent": "undo_last", "args": {}}
+{"text": "bhul thai, pachhu farvo", "intent": "undo_last", "args": {}}
+{"text": "hu shu undo kari saku", "intent": "what_can_i_undo", "args": {}}

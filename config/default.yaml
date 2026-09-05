@@ -47,24 +47,78 @@ router:
   grammar:
     enabled: true
     dirs: [config/intents]
+    level_range: [0, 100]        # inclusive bounds for the {level} slot in
+                                  # config/intents/*.yaml. Constraining it to a
+                                  # numeric range is what keeps "volume {level}"
+                                  # from greedily claiming non-numeric text like
+                                  # "volume kitna hai" at the grammar stage —
+                                  # see src/munshiji/router/grammar.py.
   embeddings:
     enabled: true
     model: multilingual-e5-small
-    threshold: 0.75
+    threshold: 0.88          # NOT the report's generic 0.75 — calibrated against
+                              # the actual multilingual-e5-small score
+                              # distribution, see docs/PHASE-2-RESULTS.md.
+                              # e5 is contrastively trained and its cosine range
+                              # is compressed: *unrelated* utterances score
+                              # 0.78-0.93 against this index, so at 0.75 nothing
+                              # ever fell through to teach mode — 0/18 held-out
+                              # out-of-domain utterances were refused, they all
+                              # confidently fired some Phase 2 tool. At 0.88 the
+                              # in-domain paraphrase score is unchanged (92.5%,
+                              # lowest in-domain score is 0.884) and 14/18
+                              # out-of-domain utterances are correctly refused.
+                              # Re-measure with tests/golden/out_of_domain.yaml
+                              # before changing this or the encoder.
     examples: config/examples
   slots:
     fuzzy_app_cutoff: 75         # rapidfuzz score_cutoff for app-name correction,
                                   # per docs/architecture-and-router.md's spec value
   teach_mode: true
+  escalation: [cloud]            # ordered targets tried after grammar+embeddings
+                                  # both miss: cloud | local. Empty = teach mode
+                                  # only. The LOCAL 3B IS NOT THE DEFAULT — see
+                                  # docs/decisions/0001-local-llm-off-the-default-path.md
+                                  # (11.3 tok/s means ~4.4s for a tool call and
+                                  # ~10.6s for a paragraph; a 3B is slow AND
+                                  # unreliable on knowledge questions).
 
 tools:
   volume_step_pct: 10            # relative nudge size for "louder"/"quieter" with no explicit level
   brightness_step_pct: 10        # relative nudge size for "brighter"/"dimmer" with no explicit level
   subprocess_timeout_s: 10       # timeout for shutdown/netsh/PnP subprocess calls in tools/system.py
   fuzzy_app_cutoff: 75           # rapidfuzz score_cutoff for resolving app names in tools/apps.py
+  files:
+    # Phase 3. Every path a file tool touches must resolve inside one of these
+    # roots — this is the blast-radius cap for tools/files.py, not a
+    # convenience default. Deliberately the user's own document folders and
+    # NOT the whole profile (which would pull in AppData) or a bare drive.
+    # Spoken folder names ("desktop", "downloads") resolve against this list,
+    # so adding a root here is also what makes it addressable by voice.
+    roots:
+      - ~/Desktop
+      - ~/Documents
+      - ~/Downloads
+      - ~/Pictures
+      - ~/Music
+      - ~/Videos
+    everything_cli: es.exe       # Everything CLI (voidtools) for instant search.
+                                  # Resolved on PATH or as an absolute path; if it
+                                  # is missing or the service isn't running,
+                                  # find_file falls back to a filesystem walk.
+    max_results: 20              # cap on results read back to the user
+    max_batch: 50                # refuse a move/delete touching more files than
+                                  # this — mass mutation is `blocked` territory
+                                  # (security-and-privacy.md), not a big confirm
+    search_timeout_s: 10         # timeout for the Everything CLI subprocess
+    walk_max_entries: 20000      # ceiling on the fallback walk, so a missing
+                                  # Everything install degrades to slow, not hung
 
 llm:
-  enabled: true
+  # OFF BY DEFAULT — opt-in privacy mode, not the standard escalation target.
+  # See docs/decisions/0001-local-llm-off-the-default-path.md before flipping
+  # this. Enabling it also requires adding `local` to router.escalation above.
+  enabled: false
   provider: ollama
   model: qwen2.5:3b-instruct-q4_K_M   # pin by digest before shipping, not :latest
   keep_alive: -1
@@ -94,6 +148,24 @@ ui:
     opacity: 0.92
     transcript_display_s: 3.0     # how long the last transcript stays shown
                                    # before the pill reverts to the state label
+  control_center:
+    # The desktop Control Center's backend (src/munshiji/ui/server.py): it
+    # serves the page and takes typed commands through the same router,
+    # registry and confirmation gate a spoken command takes.
+    enabled: true
+    host: 127.0.0.1              # LOOPBACK ONLY. ui/server.py refuses to start
+                                  # on anything else — this is a machine-control
+                                  # surface, not a network service, and 0.0.0.0
+                                  # is forbidden outright (security-and-privacy.md).
+                                  # The remote/phone API is a separate Phase 7
+                                  # surface (net/api.py), bound to Tailscale.
+    port: 5180                    # same port desktop-preview/serve.mjs used
+    ui_dir: desktop-preview/dist  # the page served at /, token injected on the way out
+    open_browser: false           # open the Control Center on start
+    max_commands_per_minute: 60   # rate cap on /command and /confirm
+    max_event_clients: 4          # concurrent /events (SSE) listeners
+    event_queue_size: 200         # per-listener backlog before events are dropped;
+                                   # a stalled tab must never block the audio thread
 
 network:
   mode: hybrid                 # local_only | hybrid | full
@@ -110,6 +182,12 @@ security:
   blocked_tools: [registry_write, format_disk, delete_permanent]
   speaker_verification: false
   undo_depth: 20
+  confirm_timeout_s: 45          # a pending spoken confirmation expires after this.
+                                  # Without it a "yes" answering some later question
+                                  # could fire an action proposed minutes earlier —
+                                  # the gate fails closed on expiry.
+  confirm_max_attempts: 2        # how many times an unclear answer is re-asked
+                                  # before the gate cancels. Fails closed.
 
 memory:
   facts_db: data/facts.sqlite

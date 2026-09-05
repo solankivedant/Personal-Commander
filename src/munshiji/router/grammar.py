@@ -5,14 +5,28 @@ Loads the hassil intent YAML files under ``config/intents/`` (per
 and matches an utterance to ``(intent_name, slots)``. First match wins — this
 module has no notion of "second best," that ambiguity is Stage 2's job.
 
-Wildcard captures (``{app}``, ``{level}``, ``{query}``, ...) are detected
-automatically by scanning every loaded sentence template for ``{name}``
-references, so adding a new ``{foo}`` capture to a YAML file does not require
-touching this module. A small set of "special" slots (currently just
-``{state}`` for on/off style intents) resolve to a canonical value via a
-hassil ``TextSlotList`` instead of being treated as free-text wildcards, so
-grammar-stage matches for e.g. ``wifi_toggle`` already carry
-``{"state": "on"}`` rather than raw matched text.
+Wildcard captures (``{app}``, ``{query}``, ...) are detected automatically by
+scanning every loaded sentence template for ``{name}`` references, so adding a
+new ``{foo}`` capture to a YAML file does not require touching this module.
+A small set of "special" slots are *constrained* instead of being treated as
+free-text wildcards, so a grammar-stage match carries a resolved value rather
+than raw matched text — and, just as importantly, so a template holding one
+cannot swallow an utterance it has no business matching:
+
+- ``{state}`` (on/off intents) -> ``TextSlotList``, resolving to ``"on"``/``"off"``.
+- ``{direction}`` (up/down intents) -> ``TextSlotList``, resolving to
+  ``"up"``/``"down"`` off the same vocabulary ``router/slots.py`` uses.
+- ``{level}`` (volume/brightness percentages) -> ``RangeSlotList`` over
+  ``config.router.grammar.level_range``.
+
+The ``{level}`` constraint is load-bearing, not cosmetic. As an untyped
+wildcard it matched *any* text, so ``"volume {level}"`` claimed
+``"volume kitna hai"`` ("what's the volume") at Stage 1 with
+``level="kitna hai"`` — intercepting a question that ``get_volume``'s
+embedding examples already covered, and passing junk to a tool that wants an
+int. hassil resolves a ``RangeSlotList`` from digits *and* number words, so
+"set volume to fifty percent" still matches at Stage 1; only non-numeric text
+now falls through to Stage 2, which is the whole point.
 """
 
 from __future__ import annotations
@@ -24,7 +38,9 @@ from typing import Any
 
 import hassil
 import yaml
-from hassil import Intents, SlotList, TextSlotList, WildcardSlotList
+from hassil import Intents, RangeSlotList, SlotList, TextSlotList, WildcardSlotList
+
+from munshiji.router.slots import DOWN_WORDS, UP_WORDS
 
 # Repo root: src/munshiji/router/grammar.py -> parents[3] is the repo root
 # (mirrors the parents[2] pattern used in munshiji/config.py, one level
@@ -48,10 +64,29 @@ _STATE_VALUES: list[tuple[str, str]] = [
     ("band", "off"),
 ]
 
+# Default {level} range. Overridden from `config.router.grammar.level_range`
+# at bootstrap — this pair only exists so a bare GrammarRouter(...) in a test
+# or a REPL doesn't need the whole config object to construct.
+DEFAULT_LEVEL_RANGE: tuple[int, int] = (0, 100)
 
-def _build_special_slot_lists() -> dict[str, SlotList]:
+
+def _direction_values() -> list[tuple[str, str]]:
+    """{direction} vocabulary, read straight off router/slots.py's word sets
+    rather than duplicated here — the two must agree, since `enrich_slots`
+    re-derives direction from raw text for the embedding stage and a word
+    known to one layer but not the other is exactly the kind of silent
+    inconsistency the golden set struggles to surface."""
+    return [(word, "up") for word in sorted(UP_WORDS)] + [
+        (word, "down") for word in sorted(DOWN_WORDS)
+    ]
+
+
+def _build_special_slot_lists(level_range: tuple[int, int]) -> dict[str, SlotList]:
+    low, high = level_range
     return {
         "state": TextSlotList.from_tuples(_STATE_VALUES, name="state"),
+        "direction": TextSlotList.from_tuples(_direction_values(), name="direction"),
+        "level": RangeSlotList(name="level", start=low, stop=high),
     }
 
 
@@ -67,8 +102,14 @@ class GrammarMatch:
 class GrammarRouter:
     """Loads hassil grammar templates and matches utterances against them."""
 
-    def __init__(self, dirs: list[Path], language: str = "en") -> None:
+    def __init__(
+        self,
+        dirs: list[Path],
+        language: str = "en",
+        level_range: tuple[int, int] = DEFAULT_LEVEL_RANGE,
+    ) -> None:
         self._language = language
+        self._level_range = level_range
         merged_intents: dict[str, Any] = {}
         wildcard_names: set[str] = set()
 
@@ -97,17 +138,22 @@ class GrammarRouter:
         else:
             self._intents = None
 
-        special = _build_special_slot_lists()
+        special = _build_special_slot_lists(level_range)
         slot_lists: dict[str, SlotList] = {}
         for name in wildcard_names:
             slot_lists[name] = special.get(name, WildcardSlotList(name=name))
         self._slot_lists = slot_lists
 
     @classmethod
-    def from_config_dirs(cls, dirs: list[str], root: Path = REPO_ROOT) -> GrammarRouter:
+    def from_config_dirs(
+        cls,
+        dirs: list[str],
+        root: Path = REPO_ROOT,
+        level_range: tuple[int, int] = DEFAULT_LEVEL_RANGE,
+    ) -> GrammarRouter:
         """Build a GrammarRouter from the string paths in
         ``config.router.grammar.dirs`` (relative to the repo root)."""
-        return cls([root / d for d in dirs])
+        return cls([root / d for d in dirs], level_range=level_range)
 
     def match(self, text: str) -> GrammarMatch | None:
         if self._intents is None:
@@ -117,8 +163,9 @@ class GrammarRouter:
             return None
         slots: dict[str, Any] = {}
         for name, entity in result.entities.items():
-            # TextSlotList entries (e.g. "toggle") resolve .value to the
-            # canonical output ("on"/"off"); plain wildcards have
-            # value == text, so this is safe for both cases.
+            # TextSlotList entries ({state}, {direction}) resolve .value to
+            # the canonical output ("on"/"down"/...); a RangeSlotList ({level})
+            # resolves to a number; plain wildcards have value == text. So
+            # this is safe for all three cases.
             slots[name] = entity.value if entity.value is not None else entity.text
         return GrammarMatch(intent=result.intent.name, slots=slots, matched_text=text)

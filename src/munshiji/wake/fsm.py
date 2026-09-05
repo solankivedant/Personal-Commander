@@ -1,6 +1,18 @@
 """IDLE -> LISTENING -> TRANSCRIBING -> ROUTING -> ACTING -> SPEAKING state
-machine, plus push-to-talk hotkey entry. Phase 1 voice loop; Phase 2 wires
-real routing/tool-execution into ROUTING/ACTING (see _route_and_act below)."""
+machine, plus push-to-talk hotkey entry. Phase 1 voice loop; Phase 2 wired
+real routing/tool-execution into ROUTING/ACTING; Phase 3 adds CONFIRMING —
+the first multi-turn state in the loop.
+
+CONFIRMING is what makes `risk="confirm"` tools reachable at all. Before it,
+`_route` could only describe a confirm-tier action back to the user and drop
+it, because a spoken yes/no needs the loop to stay in the conversation across
+two utterances rather than falling back to IDLE and waiting for the wake word
+again. The shape: propose -> speak the prompt -> re-enter LISTENING without a
+wake word -> the next transcript resolves the gate instead of being routed.
+
+The gate itself (security/confirm.py) owns every safety decision; this module
+only carries transcripts to it and acts on the outcome. It cannot approve
+anything on its own, which is the point — see that module's docstring."""
 
 from __future__ import annotations
 
@@ -17,6 +29,8 @@ import structlog
 
 from munshiji.audio.vad import Endpointer, SileroVad
 from munshiji.bus import EventBus
+from munshiji.security.confirm import ConfirmationGate
+from munshiji.tools.dispatch import CommandDispatcher
 from munshiji.tools.registry import REGISTRY, ToolRegistry
 
 if TYPE_CHECKING:
@@ -37,6 +51,7 @@ class VoiceState(Enum):
     TRANSCRIBING = "transcribing"
     ROUTING = "routing"
     ACTING = "acting"
+    CONFIRMING = "confirming"
     SPEAKING = "speaking"
 
 
@@ -48,6 +63,11 @@ class VoiceFSM:
     router is wired, e.g. in tests) before handing the result to TTS.
     Barge-in during SPEAKING (wake re-fire or hotkey) stops playback and
     re-enters LISTENING.
+
+    With a `confirm_gate` wired, a confirm-tier route enters CONFIRMING and
+    the *next* transcript is read as an answer rather than a command. Without
+    one the FSM still refuses to execute confirm-tier tools — the gate adds
+    the ability to say yes, never the ability to skip being asked.
     """
 
     def __init__(
@@ -64,6 +84,7 @@ class VoiceFSM:
         now_fn: Callable[[], float] = time.monotonic,
         router: Router | None = None,
         registry: ToolRegistry = REGISTRY,
+        confirm_gate: ConfirmationGate | None = None,
     ) -> None:
         self._capture = capture
         self._wake_detector = wake_detector
@@ -77,6 +98,7 @@ class VoiceFSM:
         self._now_fn = now_fn
         self._router = router
         self._registry = registry
+        self._confirm_gate = confirm_gate
 
         self.state = VoiceState.IDLE
         self._endpointer: Endpointer | None = None
@@ -114,51 +136,57 @@ class VoiceFSM:
         text = self._asr.transcribe(audio, self._capture.sample_rate)
         self._bus.publish("asr.transcript", text)
 
-        self._transition(VoiceState.ROUTING)
-        response = self._route(text) if (self._router is not None and text) else text
+        awaiting_confirmation = (
+            self._confirm_gate is not None and self._confirm_gate.pending is not None
+        )
+        if awaiting_confirmation:
+            # A pending confirmation takes precedence over routing: this
+            # utterance is an answer, not a new command. Routing it instead
+            # would let "yes" be matched as some unrelated intent while the
+            # proposed action sat unanswered.
+            self._transition(VoiceState.CONFIRMING)
+            response = self._resolve_confirmation(text)
+        else:
+            self._transition(VoiceState.ROUTING)
+            response = self._route(text) if (self._router is not None and text) else text
         self._transition(VoiceState.ACTING)
 
         self._transition(VoiceState.SPEAKING)
         self._speak(response)
 
-    def _route(self, text: str) -> str:
-        """Run the Phase 2 cascade and, for anything that doesn't need
-        confirmation, execute the resolved tool. Phase 3 owns the real
-        spoken confirm gate (security/confirm.py doesn't exist yet), so a
-        route that needs confirmation — or whose tool isn't registered yet,
-        e.g. Phase 3's file tools — fails safe: it is described back to the
-        user rather than either silently executed or silently dropped.
-        Voice-driven teach mode (asking the user what an unmatched utterance
-        should do) is deferred past Phase 2 — the FSM has no multi-turn
-        dialogue state yet, only single-utterance routing — so a "teach"
-        result just reports that nothing matched.
+    def _dispatcher(self) -> CommandDispatcher:
+        """Build a dispatcher over this FSM's current collaborators.
+
+        Constructed per call rather than held: the dispatcher is stateless
+        (the pending confirmation lives in the gate), and building it here
+        keeps `self._router` / `self._registry` / `self._confirm_gate`
+        swappable after construction, which is how the tests wire fakes in.
         """
-        assert self._router is not None
-        route = self._router.route(text)
-        self._bus.publish(
-            "router.route",
-            {"tool": route.tool, "stage": route.stage, "args": route.args},
+        return CommandDispatcher(
+            router=self._router,
+            bus=self._bus,
+            registry=self._registry,
+            confirm_gate=self._confirm_gate,
         )
 
-        if route.tool is None:
-            return "I don't know how to do that yet."
-        if route.confirm_required is not False:
-            # True, or None (tool not registered / risk unknown) — both must
-            # block execution per security-and-privacy.md; only an explicit
-            # False clears it.
-            return f"That needs confirmation, which isn't wired up yet: {route.tool}."
+    def _route(self, text: str) -> str:
+        """Route one transcript and return what to speak.
 
-        spec = self._registry.get(route.tool)
-        if spec is None:
-            return f"I don't have a way to do that yet ({route.tool})."
-        try:
-            return spec(**route.args)
-        except Exception as exc:
-            # Tools already catch their own execution errors and return a
-            # readable string (engineering-standards.md); this guards only
-            # the integration seam — e.g. router-extracted args that don't
-            # match the tool's actual parameters.
-            return f"Something went wrong trying to do that: {exc}"
+        The decision itself lives in `tools/dispatch.py`, shared with the
+        Control Center so a typed command and a spoken one take exactly the
+        same safety path.
+
+        Voice-driven teach mode (asking the user what an unmatched utterance
+        should do) is still deferred: CONFIRMING is a yes/no turn, not the
+        open-ended dialogue teach mode needs.
+        """
+        assert self._router is not None
+        return self._dispatcher().route(text).speech
+
+    def _resolve_confirmation(self, text: str) -> str:
+        """Interpret this utterance as the answer to the pending action."""
+        assert self._confirm_gate is not None
+        return self._dispatcher().resolve_confirmation(text).speech
 
     def _speak(self, text: str) -> None:
         self._interrupted = False
@@ -168,8 +196,20 @@ class VoiceFSM:
                 if text:
                     self._tts.speak(text)
             finally:
+                # No `return` in here: it would swallow an exception raised
+                # by tts.speak() and leave the failure invisible.
                 if not self._interrupted:
-                    self._transition(VoiceState.IDLE)
+                    awaiting = (
+                        self._confirm_gate is not None
+                        and self._confirm_gate.pending is not None
+                    )
+                    if awaiting:
+                        # Multi-turn: we just asked a question, so listen for
+                        # the answer instead of dropping to IDLE and making
+                        # the user say the wake word again mid-sentence.
+                        self._enter_listening()
+                    else:
+                        self._transition(VoiceState.IDLE)
 
         self._speaking_thread = threading.Thread(target=run, daemon=True)
         self._speaking_thread.start()

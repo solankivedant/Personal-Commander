@@ -39,12 +39,33 @@ to Documents/Invoices. Proceed?"), and nothing executes until confirmed.
 
 Voice transcription errors + an eager model + shell access is a specific,
 foreseeable failure mode, not a hypothetical — do not skip this gate to reduce
-friction.
+friction. Phase 2's own measurements make it concrete: "meri maa ko phone
+lagao" ("call my mother") routed to `restart`, and this gate is what stood
+between that and a reboot.
+
+Implemented in `security/confirm.py` (Phase 3), with the FSM's CONFIRMING
+state carrying the answer back. Three properties there are load-bearing and
+all fail closed — only an ASR transcript can confirm (there is deliberately no
+API a tool result could reach), pending proposals expire
+(`security.confirm_timeout_s`), and ambiguity is re-asked then dropped. The
+prompt itself comes from the tool's `preview=` where it has one, so the user
+hears "Move 14 PDFs from Desktop to Documents" rather than an argument list.
 
 ## Undo stack (§8.3)
 
 Every mutating tool registers its inverse operation **before** executing, not
-after. If a tool can mutate state and doesn't wire up an inverse, it isn't done.
+after. If a tool can mutate state and doesn't wire up an inverse, it isn't
+done. `security/undo.py` holds the stack; `undo_last` / `what_can_i_undo`
+(`tools/system.py`) make it reachable by voice, which is the only way it helps
+a user who doesn't know it exists.
+
+One inverse is deliberately *guided* rather than automatic: `delete_files`
+sends files to the Recycle Bin and its undo names them and says where they
+are. Windows exposes no supported API for restoring a specific item — the
+shell namespace identifies them by an internal `$R…` path, with the original
+location only available as a localized detail column. Prefer a recoverable
+operation plus an honest recovery message over an automatic restore built on
+something that breaks on non-English Windows.
 
 ## Credential handling (§8.4)
 
@@ -82,6 +103,13 @@ Before merging any new function decorated with `@tool`, confirm:
 - [ ] `risk` is `confirm` if it deletes/sends/spends/overwrites, `blocked` if it
       touches credentials/registry/mass-deletion, else `safe`
 - [ ] an inverse is registered if it mutates state
+- [ ] `preview=` is set if it's `confirm` and its effect isn't obvious from
+      its arguments
+- [ ] any path argument is resolved and checked against an allowlist of roots
+      *after* `resolve()` (see `tools/files.py::ensure_within_roots`) — a
+      textual prefix check passes both `..` and a symlink
+- [ ] batch operations are capped, so mass mutation refuses rather than
+      confirming
 - [ ] it catches its own exceptions (see engineering-standards.md)
 - [ ] if it fetches external content, that content is delimiter-wrapped before
       re-entering the LLM context

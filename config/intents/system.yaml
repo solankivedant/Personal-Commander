@@ -6,11 +6,19 @@
 # added here — see .claude/skills/new-tool/SKILL.md.
 
 intents:
+  # {level} is constrained to a numeric RangeSlotList by router/grammar.py
+  # (config.router.grammar.level_range), NOT a free wildcard. That is what
+  # stops "volume {level}" from swallowing "volume kitna hai" / "volume
+  # ketlu che" — those are get_volume questions and must reach the embedding
+  # stage. Direction phrasings get their own {direction} slot for the same
+  # reason: they used to only match by accident, as junk {level} captures.
   set_volume:
     data:
       - sentences:
           - "set volume to {level} [percent]"
           - "volume {level}"
+          - "[turn|set] [the] volume {direction}"
+          - "volume {direction}"
           - "[make it] (louder|quieter)"
 
   mute:
@@ -23,7 +31,7 @@ intents:
   lock_screen:
     data:
       - sentences:
-          - "lock [the] (screen|computer|laptop|pc)"
+          - "lock [the|my] (screen|computer|laptop|pc)"
 
   sleep:
     data:
@@ -41,6 +49,9 @@ intents:
     data:
       - sentences:
           - "set brightness to {level} [percent]"
+          - "brightness {level}"
+          - "[turn|set] [the] brightness {direction}"
+          - "brightness {direction}"
           - "[make it|screen] (brighter|dimmer)"
 
   # --- New Phase 2 intents below (system.yaml). Grammar templates are
@@ -96,3 +107,19 @@ intents:
       - sentences:
           - "(what's|what is|check) [the] bluetooth status"
           - "is bluetooth (on|off|connected)"
+
+  # --- Phase 3: undo. The safety net has to be reachable by voice, or the
+  # Recycle Bin and the inverse-operation stack are only useful to someone
+  # who already knows to go looking for them.
+  undo_last:
+    data:
+      - sentences:
+          - "undo [that|it|this]"
+          - "undo [the] last (thing|action|change|one)"
+          - "(take|put) that back"
+
+  what_can_i_undo:
+    data:
+      - sentences:
+          - "what (can|could) I undo"
+          - "what would (undo|undoing) do"

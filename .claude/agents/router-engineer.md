@@ -14,8 +14,8 @@ respect.
 Ground rules specific to this work:
 
 - Cascade order is fixed: grammar (hassil) → embeddings (multilingual-e5-small,
-  threshold 0.75) → LLM → teach mode. First match wins. Never reorder or add a
-  bypass for convenience.
+  threshold 0.88, calibrated — see docs/PHASE-2-RESULTS.md) → LLM → teach
+  mode. First match wins. Never reorder or add a bypass for convenience.
 - A new intent needs: a grammar template in `config/intents/*.yaml` OR example
   utterances in `config/examples/{en,hi,gu}.jsonl` (ideally both — grammar for
   the common phrasing, examples for paraphrase coverage), a corresponding tool

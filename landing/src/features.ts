@@ -48,6 +48,7 @@ export function renderFeatures(container: HTMLElement, tools: ToolCard[]): void 
   for (const tool of tools) {
     const card = document.createElement("div");
     card.className = `feature-card${tool.span2 ? " span-2" : ""}`;
+    card.dataset.tone = tool.tone;
     card.innerHTML = cardMarkup(tool);
     container.appendChild(card);
   }

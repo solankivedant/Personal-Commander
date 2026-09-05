@@ -57,6 +57,10 @@ class AsrConfig(BaseModel):
 class GrammarConfig(BaseModel):
     enabled: bool
     dirs: list[str]
+    # Inclusive [low, high] bounds for the {level} slot. Defaulted (rather
+    # than required) so an older config/default.yaml without the key still
+    # validates; the value here must stay in step with the YAML's.
+    level_range: tuple[int, int] = (0, 100)
 
 
 class EmbeddingsConfig(BaseModel):
@@ -77,11 +81,24 @@ class RouterConfig(BaseModel):
     teach_mode: bool
 
 
+class FilesConfig(BaseModel):
+    """tools/files.py (Phase 3). `roots` is the blast-radius cap — every path
+    a file tool touches must resolve inside one of them."""
+
+    roots: list[str]
+    everything_cli: str
+    max_results: int
+    max_batch: int
+    search_timeout_s: int
+    walk_max_entries: int
+
+
 class ToolsConfig(BaseModel):
     volume_step_pct: int
     brightness_step_pct: int
     subprocess_timeout_s: int
     fuzzy_app_cutoff: int
+    files: FilesConfig
 
 
 class LlmConfig(BaseModel):
@@ -117,8 +134,25 @@ class OverlayConfig(BaseModel):
     transcript_display_s: float
 
 
+class ControlCenterConfig(BaseModel):
+    """ui/server.py — the loopback HTTP surface the desktop Control Center
+    talks to. `host` is validated as loopback at construction there, not
+    here, so a bad value fails loudly at startup with the reason attached.
+    Defaulted throughout so an older config/default.yaml still validates."""
+
+    enabled: bool = True
+    host: str = "127.0.0.1"       # loopback only — never 0.0.0.0
+    port: int = 5180
+    ui_dir: str = "desktop-preview/dist"
+    open_browser: bool = False
+    max_commands_per_minute: int = 60
+    max_event_clients: int = 4
+    event_queue_size: int = 200
+
+
 class UiConfig(BaseModel):
     overlay: OverlayConfig
+    control_center: ControlCenterConfig = ControlCenterConfig()
 
 
 class NetworkConfig(BaseModel):
@@ -134,6 +168,10 @@ class SecurityConfig(BaseModel):
     blocked_tools: list[str]
     speaker_verification: bool
     undo_depth: int
+    # Defaulted so an older config/default.yaml without these keys still
+    # validates; the YAML remains the source of truth.
+    confirm_timeout_s: int = 45
+    confirm_max_attempts: int = 2
 
 
 class DocumentsConfig(BaseModel):

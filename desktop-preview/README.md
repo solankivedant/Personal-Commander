@@ -1,28 +1,75 @@
-# Munshiji — desktop preview shell
+# Munshiji — desktop Control Center
 
-A [Tauri](https://tauri.app) wrapper around the Control Center UI mockup
-(`dist/index.html`) so it can be built into a real, installable Windows app
-(an NSIS `.exe` installer). Windows-only, deliberately: the real Munshiji
-product only ever targets Windows (Office COM automation has no macOS/Linux
-equivalent per `docs/ARCHITECTURE.md`), so a preview build for other platforms
-would advertise support that will never exist.
+`dist/index.html` is the Control Center UI. It is served two ways, and the
+difference matters:
 
-**This is not the Munshiji product.** It's a static HTML/CSS/JS UI preview with
-no Rust ↔ frontend bridge, no calls into `src/munshiji/`, and no network
-access. It exists so people can download something and see the intended shape
-of the app while the real engine (router, tools, voice loop) is built out
-phase by phase — see `../docs/ROADMAP.md`. The real shipping installer, once
-the engine exists, is the PyInstaller + Inno Setup pipeline under `../installer/`
-and `../scripts/package.py` (§8 of `munshiji-full-report.md`), not this Tauri
-shell — do not confuse the two.
+| How you open it | What it can do |
+|---|---|
+| **From the engine** — `uv run munshiji --no-voice` (or `uv run munshiji`), then <http://127.0.0.1:5180> | Real. Commands run on this machine. |
+| From the [Tauri](https://tauri.app) shell here, or `npm run web` | Interface only. It probes for the engine and sends you to the served copy if it finds one; otherwise it says so and stays inert. |
 
-## Why Tauri here, PyInstaller there
+**Every reply you see in the served copy came from a real tool.** Clicking
+an example posts the utterance to `src/munshiji/ui/server.py`, which routes
+it through the same cascade a spoken command takes
+(`tools/dispatch.py` → `router/` → the tool), and shows what the tool
+returned. The confirmation buttons carry your answer to
+`security/confirm.py`, which is the only thing that can approve a delete or
+a move — there is no "approved" flag the page can send.
 
-The actual assistant is a Python process (ASR/TTS/LLM/COM automation) with no
-reason to ship a second GUI runtime. This preview shell is a separate,
-disposable artifact: Tauri gives a small (~10 MB) installer for a page that's
-otherwise just static assets, which matters if this preview is meant to be
-freely downloadable. It does not imply the real app will be rewritten in Rust.
+Until 2026-09 this page replayed recorded strings on a timer. It doesn't any
+more: with no engine running it renders the interface and refuses to
+pretend, which is why the ribbon and the bar at the bottom both say the
+engine is offline.
+
+## Running it
+
+```bash
+# From the repo root. First start takes ~35s: the multilingual encoder loads.
+uv run munshiji --no-voice          # typed commands only — no mic, no models
+uv run munshiji                     # wake word + microphone as well
+uv run munshiji --no-voice --open   # ...and open the browser for you
+```
+
+The URL printed at startup (`control_center_ready`) carries the session
+token — the page is only able to act when it is served with it. The token is
+minted per run, so a stale tab reconnects by reloading that URL.
+
+What is exposed, and where it stops:
+
+* Bound to loopback only. `src/munshiji/ui/server.py` refuses to start on any
+  non-loopback host, `0.0.0.0` included. The remote/phone surface is a
+  separate Phase 7 thing (`net/api.py`, Tailscale-bound) and is not this.
+* Bearer token per run, plus Host and Origin checks, so a web page you happen
+  to have open cannot reach the engine.
+* `/command` and `/confirm` are rate limited; every request is logged, and
+  every action lands in `data/audit.jsonl` the same as a spoken one.
+
+## The Tauri shell
+
+Windows-only, deliberately: the real product only ever targets Windows
+(Office COM automation has no macOS/Linux equivalent per
+`docs/ARCHITECTURE.md`), so a preview build for other platforms would
+advertise support that will never exist.
+
+The shell wraps `dist/` so the Control Center can be installed as a normal
+Windows app (an NSIS `.exe`). It bundles the page without a token, so on
+launch the page looks for the engine on `127.0.0.1:5180` and navigates to the
+served copy. If the engine isn't running it shows the "engine isn't running"
+note with the command to start it. The shell has no Rust ↔ frontend bridge
+and never calls into `src/munshiji/` itself — the engine is a separate Python
+process, and the page talks to it over loopback HTTP like any other client.
+
+The shipping installer for the assistant itself is still the PyInstaller +
+Inno Setup pipeline under `../installer/` and `../scripts/package.py` (§8 of
+`munshiji-full-report.md`), not this Tauri shell — do not confuse the two.
+
+### Why Tauri here, PyInstaller there
+
+The assistant is a Python process (ASR/TTS/LLM/COM automation) with no reason
+to ship a second GUI runtime. This shell is a separate, small artifact: Tauri
+gives a ~10 MB installer for a page that is otherwise static assets, which
+matters if it is meant to be freely downloadable. It does not imply the real
+app will be rewritten in Rust.
 
 ## Building it yourself
 
@@ -40,7 +87,7 @@ npm install
 # icon.ico isn't, since it needs the Tauri CLI to produce):
 npm run icon
 
-npm run dev      # opens the preview in a native window
+npm run dev      # opens the Control Center in a native window
 npm run build    # produces an NSIS installer under src-tauri/target/release/bundle/nsis/
 ```
 
@@ -49,13 +96,14 @@ npm run build    # produces an NSIS installer under src-tauri/target/release/bun
 ```bash
 cd desktop-preview
 npm install
-npm run web      # http://localhost:5180 (override with PORT=xxxx)
+npm run web      # http://localhost:5181 (override with PORT=xxxx)
 ```
 
-`serve.mjs` is a zero-dependency Node static server for `dist/` — the same
-file the Tauri window loads, just opened as a normal browser tab. Use this
-for quick UI iteration; use `npm run dev` (below) when you need to check how
-it actually looks inside a native window.
+`serve.mjs` is a zero-dependency Node static server for `dist/`. It serves
+the page without a token — same as the Tauri bundle — so use it for pure
+layout/CSS iteration. Port 5181, not 5180: 5180 belongs to the engine
+(`config/default.yaml`, `ui.control_center.port`), and taking it would stop
+the real Control Center from starting.
 
 ## Getting a build without installing Rust
 
@@ -67,7 +115,10 @@ landing page's download button links to.
 
 ## Updating the UI
 
-`dist/index.html` is a hand-copy of the Claude-artifact Control Center design,
-with the Claude-runtime frame script stripped out and a preview-build ribbon
-added at the top. If the artifact is revised, re-sync the `<style>`/body/
-`<script>` content here (keep the ribbon and the `<title>`).
+`dist/index.html` started as a hand-copy of the Claude-artifact Control
+Center design and has since diverged: the demo timer is gone and the page is
+a real client of `ui/server.py` (`ENGINE`, `send()`, `openStream()` near the
+bottom of the inline script). Re-syncing from a revised artifact means
+keeping that block, the command bar, the connection note, and the
+`__MUNSHIJI_SESSION_TOKEN__` placeholder the server substitutes on the way
+out.

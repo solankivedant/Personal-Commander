@@ -16,7 +16,11 @@ function slideMarkup(slide: ShowcaseSlide, index: number, total: number): string
   return `
 <div class="showcase-copy">
   ${mark(slide.icon, tone, "lg")}
-  <div class="index mono">${num} / ${count}</div>
+  <div class="index mono">
+    <span class="now">${num}</span>
+    <span class="rule"></span>
+    <span class="total">${count}</span>
+  </div>
   <h3>${slide.name}</h3>
   <p>${slide.desc}</p>
   <div class="chips">
@@ -64,7 +68,8 @@ function slideMarkup(slide: ShowcaseSlide, index: number, total: number): string
 }
 
 /** Full-width showcase: exactly one slide on screen, wrapping forever in both
- * directions, with autoplay that yields to any manual interaction. */
+ * directions. Advancing is manual only - the reader sets the pace, so nothing
+ * slides out from under them mid-sentence. */
 export function renderShowcase(root: HTMLElement, slides: ShowcaseSlide[]): void {
   const viewport = root.querySelector<HTMLElement>(".showcase-viewport");
   const dotsEl = root.querySelector<HTMLElement>(".showcase-dots");
@@ -78,6 +83,8 @@ export function renderShowcase(root: HTMLElement, slides: ShowcaseSlide[]): void
   const slideEls = slides.map((slide, i) => {
     const el = document.createElement("div");
     el.className = "showcase-slide";
+    // Drives --tone for every graphic in the slide, copy column and mockup alike.
+    el.dataset.tone = slide.tone;
     el.innerHTML = slideMarkup(slide, i, slides.length);
     el.setAttribute("aria-hidden", "true");
     viewport.appendChild(el);
@@ -92,9 +99,7 @@ export function renderShowcase(root: HTMLElement, slides: ShowcaseSlide[]): void
   });
 
   const dots = dotsEl ? (Array.from(dotsEl.children) as HTMLElement[]) : [];
-  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
   let index = 0;
-  let timer: number | null = null;
 
   function paint(): void {
     slideEls.forEach((el, i) => {
@@ -112,30 +117,9 @@ export function renderShowcase(root: HTMLElement, slides: ShowcaseSlide[]): void
     paint();
   }
 
-  function play(): void {
-    if (reduceMotion || timer !== null) return;
-    timer = window.setInterval(() => go(index + 1), 5200);
-  }
-
-  function pause(): void {
-    if (timer !== null) window.clearInterval(timer);
-    timer = null;
-  }
-
-  function nudge(next: number): void {
-    pause();
-    go(next);
-    play();
-  }
-
-  prevBtn?.addEventListener("click", () => nudge(index - 1));
-  nextBtn?.addEventListener("click", () => nudge(index + 1));
-  dots.forEach((d, i) => d.addEventListener("click", () => nudge(i)));
-  root.addEventListener("mouseenter", pause);
-  root.addEventListener("mouseleave", play);
-  root.addEventListener("focusin", pause);
-  root.addEventListener("focusout", play);
+  prevBtn?.addEventListener("click", () => go(index - 1));
+  nextBtn?.addEventListener("click", () => go(index + 1));
+  dots.forEach((d, i) => d.addEventListener("click", () => go(i)));
 
   paint();
-  play();
 }

@@ -1,0 +1,274 @@
+# Held-out paraphrase set — the *semantic* half of the golden suite.
+#
+# Why this file exists, separately from utterances.yaml:
+#
+# Every embedding-stage case in tests/golden/utterances.yaml is, by
+# construction, a verbatim copy of a line in config/examples/*.jsonl. That
+# makes it an excellent test of cascade *mechanics* (stage ordering,
+# thresholding, confirm resolution, slot enrichment) and a worthless test of
+# semantic recall: the query has an exact match in the index, so cosine
+# similarity is 1.0 and any encoder — including tests/test_router.py's
+# deliberately non-semantic `_fake_encoder` — scores 100%.
+#
+# So "the golden set passes with the real multilingual-e5-small" was not,
+# on its own, evidence for the claim it was being used to support: that one
+# shared example set generalizes across en/hi/gu because the encoder is
+# multilingual (CLAUDE.md, .claude/rules/architecture-and-router.md §10.2).
+#
+# Every utterance below is deliberately NOT in config/examples/*.jsonl and
+# NOT matchable by any config/intents/*.yaml grammar template — it can only
+# be answered by Stage 2 actually generalizing. tests/test_router.py asserts
+# that non-membership rather than trusting this comment, so a future edit
+# that "fixes" a failing case by pasting it into the example set fails
+# loudly instead of quietly turning this file back into utterances.yaml.
+#
+# Graded only against the real encoder (MUNSHIJI_GOLDEN_REAL_ENCODER=1).
+# Grading these with the fake encoder would measure nothing — it has no
+# semantics to generalize with, by design.
+
+# --- English ---
+- text: "boot up spotify for me"
+  lang: en
+  expect_tool: open_app
+  expect_args: {app: spotify}
+
+- text: "I need excel running"
+  lang: en
+  expect_tool: open_app
+  expect_args: {app: excel}
+
+- text: "I am done with firefox"
+  lang: en
+  expect_tool: close_app
+  expect_args: {app: firefox}
+
+- text: "jump over to outlook"
+  lang: en
+  expect_tool: focus_app
+  expect_args: {app: outlook}
+
+- text: "tuck this window away"
+  lang: en
+  expect_tool: minimize_app
+
+- text: "make this window fill the screen"
+  lang: en
+  expect_tool: maximize_app
+
+- text: "give me a list of everything that is running"
+  lang: en
+  expect_tool: list_apps
+
+- text: "I can barely hear this"
+  lang: en
+  expect_tool: set_volume
+  expect_args: {direction: up}
+
+- text: "drop the volume a little"
+  lang: en
+  expect_tool: set_volume
+  expect_args: {direction: down}
+
+- text: "no sound at all please"
+  lang: en
+  expect_tool: mute
+
+- text: "this screen is way too bright"
+  lang: en
+  expect_tool: set_brightness
+  expect_args: {direction: down}
+
+- text: "how much juice is left"
+  lang: en
+  expect_tool: battery_status
+
+- text: "I am stepping away, lock it"
+  lang: en
+  expect_tool: lock_screen
+
+- text: "shut the whole machine down"
+  lang: en
+  expect_tool: shutdown
+  expect_confirm: true
+
+- text: "give it a fresh restart"
+  lang: en
+  expect_tool: restart
+  expect_confirm: true
+
+- text: "cut off the wifi"
+  lang: en
+  expect_tool: wifi_toggle
+  expect_args: {state: "off"}
+
+- text: "get bluetooth going"
+  lang: en
+  expect_tool: bluetooth_toggle
+  expect_args: {state: "on"}
+
+- text: "is the internet connected"
+  lang: en
+  expect_tool: wifi_status
+
+# --- Hindi (romanized) ---
+- text: "chrome shuru karo"
+  lang: hi
+  expect_tool: open_app
+  expect_args: {app: chrome}
+
+- text: "excel open karo"
+  lang: hi
+  expect_tool: open_app
+  expect_args: {app: excel}
+
+- text: "firefox ko band kar do"
+  lang: hi
+  expect_tool: close_app
+  expect_args: {app: firefox}
+
+- text: "outlook pe le chalo"
+  lang: hi
+  expect_tool: focus_app
+  expect_args: {app: outlook}
+
+- text: "is window ko chhota kar do"
+  lang: hi
+  expect_tool: minimize_app
+
+- text: "window ko poora bada karo"
+  lang: hi
+  expect_tool: maximize_app
+
+- text: "kaun kaun se program chal rahe hain"
+  lang: hi
+  expect_tool: list_apps
+
+- text: "awaaz thodi zyada karo"
+  lang: hi
+  expect_tool: set_volume
+  expect_args: {direction: up}
+
+- text: "sound halka kar do"
+  lang: hi
+  expect_tool: set_volume
+  expect_args: {direction: down}
+
+- text: "bilkul awaaz mat karo"
+  lang: hi
+  expect_tool: mute
+
+- text: "screen bahut chamak rahi hai"
+  lang: hi
+  expect_tool: set_brightness
+  expect_args: {direction: down}
+
+- text: "battery kitna percent hai"
+  lang: hi
+  expect_tool: battery_status
+
+- text: "laptop ko lock kar do"
+  lang: hi
+  expect_tool: lock_screen
+
+- text: "computer ko poori tarah band kar do"
+  lang: hi
+  expect_tool: shutdown
+  expect_confirm: true
+
+- text: "system phir se chalu karo"
+  lang: hi
+  expect_tool: restart
+  expect_confirm: true
+
+- text: "wifi ko off kar do"
+  lang: hi
+  expect_tool: wifi_toggle
+  expect_args: {state: "off"}
+
+- text: "bluetooth on kar do"
+  lang: hi
+  expect_tool: bluetooth_toggle
+  expect_args: {state: "on"}
+
+- text: "internet chal raha hai kya"
+  lang: hi
+  expect_tool: wifi_status
+
+# --- Gujarati (romanized) ---
+- text: "excel kholo"
+  lang: gu
+  expect_tool: open_app
+  expect_args: {app: excel}
+
+- text: "firefox band karo"
+  lang: gu
+  expect_tool: close_app
+  expect_args: {app: firefox}
+
+- text: "outlook par jao"
+  lang: gu
+  expect_tool: focus_app
+  expect_args: {app: outlook}
+
+- text: "aa window ne chhupavo"
+  lang: gu
+  expect_tool: minimize_app
+
+- text: "window ne poora motu karo"
+  lang: gu
+  expect_tool: maximize_app
+
+- text: "kaya program chali rahya che"
+  lang: gu
+  expect_tool: list_apps
+
+- text: "avaaj thodi vadhare karo"
+  lang: gu
+  expect_tool: set_volume
+  expect_args: {direction: up}
+
+- text: "sound ochu karo"
+  lang: gu
+  expect_tool: set_volume
+  expect_args: {direction: down}
+
+- text: "sav avaaj band karo"
+  lang: gu
+  expect_tool: mute
+
+- text: "screen bahu tej che"
+  lang: gu
+  expect_tool: set_brightness
+  expect_args: {direction: down}
+
+- text: "battery no charge ketlo che"
+  lang: gu
+  expect_tool: battery_status
+
+- text: "computer lock kari do"
+  lang: gu
+  expect_tool: lock_screen
+
+- text: "computer ne sampurna band karo"
+  lang: gu
+  expect_tool: shutdown
+  expect_confirm: true
+
+- text: "system fari thi chalu karo"
+  lang: gu
+  expect_tool: restart
+  expect_confirm: true
+
+- text: "wifi ne band kari do"
+  lang: gu
+  expect_tool: wifi_toggle
+  expect_args: {state: "off"}
+
+- text: "bluetooth ne chalu kari do"
+  lang: gu
+  expect_tool: bluetooth_toggle
+  expect_args: {state: "on"}
+
+- text: "internet chalu che ke nahi"
+  lang: gu
+  expect_tool: wifi_status
